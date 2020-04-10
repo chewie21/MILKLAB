@@ -11,8 +11,4 @@ public class AccountController {
         return "account";
     }
 
-    @GetMapping("/menu")
-    public String menu() {
-        return "menu";
-    }
 }

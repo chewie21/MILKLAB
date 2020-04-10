@@ -12,25 +12,24 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.util.Map;
 
 @Controller
-public class MenuAdminController {
+public class ProductsController {
 
     @Autowired
     private ProductRepo productRepo;
 
-    @GetMapping("/menuAdmin")
+    @GetMapping("/AdminProducts")
     public String ShowProduct (Map<String, Object> model) {
         Iterable<Product> products = productRepo.findAll();
         model.putIfAbsent("products", products);
-        return "menuAdmin";
+        return "AdminProducts";
     }
-    @PostMapping("/menuAdmin")
-    public String addProduct(Product product, Map<String, Object> model) {
-
+    @PostMapping("/AdminProducts")
+    public String AddProduct(Product product, Map<String, Object> model) {
         productRepo.save(product);
         Iterable<Product> products = productRepo.findAll();
         model.put("products", products);
 
-        return "redirect:/menuAdmin";
+        return "redirect:AdminProducts";
     }
 
     @PostMapping("/filter")
@@ -38,7 +37,7 @@ public class MenuAdminController {
         Iterable<Product> products;
         if (findGroup.equals("null")) {
             if (findName.isEmpty()) {
-                return "redirect:/menuAdmin";
+                return "redirect:/AdminProducts";
             }
             else
             products = productRepo.findByProdName(findName);
@@ -49,6 +48,6 @@ public class MenuAdminController {
             products = productRepo.findByProdNameAndProdGroup(findName, findGroup);
         }
             attr.addFlashAttribute("products", products);
-            return "redirect:/menuAdmin";
+            return "redirect:/AdminProducts";
         }
 }

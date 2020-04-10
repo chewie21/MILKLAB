@@ -1,6 +1,7 @@
 package com.example.milk.domain;
 
 import javax.persistence.*;
+import java.sql.Blob;
 
 @Entity
 @Table (name = "milk_product")
@@ -11,13 +12,15 @@ public class Product {
     private String prodGroup;
     private String prodName;
     private Long prodCoast;
+    private String prodInfo;
 
     public Product() {}
 
-    public Product (String prodName, Long prodCoast, String prodGroup) {
+    public Product (String prodName, Long prodCoast, String prodGroup, String prodInfo) {
         this.prodName = prodName;
         this.prodGroup = prodGroup;
         this.prodCoast = prodCoast;
+        this.prodInfo = prodInfo;
     }
 
     public Long getId() {
@@ -51,4 +54,8 @@ public class Product {
     public void setProdCoast(Long prodCoast) {
         this.prodCoast = prodCoast;
     }
+
+    public String getProdInfo() { return prodInfo; }
+
+    public void setProdInfo(String prodInfo) { this.prodInfo = prodInfo; }
 }
