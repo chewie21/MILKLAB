@@ -31,7 +31,7 @@
                     <a href="#" class="nav-link disabled">Доставка</a>
                 </li>
                 <li class="nav-item">
-                    <a href="account" class="nav-link">Аккаунт</a>
+                    <a href="account" class="nav-link active">Аккаунт</a>
                 </li>
                 <li class="nav-item">
                     <a href="contacts" class="nav-link">Контакты</a>
@@ -43,6 +43,38 @@
         </div>
     </div>
 </nav>
-<p class="text-muted fixed-bottom text-center">©MILKLAB</p>
+<div class="jumbotron bg-white">
+    <div class="container">
+        <div class="container ml-0 pl-0 pb-5">
+            <h1 class="display-4">Личный кабинет</h1>
+            <p class="lead">Вся информация, которую мы знаем о Вас и храним в глубочайшем секрете.</p>
+        </div>
+        <form>
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="form-row">
+                        <label for="staticId" class="col-md-2 col-form-label-lg">Ваш ID:</label>
+                        <div class="col-md-auto">
+                            <input type="text" readonly name="id" class="form-control-lg form-control-plaintext" id="staticId" th:value="${order.id}" value="Пример"/>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <label for="staticName" class="col-md-2 col-form-label-lg">Имя:</label>
+                        <div class="col-md-auto">
+                            <input type="text" readonly name="name" class="form-control-lg form-control-plaintext" id="staticName" th:value="${order.productProdName}"/>
+                        </div>
+                    </div>
+                    <div class="form-row">
+                        <label for="staticSurname" class="col-md-2 col-form-label-lg">Фамилия:</label>
+                        <div class="col-md-auto">
+                            <input type="text" readonly name="surname" class="form-control-lg form-control-plaintext" id="staticSurname" th:value="${order.userUsername}"/>
+                        </div>
+                    </div>
+
+                    </div>
+                </div>
+        </form>
+    </div>
+</div>
 </body>
 </html>

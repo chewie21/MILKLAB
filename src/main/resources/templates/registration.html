@@ -12,12 +12,11 @@
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
         <script src="js/bootstrap-formhelpers.min.js"></script>
     </head>
-    <body>
-        <div class="jumbotron">
-            <div class="container ml-0 pl-0">
+    <body class="bg-light">
+        <div class="jumbotron bg-light">
+            <div class="container">
               <h1 class="display-4">Регистрация</h1>
               <p class="lead">Заполните все поля, чтобы мы смогли сделать Ваш визит безупречным.</p>
-            </div>
             <form th:action="@{/registration}" method="post">
                 <div class="form-row">
                     <div class="form-group col-md-6">
@@ -51,6 +50,8 @@
                   </div>
                 <button type="submit" class="btn btn-primary btn-block">Зарегистрироваться</button>
               </form>
-          </div>
+                <p class="mt-5 mb-3 text-muted text-center fixed-bottom">©MILKLAB</p>
+            </div>
+        </div>
     </body>
 </html>

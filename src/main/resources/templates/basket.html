@@ -43,6 +43,42 @@
         </div>
     </div>
 </nav>
-<p class="text-muted fixed-bottom text-center">©MILKLAB</p>
+<div class="jumbotron bg-white">
+    <div class="container">
+        <div class="container ml-0 pl-0 pb-5">
+            <h1 class="display-4">Корзина</h1>
+            <p class="lead">Проверьте все позиции, прежде чем совершать заказ.</p>
+        </div>
+        <form th:action="@{/menu/order}" method="post">
+        <div class="table-responsive">
+            <table class="table table-hover">
+                <thead class="text-center">
+                <tr>
+                    <th>Продукт</th>
+                    <th>Цена</th>
+                    <th>Действия</th>
+                </tr>
+                </thead>
+                <tbody class="text-center">
+                <tr th:each="basket : ${baskets}">
+                    <td th:text="${basket.product.prodName}"></td>
+                    <td th:text="${basket.product.prodCoast}"></td>
+                    <td>
+                        <form th:action="@{/menu/basket/{basket.id}(basket.id=${basket.id})}" method="post">
+                            <button type="submit" class="btn btn-danger btn-block">Удалить</button>
+                        </form>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+            <input class="text-center" th:value="${orderCoast}" name="orderCoast"/>
+            <input type="text" name="address"/>
+            <button type="submit" class="btn btn-primary">Заказать</button>
+        </div>
+        </form>
+
+        <p class="text-muted fixed-bottom text-center">©MILKLAB</p>
+    </div>
+</div>
 </body>
 </html>

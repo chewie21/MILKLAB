@@ -1,21 +1,18 @@
 package com.example.milk.controller;
 
-import com.example.milk.domain.Role;
 import com.example.milk.domain.User;
-import com.example.milk.repos.UserRepo;
+import com.example.milk.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
-
-import java.util.Collections;
-import java.util.Map;
 
     @Controller
     public class RegistrationController {
 
         @Autowired
-        private UserRepo userRepo;
+        private UserService userService;
 
         @GetMapping("/registration")
         public String registration() {
@@ -23,16 +20,16 @@ import java.util.Map;
         }
 
         @PostMapping("/registration")
-        public String addUser(User user, Map<String, Object> model) {
+        public String addUser(User user, Model model) {
 
-            User userFromDb = userRepo.findByUsername(user.getUsername());
-            if(userFromDb != null) {
-                model.put("message", "Такой пользователь уже существует");
+            User checkUser = userService.checkAccount(user);
+            if (checkUser != null) {
+                model.addAttribute("message", "Такой пользователь уже существует");
                 return "registration";
             }
-            user.setActive(true);
-            user.setRoles(Collections.singleton(Role.USER));
-            userRepo.save(user);
+            else {
+                userService.newAccount(user);
+            }
             return "redirect:/login";
         }
     }

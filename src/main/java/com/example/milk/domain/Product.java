@@ -1,26 +1,40 @@
 package com.example.milk.domain;
 
 import javax.persistence.*;
-import java.sql.Blob;
+import java.io.Serializable;
+import java.util.List;
+import java.util.Set;
 
 @Entity
-@Table (name = "milk_product")
-public class Product {
+@Table(name = "m_product")
+public class Product implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-    private String prodGroup;
     private String prodName;
-    private Long prodCoast;
     private String prodInfo;
+    private Long prodCoast;
+    private String prodImg;
 
     public Product() {}
 
-    public Product (String prodName, Long prodCoast, String prodGroup, String prodInfo) {
+    public Product(String prodName, String prodInfo, Long prodCoast) {
         this.prodName = prodName;
-        this.prodGroup = prodGroup;
-        this.prodCoast = prodCoast;
         this.prodInfo = prodInfo;
+        this.prodCoast = prodCoast;
+    }
+
+    @ElementCollection(targetClass = ProductGroup.class, fetch = FetchType.EAGER)
+    @CollectionTable(name = "product_group", joinColumns = @JoinColumn(name = "product_id"))
+    @Enumerated(EnumType.STRING)
+    private Set<ProductGroup> prodGroup;
+
+    public Set<ProductGroup> getGroup() {
+        return prodGroup;
+    }
+
+    public void setGroup(Set<ProductGroup> group) {
+        this.prodGroup = group;
     }
 
     public Long getId() {
@@ -31,20 +45,20 @@ public class Product {
         this.id = id;
     }
 
-    public String getProdGroup() {
-        return prodGroup;
-    }
-
-    public void setProdGroup(String prodGroup) {
-        this.prodGroup = prodGroup;
-    }
-
     public String getProdName() {
         return prodName;
     }
 
     public void setProdName(String prodName) {
         this.prodName = prodName;
+    }
+
+    public String getProdInfo() {
+        return prodInfo;
+    }
+
+    public void setProdInfo(String prodInfo) {
+        this.prodInfo = prodInfo;
     }
 
     public Long getProdCoast() {
@@ -55,7 +69,11 @@ public class Product {
         this.prodCoast = prodCoast;
     }
 
-    public String getProdInfo() { return prodInfo; }
+    public String getProdImg() {
+        return prodImg;
+    }
 
-    public void setProdInfo(String prodInfo) { this.prodInfo = prodInfo; }
+    public void setProdImg(String prodImg) {
+        this.prodImg = prodImg;
+    }
 }

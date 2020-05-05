@@ -1,8 +1,20 @@
 package com.example.milk.repos;
 
 import com.example.milk.domain.User;
-import org.springframework.data.repository.CrudRepository;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 
-public interface UserRepo extends CrudRepository<User, Integer> {
+import java.util.List;
+
+public interface UserRepo extends JpaRepository<User, Long> {
     User findByUsername(String username);
+
+    List<User> findAllById(Long id);
+    List<User> findAllByName(String name);
+    List<User> findAllBySurname(String surname);
+    List<User> findAllByUsername(String username);
+    List<User> findAllByEmail(String email);
+    List<User> findAllByDate(String date);
+
+
 }
