@@ -2,7 +2,6 @@ package com.example.milk.controller;
 
 import com.example.milk.domain.*;
 import com.example.milk.repos.BasketRepo;
-import com.example.milk.repos.OrderInfoRepo;
 import com.example.milk.repos.OrderRepo;
 import com.example.milk.repos.ProductRepo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,8 +25,6 @@ public class MenuController {
     ProductRepo productRepo;
     @Autowired
     BasketRepo basketRepo;
-    @Autowired
-    OrderInfoRepo orderInfoRepo;
 
 
 
@@ -48,7 +45,6 @@ public class MenuController {
                             Map<String, Object> model) {
         Basket basket = new Basket(user, product);
         basketRepo.save(basket);
-        List<Order_info> orderInfoSet = orderInfoRepo.findByUserId(user.getId());
         model.put("baskets", basketRepo.findAllByUserId(user.getId()));
         return "basket";
     }
