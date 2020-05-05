@@ -29,6 +29,10 @@ public class Product implements Serializable {
     @Enumerated(EnumType.STRING)
     private Set<ProductGroup> prodGroup;
 
+    public Product(Long productId) {
+        this.id = productId;
+    }
+
     public Set<ProductGroup> getGroup() {
         return prodGroup;
     }

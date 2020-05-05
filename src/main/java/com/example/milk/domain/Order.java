@@ -1,5 +1,8 @@
 package com.example.milk.domain;
 
+import org.hibernate.annotations.ResultCheckStyle;
+import org.hibernate.annotations.SQLDelete;
+
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.List;
@@ -7,65 +10,57 @@ import java.util.Set;
 
 @Entity
 @Table(name = "m_order")
-public class Order {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
-    private String time;
+@SQLDelete(sql = "UPDATE m_order SET removed = true WHERE id=?", check = ResultCheckStyle.COUNT)
+public class Order extends Audit {
+
+    @Column
     private String address;
-    private String date;
-    private String orderCoast;
 
+    @Column
+    @Enumerated(value = EnumType.STRING)
+    private OrderStatusEnum status;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "user_id")
+    @ManyToOne
     private User user;
+
+    @OneToMany
+    private List<Product> items;
+
+    private Boolean removed = false;
 
     public Order() {}
 
-    public Order(User user,String orderCoast, String address, String time, String date) {
-        this.user = user;
-        this.orderCoast = orderCoast;
+    public Order(Long id, String address, OrderStatusEnum status, User user) {}
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
         this.address = address;
-        this.time = time;
-        this.date = date;
     }
 
-
-    public Long getId() {
-        return id;
+    public OrderStatusEnum getStatus() {
+        return status;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setStatus(OrderStatusEnum status) {
+        this.status = status;
     }
 
-    public String getTime() { return time; }
-
-    public void setTime(String time) { this.time = time; }
-
-    public String getDate() { return date; }
-
-    public void setDate(String date) { this.date = date; }
-
-    public String getAddress() { return address; }
-
-    public void setAddress(String address) { this.address = address; }
-
-    public String getOrderCoast() {
-        return orderCoast;
-    }
-
-    public void setOrderCoast(String orderCoast) {
-        this.orderCoast = orderCoast;
-    }
-
-    //User
     public User getUser() {
         return user;
     }
+
     public void setUser(User user) {
         this.user = user;
     }
 
+    public List<Product> getItems() {
+        return items;
+    }
+
+    public void setItems(List<Product> items) {
+        this.items = items;
+    }
 }
