@@ -2,7 +2,7 @@ package com.example.milk.domain;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.List;
+
 import java.util.Set;
 
 @Entity
@@ -28,6 +28,10 @@ public class Product implements Serializable {
     @CollectionTable(name = "product_group", joinColumns = @JoinColumn(name = "product_id"))
     @Enumerated(EnumType.STRING)
     private Set<ProductGroup> prodGroup;
+
+    public Product(Long productId) {
+        this.id = productId;
+    }
 
     public Set<ProductGroup> getGroup() {
         return prodGroup;

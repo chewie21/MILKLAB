@@ -17,7 +17,7 @@ public class Basket {
     @JoinColumns({
             @JoinColumn(name = "product_id", referencedColumnName = "id"),
             @JoinColumn(name = "product_prodName", referencedColumnName = "prodName")})
-            private Product product;
+    private Product product;
 
     public Basket() {}
 

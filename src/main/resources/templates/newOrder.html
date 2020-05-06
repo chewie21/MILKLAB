@@ -22,16 +22,15 @@
                     <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Ресторан</a>
                     <div class="dropdown-menu">
                         <a class="dropdown-item" href="menu">Меню</a>
-                        <a class="dropdown-item" href="#">Заказ столов</a>
                         <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="#">Самовывоз</a>
+                        <a class="dropdown-item active" href="order">Корзина</a>
                     </div>
                 </li>
                 <li class="nav-item">
                     <a href="#" class="nav-link disabled">Доставка</a>
                 </li>
                 <li class="nav-item">
-                    <a href="account" class="nav-link active">Аккаунт</a>
+                    <a href="account" class="nav-link">Аккаунт</a>
                 </li>
                 <li class="nav-item">
                     <a href="contacts" class="nav-link">Контакты</a>
@@ -46,34 +45,19 @@
 <div class="jumbotron bg-white">
     <div class="container">
         <div class="container ml-0 pl-0 pb-5">
-            <h1 class="display-4">Личный кабинет</h1>
-            <p class="lead">Вся информация, которую мы знаем о Вас и храним в глубочайшем секрете.</p>
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead class="text-center">
+                    <tr>
+                        <th>ID</th>
+                    </tr>
+                    </thead>
+                    <tbody th:each="order : ${orders}"}>
+                    <tr th:text="${order.id}"></tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
-        <form>
-            <div class="row">
-                <div class="col-md-8">
-                    <div class="form-row">
-                        <label for="staticId" class="col-md-2 col-form-label-lg">Ваш ID:</label>
-                        <div class="col-md-auto">
-                            <input type="text" readonly name="id" class="form-control-lg form-control-plaintext" id="staticId" th:value="${order.id}" value="Пример"/>
-                        </div>
-                    </div>
-                    <div class="form-row">
-                        <label for="staticName" class="col-md-2 col-form-label-lg">Имя:</label>
-                        <div class="col-md-auto">
-                            <input type="text" readonly name="name" class="form-control-lg form-control-plaintext" id="staticName" th:value="${order.productProdName}"/>
-                        </div>
-                    </div>
-                    <div class="form-row">
-                        <label for="staticSurname" class="col-md-2 col-form-label-lg">Фамилия:</label>
-                        <div class="col-md-auto">
-                            <input type="text" readonly name="surname" class="form-control-lg form-control-plaintext" id="staticSurname" th:value="${order.userUsername}"/>
-                        </div>
-                    </div>
-
-                    </div>
-                </div>
-        </form>
     </div>
 </div>
 </body>
