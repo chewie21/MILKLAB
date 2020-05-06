@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>MILKLAB</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link href="css/bootstrap-formhelpers.min.css" rel="stylesheet" media="screen">
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    <script src="js/bootstrap-formhelpers.min.js"></script>
+</head>
+<body class="bg-light">
+<div class="jumbotron bg-light">
+    <form class="form" th:action="@{/AdminAccounts}" method="post" style="width: 100%; max-width: 330px; padding: 15px; margin: auto; text-align: center;">
+        <h1 class="display-4 mb-3 font-weight-light">Редактирование</h1>
+        <label for="staticId">ID:</label>
+        <input type="text" name="id" class="form-control text-primary" id="staticId" th:value="${user.id}"/>
+        <label for="staticName">Имя:</label>
+        <input type="text" name="name" class="form-control text-primary" id="staticName" th:value="${user.name}"/>
+        <label for="staticSurname">Фамилия:</label>
+        <input type="text" name="surname" class="form-control text-primary" id="staticSurname" th:value="${user.surname}"/>
+        <label for="staticEmail">Email:</label>
+        <input type="text" name="email" class="form-control text-primary" id="staticEmail" th:value="${user.email}"/>
+        <label for="staticDate">День рождения:</label>
+        <input type="date" name="date" class="form-control text-primary" id="staticDate" th:value="${user.date}" value="01.08.1998"/>
+        <label for="staticUsername">Номер телефона:</label>
+        <input type="text" name="username" class="form-control bfh-phone text-primary" data-country="RU" id="staticUsername" th:value="${user.username}"/>
+        <label for="staticPassword">Пароль:</label>
+        <input type="text" name="password" class="form-control text-primary" id="staticPassword" th:value="${user.password}">
+        <button type="submit" class="btn btn-primary btn-lg btn-block">Сохранить</button>
+    </form>
+</div>
+</body>
+</html>
