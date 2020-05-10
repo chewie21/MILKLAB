@@ -1,49 +1,50 @@
 package com.example.milk.domain;
 
-import org.hibernate.annotations.ResultCheckStyle;
-import org.hibernate.annotations.SQLDelete;
-
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Table(name = "m_order")
-@SQLDelete(sql = "UPDATE m_order SET removed = true WHERE id=?", check = ResultCheckStyle.COUNT)
-public class Order extends Audit {
+public class Order {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
 
-    @Column
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "user_id")
+    private User user;
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    private List<Product> product = new ArrayList<>();
+
+    private Long orderCoast;
     private String address;
+    private String time;
+    private String date;
+
+    private boolean active;
 
     @Column
     @Enumerated(value = EnumType.STRING)
     private OrderStatusEnum status;
 
-    @ManyToOne
-    private User user;
-
-    @OneToMany
-    private List<Product> items;
-
-    private Boolean removed = false;
-
-    public Order() {}
-
-    public Order(Long id, String address, OrderStatusEnum status, User user) {}
-
-    public String getAddress() {
-        return address;
-    }
-
-    public void setAddress(String address) {
+    public Order () {}
+    public Order(User user, String address, String time, String date, Long orderCoast, OrderStatusEnum status) {
+        this.user = user;
         this.address = address;
-    }
-
-    public OrderStatusEnum getStatus() {
-        return status;
-    }
-
-    public void setStatus(OrderStatusEnum status) {
+        this.time = time;
+        this.date = date;
+        this.orderCoast = orderCoast;
         this.status = status;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public User getUser() {
@@ -54,12 +55,59 @@ public class Order extends Audit {
         this.user = user;
     }
 
-    public List<Product> getItems() {
-        return items;
+    public List<Product> getProduct() {
+        return product;
     }
 
-    public void setItems(List<Product> items) {
-        this.items = items;
+    public void setProduct(List<Product> product) {
+        this.product = product;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
+    }
+
+    public String getTime() {
+        return time;
+    }
+
+    public void setTime(String time) {
+        this.time = time;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
+
+    public Long getOrderCoast() {
+        return orderCoast;
+    }
+
+    public void setOrderCoast(Long orderCoast) {
+        this.orderCoast = orderCoast;
+    }
+
+    public OrderStatusEnum getStatus() {
+        return status;
+    }
+
+    public void setStatus(OrderStatusEnum status) {
+        this.status = status;
     }
 }
-

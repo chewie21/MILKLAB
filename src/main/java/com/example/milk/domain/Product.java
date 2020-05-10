@@ -3,8 +3,6 @@ package com.example.milk.domain;
 import javax.persistence.*;
 import java.io.Serializable;
 
-import java.util.Set;
-
 @Entity
 @Table(name = "m_product")
 public class Product implements Serializable {
@@ -16,6 +14,9 @@ public class Product implements Serializable {
     private Long prodCoast;
     private String prodImg;
 
+    @ManyToOne
+    private ProductGroup productGroup;
+
     public Product() {}
 
     public Product(String prodName, String prodInfo, Long prodCoast) {
@@ -24,21 +25,8 @@ public class Product implements Serializable {
         this.prodCoast = prodCoast;
     }
 
-    @ElementCollection(targetClass = ProductGroup.class, fetch = FetchType.EAGER)
-    @CollectionTable(name = "product_group", joinColumns = @JoinColumn(name = "product_id"))
-    @Enumerated(EnumType.STRING)
-    private Set<ProductGroup> prodGroup;
-
     public Product(Long productId) {
         this.id = productId;
-    }
-
-    public Set<ProductGroup> getGroup() {
-        return prodGroup;
-    }
-
-    public void setGroup(Set<ProductGroup> group) {
-        this.prodGroup = group;
     }
 
     public Long getId() {
@@ -80,4 +68,13 @@ public class Product implements Serializable {
     public void setProdImg(String prodImg) {
         this.prodImg = prodImg;
     }
+
+    public ProductGroup getProductGroup() {
+        return productGroup;
+    }
+
+    public void setProductGroup(ProductGroup productGroup) {
+        this.productGroup = productGroup;
+    }
+
 }

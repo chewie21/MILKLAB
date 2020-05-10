@@ -15,7 +15,7 @@
 <body>
 <header>
     <nav class="navbar navbar-expand-md navbar-light sticky-top bg-light">
-        <a href="Admin" class="navbar-brand">MILKLAB for admins</a>
+        <a href="/" class="navbar-brand">MILKLAB for admins</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -23,6 +23,9 @@
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
                     <a href="AdminProducts" class="nav-link">Товары</a>
+                </li>
+                <li class="nav-item">
+                    <a href="AdminCarousels" class="nav-link">Карусель</a>
                 </li>
                 <li class="nav-item">
                     <a href="AdminOrders" class="nav-link active">Заказы</a>
@@ -39,11 +42,9 @@
     <button type="button" class="btn btn-primary mb-1" data-toggle="modal" data-target="#findAccount">
         Найти заказ
     </button>
-    <button type="button" class="btn btn-primary mb-1" data-toggle="modal" data-target="#newAccount">
-        Добавить заказ
-    </button>
-    <a href="AdminAccounts" class="btn btn-secondary mb-1" role="button" aria-pressed="true">Активные заказы</a>
-
+    <form th:action="@{/AdminOrders/activeOrders}" method="post">
+        <button type="submit" class="btn btn-secondary mb-1" role="button" aria-pressed="true">Активные заказы</button>
+    </form>
 </div>
     <div class="table-responsive">
         <table class="table table-hover">
@@ -54,18 +55,22 @@
             <th>Имя</th>
             <th>Дата</th>
             <th>Время</th>
+            <th>Состояние</th>
             <th>Действия</th>
         </tr>
         </thead>
         <tbody class="text-center">
         <tr th:each="order : ${orders}">
             <td th:text="${order.id}"></td>
-            <td th:text="${order.userUsername}"></td>
-            <td th:text="${order.userName}"></td>
-            <td th:text="${order.time}"></td>
+            <td th:text="${order.user.username}"></td>
+            <td th:text="${order.user.name}"></td>
             <td th:text="${order.date}"></td>
+            <td th:text="${order.time}"></td>
+            <td th:text="${order.active}"></td>
             <td>
-                <a class="btn btn-primary btn-block mb-2" th:href="@{/AdminOrders/{order.id}(order.id=${order.id})}">Информация</a>
+                <a class="btn btn-secondary btn-block" href="">Информация</a>
+                <a class="btn btn-primary btn-block" th:href="@{/AdminOrders/active/{order.id}(order.id=${order.id})}">Закрыть</a>
+                <a class="btn btn-danger btn-block" th:href="@{/AdminOrders/delete/{order.id}(order.id=${order.id})}">Удалить</a>
             </td>
         </tr>
         </tbody>

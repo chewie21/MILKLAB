@@ -5,9 +5,10 @@ import com.example.milk.domain.OrderStatusEnum;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.List;
+import java.util.Optional;
 
 public interface OrderRepo extends CrudRepository <Order, Long> {
-    List<Order> findAllByUser_Id(Long userId);
-    List<Order> findAllByUser_IdAndStatus(Long userId, OrderStatusEnum orderStatusEnum);
-    Order findByUser_IdAndStatus(Long userId, OrderStatusEnum orderStatusEnum);
+    List<Order> findAllByUserIdAndActive(Long userId, boolean active);
+    Order findByUserIdAndStatus (Long user, OrderStatusEnum orderStatusEnum);
+    List<Order> findAllByActive (boolean active);
 }

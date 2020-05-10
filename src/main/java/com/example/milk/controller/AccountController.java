@@ -17,10 +17,14 @@ import java.util.Map;
 public class AccountController {
     @Autowired
     private UserService userService;
+    @Autowired
+    private OrderService orderService;
 
     @GetMapping
     public String ShowAccount (@AuthenticationPrincipal User user, Model model) {
         model.addAttribute("user", user);
+        model.addAttribute("active", orderService.findByTrueActive(user, true) );
+        model.addAttribute("notActive", orderService.findByFalseActive(user, false));
         return "account";
     }
     @GetMapping("edit")
@@ -38,7 +42,6 @@ public class AccountController {
                                @RequestParam String password) {
 
         userService.saveAccount(user, name, surname, username, email, date, password);
-
         return "redirect:/account";
     }
 

@@ -1,6 +1,8 @@
 package com.example.milk.domain;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "m_basket")
@@ -13,17 +15,13 @@ public class Basket {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumns({
-            @JoinColumn(name = "product_id", referencedColumnName = "id"),
-            @JoinColumn(name = "product_prodName", referencedColumnName = "prodName")})
-    private Product product;
+    @ManyToMany(fetch = FetchType.EAGER)
+    private List<Product> products = new ArrayList<>();
 
     public Basket() {}
 
-    public Basket (User user, Product product) {
+    public Basket (User user) {
         this.user = user;
-        this.product = product;
     }
 
     public Long getId() {
@@ -42,12 +40,14 @@ public class Basket {
         this.user = user;
     }
 
-    public Product getProduct() {
-        return product;
+    public List<Product> getProducts() {
+        return products;
+    }
+    public String getProduct() {
+        return products.toString();
     }
 
-    public void setProduct(Product product) {
-        this.product = product;
+    public void setProduct(List<Product> products) {
+        this.products = products;
     }
-
 }

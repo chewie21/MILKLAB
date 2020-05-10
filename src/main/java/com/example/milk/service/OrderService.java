@@ -18,45 +18,46 @@ public class OrderService {
     @Autowired
     OrderRepo orderRepo;
 
-    public Order createNewActiveOrderByUser(User user) {
-        Order order = new Order(null,null, OrderStatusEnum.ACTIVE, user);
-        orderRepo.save(order);
-        return order;
-    }
-
     public Iterable<Order> findAll() {
         return orderRepo.findAll();
     }
+    public Order findById (Long id) { return orderRepo.findById(id).get();}
 
-    public List<Order> findAllByUser(User user) {
-        return orderRepo.findAllByUser_Id(user.getId());
+    public void saveOrder (User user, String address, String time, String date, Long orderCoast, List<Long> productIds) {
+        Order order = findOrder(user, address, time, date, orderCoast);
+        order.setActive(true);
+        order.getProduct().addAll(productIds.stream().filter(Objects::nonNull).map(Product::new).collect(Collectors.toList()));
+        order.setStatus(OrderStatusEnum.DONE);
+        orderRepo.save(order);
+
     }
 
-    public Order findActiveOrderByUser(User user) {
-        Order order = orderRepo.findByUser_IdAndStatus(user.getId(), OrderStatusEnum.ACTIVE);
-        return order == null ? createNewActiveOrderByUser(user) : order;
+    public Order newOrder (User user, String address, String time, String date, Long orderCoast) {
+        Order order = new Order (user, address, time, date, orderCoast, OrderStatusEnum.ACTIVE);
+        orderRepo.save(order);
+        return order;
     }
-
-    public void addItemToActiveOrder(User userDetails, Long productId) {
-        Order activeOrder = findActiveOrderByUser(userDetails);
-        if(activeOrder != null) {
-            activeOrder.getItems().add(new Product(productId));
-            orderRepo.save(activeOrder);
-        }
+    public Order findOrder (User user, String address, String time, String date, Long orderCoast) {
+        Order order = orderRepo.findByUserIdAndStatus(user.getId(), OrderStatusEnum.ACTIVE);
+        return order == null ? newOrder(user, address, time, date, orderCoast) : order;
     }
-
-    public void addItemsToActiveOrder(User userDetails, List<Long> productIds) {
-        Order activeOrder = findActiveOrderByUser(userDetails);
-        if(activeOrder != null) {
-            activeOrder.getItems().addAll(productIds.stream().filter(Objects::nonNull).map(Product::new).collect(Collectors.toList()));
-            orderRepo.save(activeOrder);
-        }
+    public List<Order> findByTrueActive (User user, boolean active) {
+        return orderRepo.findAllByUserIdAndActive(user.getId(), true);
     }
-
-    public void deleteItemFromActiveOrder(User userDetails, Long id) {
-        Order activeOrder = findActiveOrderByUser(userDetails);
-        activeOrder.getItems().removeIf(product -> product.getId().equals(id));
-        orderRepo.save(activeOrder);
+    public List<Order> findByFalseActive (User user, boolean active) {
+        return orderRepo.findAllByUserIdAndActive(user.getId(), false);
+    }
+    public void deleteOrder (Long id) {
+        Order order = orderRepo.findById(id).get();
+        orderRepo.delete(order);
+    }
+    public void activeOrder (Long id) {
+        Order order = orderRepo.findById(id).get();
+        order.setActive(false);
+        orderRepo.save(order);
+    }
+    public List<Order> activeOrders (boolean active) {
+        return orderRepo.findAllByActive(active);
     }
 }
 

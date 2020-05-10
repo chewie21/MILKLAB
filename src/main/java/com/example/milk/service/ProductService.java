@@ -1,6 +1,8 @@
 package com.example.milk.service;
 
 import com.example.milk.domain.Product;
+import com.example.milk.domain.ProductGroup;
+import com.example.milk.repos.ProductGroupRepo;
 import com.example.milk.repos.ProductRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -10,6 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ProductService {
@@ -20,6 +23,9 @@ public class ProductService {
     @Autowired
     private ProductRepo productRepo;
 
+    @Autowired
+    private ProductGroupRepo ProductGroupRepo;
+
     public Iterable<Product> findAll() {
         return productRepo.findAll();
     }
@@ -28,18 +34,20 @@ public class ProductService {
         productRepo.delete(product);
     }
 
-    public void newProduct(String prodName, Long prodCoast,String prodInfo, MultipartFile file) throws IOException {
+    public void newProduct(Long groupId, String prodName, Long prodCoast, String prodInfo, MultipartFile file) throws IOException {
         Product product = new Product(prodName, prodInfo, prodCoast);
         if (checkImg(file)) {
             product.setProdImg(file.getOriginalFilename());
         }
+        product.setProductGroup(ProductGroupRepo.findById(groupId).get());
         productRepo.save(product);
     }
 
-    public void saveProduct(Product product, String prodName, String prodInfo, Long prodCoast, MultipartFile file) throws IOException {
+    public void saveProduct(Product product,Long groupId, String prodName, String prodInfo, Long prodCoast, MultipartFile file) throws IOException {
         product.setProdName(prodName);
         product.setProdInfo(prodInfo);
         product.setProdCoast(prodCoast);
+        product.setProductGroup(ProductGroupRepo.findById(groupId).get());
         if (checkImg(file)) {
             product.setProdImg(file.getOriginalFilename());
         }
@@ -66,15 +74,13 @@ public class ProductService {
         return productRepo.findAllByProdName(prodName);
     }
 
-    public List<Product> findAllByGroup(String prodGroup) {
-        return productRepo.findAllByProdGroup(prodGroup);
-    }
-
     public List<Product> findAllByCoast(Long prodCoast) {
         return productRepo.findAllByProdCoast(prodCoast);
     }
 
-    public Product findById (Product product) {
-        return product = productRepo.findById(product.getId()).get();
+    public List<Product> findAllByGroup(Long groupId) {
+        ProductGroup productGroup = ProductGroupRepo.findById(groupId).get();
+        return productRepo.findAllByProductGroup(productGroup);
     }
+
 }

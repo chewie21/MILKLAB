@@ -14,26 +14,46 @@
 </head>
 <body class="bg-light">
 <div class="jumbotron bg-light">
-    <form class="form" th:action="@{/AdminProducts}" method="post" enctype="multipart/form-data" style="width: 100%; max-width: 330px; padding: 15px; margin: auto; text-align: center;">
-        <h1 class="display-4 mb-3 font-weight-light">Карточка продукта</h1>
-        <label for="staticId">ID:</label>
-        <input type="text" name="id" class="form-control text-primary" id="staticId" th:value="${product.id}" readonly/>
-        <label for="staticName">Название:</label>
-        <input type="text" name="prodName" class="form-control text-primary" id="staticName" th:value="${product.prodName}"/>
-        <label for="staticGroup">Группа:</label>
-            <select class="custom-select" name="prodGroup" id="staticGroup" aria-describedby="findGroup">
-                <option selected value="">Не указанна</option>
-            </select>
-        <label for="staticEmail">Информация</label>
-        <input type="text" name="prodInfo" class="form-control text-primary" id="staticEmail" th:value="${product.prodInfo}"/>
-        <label for="staticDate">Цена</label>
-        <input type="number" name="prodCoast" class="form-control text-primary" id="staticDate" th:value="${product.prodCoast}"/>
-        <img th:src="@{/img/{img}(img=${product.prodImg})}" style="height: 250px; width: 250px" alt="Нет картинки">
-        <div class="custom-file">
-            <input type="file" class="custom-file-input" name="prodImg" id="inputImg">
-            <label class="custom-file-label" for="inputImg" data-browse="Выбирите">Фаил...</label>
+    <form class="form" th:action="@{/AdminProducts}" method="post" enctype="multipart/form-data" style="width: 100%; max-width: 400px; padding: 15px; margin: auto; text-align: center;">
+        <div class="card">
+            <div class="card-footer">
+                <img th:src="@{/img/{img}(img=${product.prodImg})}" style="height: 300px; width: 328px" alt="Нет картинки :(">
+            </div>
+            <div class="card-body">
+                <input type="hidden" name="id" th:value="${product.id}">
+                <div class="card-text pb-2">
+                    <label for="staticGroup">Группа</label>
+                    <select class="custom-select text-primary" name="groupId" id="staticGroup" aria-describedby="findGroup">
+                        <option class="active" th:value="${product.productGroup.id}" th:text="${product.productGroup.prodGroup}"></option>
+                        <div th:each="group : ${groups}">
+                            <option th:value="${group.id}" th:text="${group.prodGroup}"></option>
+                        </div>
+                    </select>
+                </div>
+                <div class="card-text pb-2">
+                    <label for="staticName">Название</label>
+                    <input type="text" name="prodName" class="form-control text-primary" id="staticName" th:value="${product.prodName}"/>
+                </div>
+                <div class="card-text pb-2">
+                    <label for="staticInfo">Описание</label>
+                    <input type="text" name="prodInfo" class="form-control text-primary" id="staticInfo" th:value="${product.prodInfo}"/>
+                </div>
+                <div class="card-text pb-2">
+                    <label for="staticCoast">Цена</label>
+                    <input type="number" name="prodCoast" class="form-control text-primary" id="staticCoast" th:value="${product.prodCoast}"/>
+                </div>
+                <div class="card-text pb-2">
+                    <label for="inputImg">Картинка</label>
+                    <div class="custom-file">
+                        <input type="file" class="custom-file-input" name="prodImg" id="inputImg">
+                        <label class="custom-file-label" for="inputImg" data-browse="Выбирите"></label>
+                    </div>
+                </div>
+            </div>
+            <div class="card-footer">
+                <button type="submit" class="btn btn-primary btn-block">Сохранить</button>
+            </div>
         </div>
-        <button type="submit" class="btn btn-primary btn-lg btn-block">Сохранить</button>
     </form>
 </div>
 </body>

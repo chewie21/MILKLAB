@@ -14,23 +14,33 @@
 </head>
 <body class="bg-light">
 <div class="jumbotron bg-light">
-    <form class="form" th:action="@{/AdminAccounts}" method="post" style="width: 100%; max-width: 330px; padding: 15px; margin: auto; text-align: center;">
-        <h1 class="display-4 mb-3 font-weight-light">Редактирование</h1>
-        <label for="staticId">ID:</label>
-        <input type="text" name="id" class="form-control text-primary" id="staticId" th:value="${user.id}"/>
-        <label for="staticName">Имя:</label>
-        <input type="text" name="name" class="form-control text-primary" id="staticName" th:value="${user.name}"/>
-        <label for="staticSurname">Фамилия:</label>
-        <input type="text" name="surname" class="form-control text-primary" id="staticSurname" th:value="${user.surname}"/>
-        <label for="staticEmail">Email:</label>
-        <input type="text" name="email" class="form-control text-primary" id="staticEmail" th:value="${user.email}"/>
-        <label for="staticDate">День рождения:</label>
-        <input type="date" name="date" class="form-control text-primary" id="staticDate" th:value="${user.date}" value="01.08.1998"/>
-        <label for="staticUsername">Номер телефона:</label>
-        <input type="text" name="username" class="form-control bfh-phone text-primary" data-country="RU" id="staticUsername" th:value="${user.username}"/>
-        <label for="staticPassword">Пароль:</label>
-        <input type="text" name="password" class="form-control text-primary" id="staticPassword" th:value="${user.password}">
-        <button type="submit" class="btn btn-primary btn-lg btn-block">Сохранить</button>
+    <form class="form" th:action="@{/AdminAccounts}" method="post" style="width: 100%; max-width: 400px; padding: 15px; margin: auto; text-align: center;">
+        <input type="hidden" name="id" class="form-control text-primary" id="staticId" th:value="${user.id}"/>
+        <div class="pb-2">
+            <label for="staticName">Имя:</label>
+            <input type="text" name="name" class="form-control text-primary" id="staticName" th:value="${user.name}"/>
+        </div>
+        <div class="pb-2">
+            <label for="staticSurname">Фамилия:</label>
+            <input type="text" name="surname" class="form-control text-primary" id="staticSurname" th:value="${user.surname}"/>
+        </div>
+        <div class="pb-2">
+            <label for="staticEmail">Email:</label>
+            <input type="text" name="email" class="form-control text-primary" id="staticEmail" th:value="${user.email}"/>
+        </div>
+        <div class="pb-2">
+            <label for="staticDate">День рождения:</label>
+            <input type="date" name="date" class="form-control text-primary" id="staticDate" th:value="${user.date}" value="01.08.1998"/>
+        </div>
+        <div class="pb-2">
+            <label for="staticUsername">Номер телефона:</label>
+            <input type="text" name="username" class="form-control bfh-phone text-primary" data-country="RU" id="staticUsername" th:value="${user.username}"/>
+        </div>
+        <div class="pb-4">
+            <label for="staticPassword">Пароль:</label>
+            <input type="text" name="password" class="form-control text-primary" id="staticPassword" th:value="${user.password}">
+        </div>
+        <button type="submit" class="btn btn-primary btn-block">Сохранить</button>
     </form>
 </div>
 </body>

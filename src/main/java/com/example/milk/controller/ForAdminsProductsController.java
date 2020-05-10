@@ -1,8 +1,9 @@
 package com.example.milk.controller;
 
 import com.example.milk.domain.Product;
-import com.example.milk.domain.User;
+import com.example.milk.service.ProductGroupService;
 import com.example.milk.service.ProductService;
+import com.example.milk.service.CarouselService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -21,26 +22,30 @@ public class ForAdminsProductsController {
 
     @Autowired
     private ProductService productService;
+    @Autowired
+    private ProductGroupService productGroupService;
 
     @GetMapping
     public String ShowProduct(Map<String, Object> model) {
         model.putIfAbsent("products", productService.findAll());
+        model.put("groups", productGroupService.findAllGroup());
         return "AdminProducts";
     }
     @GetMapping("{product}")
     public String EditProduct (@PathVariable Product product, Model model) {
         model.addAttribute("product", product);
+        model.addAttribute("groups", productGroupService.findAllGroup());
         return "AdminProductsEdit";
     }
     @PostMapping
     public String SaveProduct (
             @RequestParam String prodName,
             @RequestParam String prodInfo,
-            @RequestParam String prodGroup,
+            @RequestParam Long groupId,
             @RequestParam Long prodCoast,
             @RequestParam("prodImg") MultipartFile file,
             @RequestParam("id") Product product) throws IOException {
-        productService.saveProduct(product, prodName, prodInfo, prodCoast, file);
+        productService.saveProduct(product, groupId, prodName, prodInfo, prodCoast, file);
         return "redirect:/AdminProducts";
     }
 
@@ -48,17 +53,17 @@ public class ForAdminsProductsController {
     @PostMapping("/newProduct")
     public String NewProduct(@RequestParam String prodName,
                              @RequestParam String prodInfo,
-                             @RequestParam String prodGroup,
+                             @RequestParam Long groupId,
                              @RequestParam Long prodCoast,
                              @RequestParam("prodImg") MultipartFile file) throws IOException {
-        productService.newProduct(prodName, prodCoast, prodInfo, file);
+        productService.newProduct(groupId, prodName, prodCoast, prodInfo, file);
         return "redirect:/AdminProducts";
     }
 
     @PostMapping("/filterProducts")
     public String filterProducts(@RequestParam Long id,
                                  @RequestParam String prodName,
-                                 @RequestParam String prodGroup,
+                                 @RequestParam Long groupId,
                                  @RequestParam Long prodCoast,
                                  RedirectAttributes attr) {
         if (id != null) {
@@ -69,8 +74,8 @@ public class ForAdminsProductsController {
             attr.addFlashAttribute("products", productService.findAllByName(prodName));
             return "redirect:/AdminProducts";
         }
-        else if (!prodGroup.equals("")) {
-            attr.addFlashAttribute("products", productService.findAllByGroup(prodGroup));
+        else if (groupId != null) {
+            attr.addFlashAttribute("products", productService.findAllByGroup(groupId));
             return "redirect:/AdminProducts";
         }
         else if (prodCoast != null) {
@@ -84,6 +89,11 @@ public class ForAdminsProductsController {
     @PostMapping("/deleteProduct/{product}")
     public String deleteAccount (@PathVariable Product product) {
         productService.deleteProduct(product);
+        return "redirect:/AdminProducts";
+    }
+    @PostMapping("/newGroup")
+    public String saveGroup (@RequestParam String prodGroup) {
+        productGroupService.SaveGroup(prodGroup);
         return "redirect:/AdminProducts";
     }
 }

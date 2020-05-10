@@ -10,39 +10,51 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
 </head>
 <body>
-<nav class="navbar navbar-dark bg-primary navbar-expand-md sticky-top">
-    <div class="container">
-        <a href="/" class="navbar-brand">MILKLAB</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive">
-            <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarResponsive">
-            <ul class="navbar-nav ml-auto">
-                <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Ресторан</a>
-                    <div class="dropdown-menu">
-                        <a class="dropdown-item" href="menu">Меню</a>
-                        <a class="dropdown-item" href="#">Заказ столов</a>
-                        <div class="dropdown-divider"></div>
-                        <a class="dropdown-item" href="#">Самовывоз</a>
-                    </div>
-                </li>
-                <li class="nav-item">
-                    <a href="#" class="nav-link disabled">Доставка</a>
-                </li>
-                <li class="nav-item">
-                    <a href="account" class="nav-link">Аккаунт</a>
-                </li>
-                <li class="nav-item">
-                    <a href="contacts" class="nav-link">Контакты</a>
-                </li>
-                <li class="nav-item">
-                    <a href="information" class="nav-link active">О нас</a>
-                </li>
-            </ul>
+<header>
+    <nav class="navbar navbar-dark bg-primary navbar-expand-md sticky-top">
+        <div class="container">
+            <a href="/" class="navbar-brand">MILKLAB</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarResponsive">
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item">
+                        <div th:if="${user}">
+                            <div th:if="${user.isAdmin()}">
+                                <a href="Admin" class="nav-link">Администрирование</a>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="nav-item">
+                        <a href="menu" class="nav-link">Меню</a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Акаунт</a>
+                        <div class="dropdown-menu">
+                            <div th:if="${user}">
+                                <a class="dropdown-item text-center" href="account" th:text="${user.name}"></a>
+                                <div class="dropdown-divider"></div>
+                                <form th:action="@{/logout}" method="post" class="dropdown-item">
+                                    <button type="submit" class="btn btn-outline-danger btn-sm btn-block">Выйти</button>
+                                </form>
+                            </div>
+                            <div th:unless="${user}">
+                                <a class="dropdown-item text-center" href="account">Вход</a>
+                            </div>
+                        </div>
+                    </li>
+                    <li class="nav-item">
+                        <a href="contacts" class="nav-link">Контакты</a>
+                    </li>
+                    <li class="nav-item">
+                        <a href="information" class="nav-link active">О нас</a>
+                    </li>
+                </ul>
+            </div>
         </div>
-    </div>
-</nav>
+    </nav>
+</header>
 <p class="text-muted fixed-bottom text-center">©MILKLAB</p>
 </body>
 </html>
