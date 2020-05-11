@@ -11,4 +11,7 @@ public interface OrderRepo extends CrudRepository <Order, Long> {
     List<Order> findAllByUserIdAndActive(Long userId, boolean active);
     Order findByUserIdAndStatus (Long user, OrderStatusEnum orderStatusEnum);
     List<Order> findAllByActive (boolean active);
+    List<Order> findAllById (Long id);
+    List<Order> findAllByUserUsername (String username);
+    List<Order> findAllByDate (String date);
 }

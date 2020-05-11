@@ -39,10 +39,10 @@ public class BasketService {
         return basketRepo.orderCoast(user.getId());
     }
 
-    public void deleteProductFromBasket(User user, Long productId) {
+    public void deleteProductFromBasket(User user, Long productIds) {
         Basket basket = findBasket(user);
         Long x = basket.getId();
-        basket.getProducts().removeIf(product -> product.getId().equals(productId));
+        basket.getProducts().removeIf(product -> product.getId().equals(productIds));
         basketRepo.save(basket);
     }
     public void deleteBasket (User user) {

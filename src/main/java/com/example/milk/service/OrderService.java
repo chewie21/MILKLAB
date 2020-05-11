@@ -51,10 +51,20 @@ public class OrderService {
         Order order = orderRepo.findById(id).get();
         orderRepo.delete(order);
     }
-    public void activeOrder (Long id) {
+    public void closeOrder (Long id) {
         Order order = orderRepo.findById(id).get();
         order.setActive(false);
         orderRepo.save(order);
+    }
+
+    public List<Order> findAllById(Long id) {
+        return orderRepo.findAllById(id);
+    }
+    public List<Order> findAllByUsername (String username) {
+        return orderRepo.findAllByUserUsername(username);
+    }
+    public List<Order> findAllByDate (String date) {
+        return orderRepo.findAllByDate(date);
     }
     public List<Order> activeOrders (boolean active) {
         return orderRepo.findAllByActive(active);

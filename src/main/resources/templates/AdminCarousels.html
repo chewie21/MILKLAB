@@ -38,16 +38,17 @@
         </div>
     </nav>
 </header>
-<div class="jumbotron pt-3 pb-3">
+<div class="jumbotron pt-3 pb-3 m-0 sticky-top">
     <h1 class="display-4">Карусель</h1>
     <button type="button" class="btn btn-primary mb-1" data-toggle="modal" data-target="#newCarousel">
         Добавить
     </button>
 </div>
+<div class="container">
 <div th:each="carousel : ${carousels}">
     <div class="card mb-3">
         <div class="card-img">
-            <img th:src="@{/img/{img}(img=${carousel.carouselImg})}" class="card-img-top" alt="...">
+            <img th:src="@{/img/{img}(img=${carousel.carouselImg})}" class="d-block w-100" alt="/" style="height: 360px; width: 1000px">
         </div>
         <div class="card-body">
             <p class="card-text" th:text="${carousel.carouselInfo}"></p>
@@ -58,7 +59,7 @@
         </form>
     </div>
 </div>
-
+</div>
 <form th:action="@{/AdminCarousels/newCarousel}" method="post" enctype="multipart/form-data">
     <div class="modal fade" id="newCarousel" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog" role="dialog">

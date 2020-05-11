@@ -1,5 +1,6 @@
 package com.example.milk.controller;
 
+import com.example.milk.domain.Order;
 import com.example.milk.domain.User;
 import com.example.milk.repos.UserRepo;
 import com.example.milk.service.OrderService;
@@ -44,6 +45,14 @@ public class AccountController {
         userService.saveAccount(user, name, surname, username, email, date, password);
         return "redirect:/account";
     }
+    @GetMapping("/orderInfo/{order}")
+    public String showOrder (@AuthenticationPrincipal User user,
+                             @PathVariable Order order,
+                             Model model) {
+        model.addAttribute("order", orderService.findById(order.getId()));
+        return "orderInfo";
+    }
+
 
 }
 

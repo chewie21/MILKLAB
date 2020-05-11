@@ -14,10 +14,11 @@
 </head>
 <body class="bg-light">
 <div class="jumbotron bg-light">
+    <div class="container">
     <form class="form" th:action="@{/AdminCarousels}" method="post" enctype="multipart/form-data" style="padding: 15px; margin: auto; text-align: center;">
         <div class="card">
             <div class="card-footer">
-                <img th:src="@{/img/{img}(img=${carousel.carouselImg})}" alt="Нет картинки :(">
+                <img th:src="@{/img/{img}(img=${carousel.carouselImg})}" class="d-block w-100" alt="/" style="height: 360px; width: 1000px">
             </div>
             <div class="card-body">
                 <input type="hidden" name="id" th:value="${carousel.id}">
@@ -38,6 +39,7 @@
             </div>
         </div>
     </form>
+</div>
 </div>
 </body>
 </html>

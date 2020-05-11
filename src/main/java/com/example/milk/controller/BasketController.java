@@ -45,7 +45,6 @@ public class BasketController {
     @PostMapping("/saveOrder")
     public String saveOrder(@AuthenticationPrincipal User user,
                             @RequestParam Long orderCoast,
-                            @RequestParam Long id,
                             @RequestParam String address,
                             @ModelAttribute ProductForm productForm,
                             String time, String date) {

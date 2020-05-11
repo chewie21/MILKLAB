@@ -8,7 +8,7 @@ import org.springframework.data.repository.query.Param;
 import java.util.List;
 
 public interface BasketRepo extends CrudRepository<Basket, Long> {
-    List<Basket> findAllByUserId (Long id);
+
     Basket findByUserId (Long id);
 
     @Query(nativeQuery = true,

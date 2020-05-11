@@ -12,7 +12,7 @@
 </head>
 <body>
 <header>
-    <nav class="navbar navbar-dark bg-primary navbar-expand-md sticky-top">
+    <nav class="navbar navbar-dark bg-primary navbar-expand-md fixed-top">
         <div class="container">
         <a href="/" class="navbar-brand">MILKLAB</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive">
@@ -31,7 +31,7 @@
                     <a href="menu" class="nav-link">Меню</a>
                 </li>
                 <li class="nav-item dropdown">
-                    <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Акаунт</a>
+                    <a class="nav-link dropdown-toggle active" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false" >Акаунт</a>
                     <div class="dropdown-menu">
                         <a class="dropdown-item text-center" href="account" th:text="${user.name}"></a>
                         <div class="dropdown-divider"></div>
@@ -53,7 +53,7 @@
 </header>
 <div class="jumbotron bg-white">
     <div class="container">
-        <div class="container ml-0 pl-0 pb-5">
+        <div class="container ml-0 pl-0 pb-5 pt-5">
             <h1 class="display-4">Личный кабинет</h1>
             <p class="lead">Вся информация, которую мы знаем о Вас и храним в глубочайшем секрете.</p>
         </div>

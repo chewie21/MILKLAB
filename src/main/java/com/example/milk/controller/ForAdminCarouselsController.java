@@ -15,7 +15,7 @@ import java.util.Map;
 @Controller
 @PreAuthorize("hasAuthority('ADMIN')")
 @RequestMapping("/AdminCarousels")
-public class CarouselsController {
+public class ForAdminCarouselsController {
 
     @Autowired
     private CarouselService carouselService;
