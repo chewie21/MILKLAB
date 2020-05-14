@@ -14,6 +14,16 @@
     </head>
     <body class="bg-light">
         <div class="jumbotron bg-light">
+            <div th:if="${message}">
+                <div class="container fixed-top">
+                    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                        <text th:text="${message}"></text>
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
             <div class="container">
               <h1 class="display-4">Регистрация</h1>
               <p class="lead">Заполните все поля, чтобы мы смогли сделать Ваш визит безупречным.</p>
@@ -50,7 +60,6 @@
                   </div>
                 <button type="submit" class="btn btn-primary btn-block">Зарегистрироваться</button>
               </form>
-                <p class="mt-5 mb-3 text-muted text-center fixed-bottom">©MILKLAB</p>
             </div>
         </div>
     </body>

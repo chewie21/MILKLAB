@@ -1,8 +1,7 @@
 package com.example.milk.controller;
 
-import com.example.milk.domain.Product;
-import com.example.milk.domain.ProductForm;
-import com.example.milk.domain.User;
+import com.example.milk.domain.*;
+import com.example.milk.service.BasketInfoService;
 import com.example.milk.service.BasketService;
 import com.example.milk.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,31 +21,34 @@ public class BasketController {
 
     @Autowired
     BasketService basketService;
-
     @Autowired
     OrderService orderService;
+    @Autowired
+    BasketInfoService basketInfoService;
+
 
     @GetMapping
     public String showBasket (@AuthenticationPrincipal User user,
                               Map<String, Object> model) {
         model.put("user", user);
-        model.put("baskets", basketService.findBasket(user));
-        model.put("orderCoast", basketService.orderCoast(user));
+        model.put("basketInfo", basketInfoService.findBasketInfo(basketService.findBasket(user)));
+        model.put("orderCoast", basketInfoService.orderCoast(user));
         return "basket";
     }
-    @PostMapping
-    public String newBasket(@AuthenticationPrincipal User user, Long productId,
+    @GetMapping("{product}")
+    public String newBasket(@AuthenticationPrincipal User user,
+                            @PathVariable Product product,
                             Map<String, Object> model) {
-        basketService.editBasket(user, productId);
-        model.put("baskets", basketService.findByUserId(user));
-        model.put("orderCoast", basketService.orderCoast(user));
-        return "basket";
+        basketInfoService.newBasketInfo(basketService.findBasket(user), product.getId());
+        model.put("user", user);
+        model.put("basketInfo", basketInfoService.findBasketInfo(basketService.findBasket(user)));
+        model.put("orderCoast", basketInfoService.orderCoast(user));
+        return "redirect:/basket";
     }
     @PostMapping("/saveOrder")
     public String saveOrder(@AuthenticationPrincipal User user,
                             @RequestParam Long orderCoast,
                             @RequestParam String address,
-                            @ModelAttribute ProductForm productForm,
                             String time, String date) {
         Date nowDate = new Date();
         DateFormat timeFormat = new SimpleDateFormat("HH:mm");
@@ -54,16 +56,18 @@ public class BasketController {
         DateFormat dateFormat = new SimpleDateFormat("dd.MM.yy");
         date = dateFormat.format(nowDate);
 
-        List<Long> productIds = productForm.getProductIds();
+        Basket basket = basketService.findByUserId(user);
+        List<Long> productIds = basketInfoService.findProductId(basket);
         orderService.saveOrder(user, address, time, date, orderCoast, productIds);
+        basketInfoService.deleteBasketInfo(basket);
         basketService.deleteBasket(user);
         return "redirect:/account";
     }
     @GetMapping("/delete/{product}")
     public String deleteProductFromBasket (@AuthenticationPrincipal User user,
-                                           @PathVariable Product product) {
-        Long productId = product.getId();
-        basketService.deleteProductFromBasket(user, productId);
+                                            @PathVariable Product product) {
+        Basket basket = basketService.findByUserId(user);
+        basketInfoService.deleteProductFromBasket(product.getId(), basket.getId());
         return "redirect:/basket";
     }
 }

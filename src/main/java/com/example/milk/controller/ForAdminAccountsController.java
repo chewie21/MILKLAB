@@ -1,6 +1,7 @@
 package com.example.milk.controller;
 
 import com.example.milk.domain.User;
+import com.example.milk.domain.UserRole;
 import com.example.milk.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -9,7 +10,10 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import java.util.Arrays;
 import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Controller
 @PreAuthorize("hasAuthority('ADMIN')")
@@ -26,10 +30,12 @@ public class ForAdminAccountsController {
     @GetMapping("{user}")
     public String EditAccount (@PathVariable User user, Model model) {
         model.addAttribute("user", user);
+        model.addAttribute("roles", UserRole.values());
         return "AdminAccountsEdit";
     }
     @PostMapping
     public String SaveAccount (
+            @RequestParam Map<String, String> form,
             @RequestParam String name,
             @RequestParam String surname,
             @RequestParam String username,
@@ -48,7 +54,8 @@ public class ForAdminAccountsController {
                                   @RequestParam String surname,
                                   @RequestParam String username,
                                   @RequestParam String email,
-                                  @RequestParam String date, RedirectAttributes attr) {
+                                  @RequestParam String date,
+                                  RedirectAttributes attr) {
         if (id != null){
             attr.addFlashAttribute("users", userService.findAllById(id));
             return "redirect:/AdminAccounts";

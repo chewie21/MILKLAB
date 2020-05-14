@@ -2,6 +2,7 @@ package com.example.milk.domain;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.List;
 
 @Entity
 @Table(name = "m_product")
@@ -13,6 +14,7 @@ public class Product implements Serializable {
     private String prodInfo;
     private Long prodCoast;
     private String prodImg;
+
 
     @ManyToOne
     private ProductGroup productGroup;
@@ -76,5 +78,6 @@ public class Product implements Serializable {
     public void setProductGroup(ProductGroup productGroup) {
         this.productGroup = productGroup;
     }
+
 
 }

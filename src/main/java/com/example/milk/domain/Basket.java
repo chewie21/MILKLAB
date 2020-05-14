@@ -15,9 +15,6 @@ public class Basket {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    private List<Product> products = new ArrayList<>();
-
     public Basket() {}
 
     public Basket (User user) {
@@ -40,14 +37,5 @@ public class Basket {
         this.user = user;
     }
 
-    public List<Product> getProducts() {
-        return products;
-    }
-    public String getProduct() {
-        return products.toString();
-    }
 
-    public void setProduct(List<Product> products) {
-        this.products = products;
-    }
 }

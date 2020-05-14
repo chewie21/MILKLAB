@@ -51,89 +51,97 @@
         </div>
     </nav>
 </header>
-<div class="jumbotron bg-white">
+<div class="jumbotron bg-white" style="margin-top: 55px">
+    <div class="container pl-0">
+        <h1 class="display-4">Личный кабинет</h1>
+        <p class="lead">Вся информация, которую мы знаем о Вас и храним в глубочайшем секрете.</p>
+    </div>
     <div class="container">
-        <div class="container ml-0 pl-0 pb-5 pt-5">
-            <h1 class="display-4">Личный кабинет</h1>
-            <p class="lead">Вся информация, которую мы знаем о Вас и храним в глубочайшем секрете.</p>
-        </div>
-        <form>
-            <div class="row">
-                <div class="col-md-8">
-                    <div class="form-row">
-                        <label for="staticId" class="col-md-3 col-form-label-lg">Ваш ID:</label>
-                        <div class="col-md-auto">
-                            <input type="text" readonly name="id" class="form-control-lg form-control-plaintext" id="staticId" th:value="${user.id}" value="Пример"/>
-                        </div>
+        <div class="form-row justify-content-between">
+            <div class="form-group">
+                <div class="form-row justify-content-between">
+                    <div class="form-group">
+                        <label for="staticId" class="col-form-label-lg">Ваш ID:</label>
                     </div>
-                    <div class="form-row">
-                        <label for="staticName" class="col-md-3 col-form-label-lg">Имя:</label>
-                        <div class="col-md-auto">
-                            <input type="text" readonly name="name" class="form-control-lg form-control-plaintext" id="staticName" th:value="${user.name}"/>
-                        </div>
-                    </div>
-                    <div class="form-row">
-                        <label for="staticSurname" class="col-md-3 col-form-label-lg">Фамилия:</label>
-                        <div class="col-md-auto">
-                            <input type="text" readonly name="surname" class="form-control-lg form-control-plaintext" id="staticSurname" th:value="${user.surname}"/>
-                        </div>
-                    </div>
-                    <div class="form-row">
-                        <label for="staticUsername" class="col-md-3 col-form-label-lg">Телефон:</label>
-                        <div class="col-md-auto">
-                            <input type="text" readonly name="Username" class="form-control-lg form-control-plaintext" id="staticUsername" th:value="${user.username}"/>
-                        </div>
-                    </div>
-                    <div class="form-row">
-                        <label for="staticEmail" class="col-md-3 col-form-label-lg">Email:</label>
-                        <div class="col-md-auto">
-                            <input type="text" readonly name="email" class="form-control-lg form-control-plaintext" id="staticEmail" th:value="${user.email}"/>
-                        </div>
-                    </div>
-                    <div class="form-row">
-                        <label for="staticDate" class="col-md-3 col-form-label-lg">День рождения:</label>
-                        <div class="col-md-auto">
-                            <input type="date" readonly name="date" class="form-control-lg form-control-plaintext " id="staticDate" th:value="${user.date}" value="01.08.1998"/>
-                        </div>
-                    </div>
-                    <div class="form-row pt-5 pb-5">
-                        <div class="col-md-auto pb-3">
-                            <form>
-                                <a th:href="@{/account/edit}" type="button" class="btn btn-outline-primary btn-block">Редактировать</a>
-                            </form>
-                        </div>
-                        <div class="col-md-auto">
-                            <form th:action="@{/logout}" method="post">
-                                <button type="submit" class="btn btn-outline-danger btn-block">Выйти</button>
-                            </form>
-                        </div>
+                    <div class="form-group">
+                        <input type="text" readonly name="id" class="form-control-lg form-control-plaintext" id="staticId" th:value="${user.id}"/>
                     </div>
                 </div>
-                <div class="col-md-4">
-                    <h4 class="d-flex justify-content-between align-items-center mb-3">
-                        <span class="text-muted">Активные заказы</span>
-                    </h4>
-                    <div class="list-group mb-3" th:each="a : ${active}">
-                        <a class="list-group-item d-flex justify-content-between lh-condensed list-group-item-action" th:href="@{/account/orderInfo/{order.id}(order.id=${a.id})}" >
-                            <div>
-                                <h6 class="my-0">
-                                    <p class="text-muted">Номер заказа: <text th:text="${a.id}"></text></p>
-                                </h6>
-                                <p class="text-muted mb-0"><text th:text="${a.date}"></text> / <text th:text="${a.time}"></text></p>
-                            </div>
-                            <span class="fas fa-check" style="color: #28a745"></span>
-                        </a>
+                <div class="form-row justify-content-between">
+                    <div class="form-group">
+                        <label for="staticName" class="col-form-label-lg">Имя:</label>
                     </div>
-                    <button type="button" class="btn btn-block btn-outline-secondary" data-toggle="modal" data-target="#staticBackdrop">
-                        Показать все
-                    </button>
+                    <div class="form-group">
+                        <input type="text" readonly name="name" class="form-control-lg form-control-plaintext" id="staticName" th:value="${user.name}"/>
+                    </div>
+                </div>
+                <div class="form-row justify-content-between">
+                    <div class="form-group">
+                        <label for="staticSurname" class="col-form-label-lg">Фамилия:</label>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" readonly name="surname" class="form-control-lg form-control-plaintext" id="staticSurname" th:value="${user.surname}"/>
+                    </div>
+                </div>
+                <div class="form-row justify-content-between">
+                    <div class="form-group">
+                        <label for="staticUsername" class="col-form-label-lg">Телефон:</label>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" readonly name="Username" class="form-control-lg form-control-plaintext" id="staticUsername" th:value="${user.username}"/>
+                    </div>
+                </div>
+                <div class="form-row justify-content-between">
+                    <div class="form-group">
+                        <label for="staticEmail" class="col-form-label-lg">Email:</label>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" readonly name="email" class="form-control-lg form-control-plaintext" id="staticEmail" th:value="${user.email}"/>
+                    </div>
+                </div>
+                <div class="form-row justify-content-between">
+                    <div class="form-group">
+                        <label for="staticDate" class="col-form-label-lg">День рождения:</label>
+                    </div>
+                    <div class="form-group">
+                        <input type="date" readonly name="date" class="form-control-lg form-control-plaintext " id="staticDate" th:value="${user.date}" value="01.08.1998"/>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="col-md-auto mb-3">
+                        <form>
+                            <a th:href="@{/account/edit}" type="button" class="btn btn-outline-primary btn-block">Редактировать</a>
+                        </form>
+                    </div>
+                    <div class="col-md-auto">
+                        <form th:action="@{/logout}" method="post">
+                            <button type="submit" class="btn btn-outline-danger btn-block">Выйти</button>
+                        </form>
+                    </div>
                 </div>
             </div>
-        </form>
-        <p class="text-muted fixed-bottom text-center">©MILKLAB</p>
+            <div class="form-group">
+                <h4 class="d-flex justify-content-between align-items-center mb-3">
+                    <span class="text-muted">Активные заказы</span>
+                </h4>
+                <div class="list-group mb-3" th:each="a : ${active}">
+                    <a class="list-group-item d-flex justify-content-between lh-condensed list-group-item-action" th:href="@{/account/orderInfo/{order.id}(order.id=${a.id})}" >
+                        <div>
+                            <h6 class="my-0">
+                                <p class="text-muted">Номер заказа: <text th:text="${a.id}"></text></p>
+                            </h6>
+                            <p class="text-muted mb-0"><text th:text="${a.date}"></text> / <text th:text="${a.time}"></text></p>
+                        </div>
+                        <span class="fas fa-check" style="color: #28a745"></span>
+                    </a>
+                </div>
+                <button type="button" class="btn btn-block btn-outline-secondary" data-toggle="modal" data-target="#staticBackdrop">
+                    Показать все
+                </button>
+            </div>
+        </div>
     </div>
 </div>
-
 <!-- AllOrders -->
 <div class="modal fade" id="staticBackdrop" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">

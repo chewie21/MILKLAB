@@ -22,15 +22,15 @@ public class ProductService {
 
     @Autowired
     private ProductRepo productRepo;
-
     @Autowired
-    private ProductGroupRepo ProductGroupRepo;
+    private ProductGroupService productGroupService;
 
     public Iterable<Product> findAll() {
         return productRepo.findAll();
     }
 
     public void deleteProduct(Product product) {
+        productGroupService.deleteProductFromGroup(product.getId());
         productRepo.delete(product);
     }
 
@@ -39,15 +39,20 @@ public class ProductService {
         if (checkImg(file)) {
             product.setProdImg(file.getOriginalFilename());
         }
-        product.setProductGroup(ProductGroupRepo.findById(groupId).get());
+        product.setProductGroup(productGroupService.findById(groupId));
         productRepo.save(product);
+        productGroupService.saveProductInGroup(groupId, product.getId());
     }
 
     public void saveProduct(Product product,Long groupId, String prodName, String prodInfo, Long prodCoast, MultipartFile file) throws IOException {
         product.setProdName(prodName);
         product.setProdInfo(prodInfo);
         product.setProdCoast(prodCoast);
-        product.setProductGroup(ProductGroupRepo.findById(groupId).get());
+        product.setProductGroup(productGroupService.findById(groupId));
+        if (!productGroupService.checkProductInGroup(groupId, product.getId()).equals("1")) {
+            productGroupService.deleteProductFromGroup(product.getId());
+            productGroupService.saveProductInGroup(groupId, product.getId());
+        }
         if (checkImg(file)) {
             product.setProdImg(file.getOriginalFilename());
         }
@@ -79,8 +84,7 @@ public class ProductService {
     }
 
     public List<Product> findAllByGroup(Long groupId) {
-        ProductGroup productGroup = ProductGroupRepo.findById(groupId).get();
+        ProductGroup productGroup = productGroupService.findById(groupId);
         return productRepo.findAllByProductGroup(productGroup);
     }
-
 }

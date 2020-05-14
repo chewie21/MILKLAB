@@ -25,18 +25,17 @@ public class MenuController {
     CarouselService carouselService;
     @Autowired
     ProductGroupService productGroupService;
+    @Autowired
+    BasketInfoService basketInfoService;
 
     @GetMapping
     public String showMenu(@AuthenticationPrincipal User user,
                            Map<String, Object> model) {
+        model.put("user", user);
         model.put("products", productService.findAll());
         model.put("carousels", carouselService.findAll());
-        model.put("user", user);
         model.put("groups", productGroupService.findAllGroup());
-        model.put("pizza", productService.findAllByGroup((long) 2));
-        model.put("burger", productService.findAllByGroup((long)5));
-        model.put("salad", productService.findAllByGroup((long)3));
-        model.put("drink", productService.findAllByGroup((long)35));
+        model.put("count", basketInfoService.countProduct(user));
         return "menu";
     }
 }

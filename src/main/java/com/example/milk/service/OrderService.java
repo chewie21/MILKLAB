@@ -29,7 +29,6 @@ public class OrderService {
         order.getProduct().addAll(productIds.stream().filter(Objects::nonNull).map(Product::new).collect(Collectors.toList()));
         order.setStatus(OrderStatusEnum.DONE);
         orderRepo.save(order);
-
     }
 
     public Order newOrder (User user, String address, String time, String date, Long orderCoast) {
