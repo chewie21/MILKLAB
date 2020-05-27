@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>MILKLAB</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <link href="css/bootstrap-formhelpers.min.css" rel="stylesheet" media="screen">
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bs-custom-file-input/dist/bs-custom-file-input.min.js"></script>
+    <script src="js/bootstrap-formhelpers.min.js"></script>
+</head>
+<body>
+<header>
+    <nav class="navbar navbar-expand-md navbar-light sticky-top bg-light">
+        <a href="/" class="navbar-brand">MILKLAB for admins</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a href="AdminProducts" class="nav-link">Товары</a>
+                </li>
+                <li class="nav-item">
+                    <a href="AdminCarousels" class="nav-link active">Карусель</a>
+                </li>
+                <li class="nav-item">
+                    <a href="AdminOrders" class="nav-link">Заказы <span th:if="${count}" class="badge badge-dark badge-pill" th:text="${count}"></span></a>
+                </li>
+                <li class="nav-item">
+                    <a href="AdminAccounts" class="nav-link">Клиенты</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+</header>
+<div class="jumbotron pt-3 pb-3 m-0 sticky-top">
+    <h1 class="display-4">Карусель</h1>
+    <div class="row">
+        <button type="button" class="btn btn-primary m-1" data-toggle="modal" data-target="#newCarousel">
+            Добавить
+        </button>
+    </div>
+</div>
+<div class="container">
+<div th:each="carousel : ${carousels}">
+    <div class="card m-3">
+        <div class="card-img">
+            <img th:src="@{/img/{img}(img=${carousel.carouselImg})}" class="d-block w-100" alt="/" style="height: 360px; width: 1000px">
+        </div>
+        <div class="card-body">
+            <p class="card-text" th:text="${carousel.carouselInfo}"></p>
+        </div>
+        <a class="btn btn-primary btn-block mb-2" th:href="@{/AdminCarousels/{carousel.id}(carousel.id=${carousel.id})}">Изменить</a>
+        <form th:action="@{/AdminCarousels/deleteCarousel/{carousel.id}(carousel.id=${carousel.id})}" method="post">
+            <button type="submit" class="btn btn-danger btn-block">Удалить</button>
+        </form>
+    </div>
+</div>
+</div>
+<form th:action="@{/AdminCarousels/newCarousel}" method="post" enctype="multipart/form-data">
+    <div class="modal fade" id="newCarousel" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog" role="dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="staticBackdropLabel1">Добавить акцию</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">Информация</span>
+                        </div>
+                        <input type="text" name="carouselInfo" class="form-control" aria-label="Name" required>
+                    </div>
+                    <div class="input-group pt-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">Картика</span>
+                        </div>
+                        <div class="custom-file">
+                            <input type="file" class="custom-file-input" name="carouselImg" id="inputImg" required>
+                            <label class="custom-file-label" for="inputImg" data-browse="Выбирите">Фаил...</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary btn-block">Сохранить</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+</body>
+</html>
