@@ -43,13 +43,6 @@ public class BasketInfoService {
        return basketInfoRepo.findProductId(basket.getId());
     }
     public String countProduct (User user) {
-        if (user == null){
-            String x;
-            return x = null;
-        }
-        else {
-            return basketInfoRepo.countProducts(user.getId());
-        }
+        return user == null ? null : basketInfoRepo.countProducts(user.getId()).equals("0") ? null : basketInfoRepo.countProducts(user.getId());
     }
-
 }

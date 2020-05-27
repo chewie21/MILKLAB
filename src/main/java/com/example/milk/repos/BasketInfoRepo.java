@@ -33,4 +33,6 @@ public interface BasketInfoRepo extends CrudRepository <BasketInfo, Long> {
     @Query(nativeQuery = true,
             value = "DELETE FROM m_basket_products WHERE product_id =:pid AND basket_id =:bid LIMIT 1")
     void deleteFromBasket (@Param("pid") Long productId, @Param("bid") Long basketId);
+
+
 }

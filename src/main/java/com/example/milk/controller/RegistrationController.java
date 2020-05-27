@@ -21,15 +21,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 
         @PostMapping("/registration")
         public String addUser(User user, Model model) {
-
-            User checkUser = userService.checkAccount(user);
-            if (checkUser != null) {
+            if (userService.registration(user)) {
+                return "redirect:/login";
+            }
+            else {
                 model.addAttribute("message", "Такой пользователь уже существует");
                 return "registration";
             }
-            else {
-                userService.newAccount(user);
-            }
-            return "redirect:/login";
         }
     }

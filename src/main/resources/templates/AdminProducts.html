@@ -23,13 +23,13 @@
         <div class="collapse navbar-collapse" id="navbarResponsive">
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
-                    <a href="AdminProducts" class="nav-link active">Товары</a>
+                    <a href="AdminProducts" class="nav-link active">Товары <span th:if="${stopProductCount}" class="badge badge-dark badge-pill" th:text="${stopProductCount}"></span></a>
                 </li>
                 <li class="nav-item">
                     <a href="AdminCarousels" class="nav-link">Карусель</a>
                 </li>
                 <li class="nav-item">
-                    <a href="AdminOrders" class="nav-link">Заказы</a>
+                    <a href="AdminOrders" class="nav-link">Заказы <span th:if="${count}" class="badge badge-dark badge-pill" th:text="${count}"></span></a>
                 </li>
                 <li class="nav-item">
                     <a href="AdminAccounts" class="nav-link">Клиенты</a>
@@ -40,35 +40,56 @@
 </header>
 <div class="jumbotron pt-3 pb-3 m-0 sticky-top">
     <h1 class="display-4">Товар</h1>
-    <button type="button" class="btn btn-primary mb-1" data-toggle="modal" data-target="#findProduct">
-        Найти продукт
-    </button>
-    <button type="button" class="btn btn-primary mb-1" data-toggle="modal" data-target="#newProduct">
-        Добавить продукт
-    </button>
-    <a href="AdminProducts" class="btn btn-secondary mb-1" role="button" aria-pressed="true">Полный список</a>
+    <div class="row">
+        <button type="button" class="btn btn-primary m-1" data-toggle="modal" data-target="#findProduct">
+            Найти продукт
+        </button>
+        <form th:action="@{/AdminProducts/findActive}" method="post">
+            <button type="submit" class="btn btn-primary m-1">Товары в наличии</button>
+        </form>
+        <form th:action="@{/AdminProducts/findStop}" method="post">
+            <button type="submit" class="btn btn-primary m-1">Товары в стопе <span th:if="${stopProductCount}" class="badge badge-light badge-pill" th:text="${stopProductCount}"></span></button>
+        </form>
+        <button type="button" class="btn btn-primary m-1" data-toggle="modal" data-target="#newProduct">
+            Добавить продукт
+        </button>
+        <button type="button" class="btn btn-primary m-1" data-toggle="modal" data-target="#group">
+            Группы товаров
+        </button>
+        <a href="AdminProducts" class="btn btn-secondary m-1" role="button" aria-pressed="true">Полный список</a>
+    </div>
 </div>
 <div class="table-responsive">
     <table class="table table-hover">
         <thead class="text-center">
         <tr>
             <th>ID</th>
-            <th>Группа</th>
             <th>Название</th>
             <th>Цена</th>
+            <th>Состояние</th>
             <th>Действия</th>
         </tr>
     </thead>
     <tbody class="text-center">
         <tr th:each="product : ${products}">
         <td th:text="${product.id}"></td>
-        <td th:text="${product.productGroup.prodGroup}"></td>
         <td th:text="${product.prodName}"></td>
         <td th:text="${product.prodCoast}"></td>
-        <td><a class="btn btn-primary btn-block mb-2" th:href="@{/AdminProducts/{product.id}(product.id=${product.id})}">Изменить</a>
-           <form th:action="@{/AdminProducts/deleteProduct/{product.id}(product.id=${product.id})}" method="post">
+        <td>
+            <div th:switch="${product.status}">
+                <p th:case="${product.status.ACTIVE}">В наличии</p>
+                <p th:case="${product.status.STOP}">В стопе</p>
+            </div>
+        </td>
+        <td>
+            <a class="btn btn-primary btn-block mb-2" th:href="@{/AdminProducts/{product.id}(product.id=${product.id})}">Изменить</a>
+            <div class="pb-2" th:switch="${product.status}">
+                <a th:case="${product.status.ACTIVE}" class="btn btn-dark btn-block" th:href="@{/AdminProducts/close/{product.id}(product.id=${product.id})}">В стоп</a>
+                <a th:case="${product.status.STOP}" class="btn btn-dark btn-block" th:href="@{/AdminProducts/open/{product.id}(product.id=${product.id})}">В наличии</a>
+            </div>
+            <form th:action="@{/AdminProducts/deleteProduct/{product.id}(product.id=${product.id})}" method="post">
                 <button type="submit" class="btn btn-danger btn-block">Удалить</button>
-           </form>
+            </form>
         </td>
         </tr>
     </tbody>
@@ -102,6 +123,7 @@
                         </div>
                             <select class="custom-select" name="groupId" aria-describedby="findGroup">
                                 <option value="" selected>Не выбрано</option>
+                                <option value="0">Без группы</option>
                                 <div th:each="group : ${groups}">
                                     <option th:value="${group.id}" th:text="${group.prodGroup}"></option>
                                 </div>
@@ -164,15 +186,11 @@
                             <span class="input-group-text">Группа</span>
                         </div>
                         <select class="custom-select" name="groupId" id="staticGroup" aria-describedby="findGroup">
+                            <option value="" selected>Без группы</option>
                             <div th:each="group : ${groups}">
-                            <option th:value="${group.id}" th:text="${group.prodGroup}"></option>
+                                <option th:value="${group.id}" th:text="${group.prodGroup}"></option>
                             </div>
                         </select>
-                        <div class="input-group-append">
-                            <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#newGroup">
-                                Добавить
-                            </button>
-                        </div>
                     </div>
                     <div class="input-group pt-3">
                         <div class="input-group-prepend">
@@ -201,31 +219,63 @@
     </div>
 </form>
 
-<!-- ModuleNewGroup -->
-<form th:action="@{/AdminProducts/newGroup}" method="post">
-    <div class="modal fade" id="newGroup" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel2" aria-hidden="true">
-        <div class="modal-dialog" role="dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="staticBackdropLabel2">Добавить группу</h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
+
+<!-- ModuleGroup -->
+<div class="modal fade" id="group" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel3" aria-hidden="true">
+    <div class="modal-dialog" role="dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel3">Группы товаров</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead class="text-center">
+                        <tr>
+                            <th>ID</th>
+                            <th>Группа</th>
+                            <th>Действия</th>
+                        </tr>
+                        </thead>
+                        <tbody class="text-center">
+                        <tr th:each="group : ${groups}">
+                            <td th:text="${group.id}"></td>
+                            <td th:text="${group.prodGroup}"></td>
+                            <td>
+                                <form th:action="@{/AdminProducts/deleteProductGroup/{productGroup.id}(productGroup.id=${group.id})}" method="post">
+                                    <button type="submit" class="btn btn-danger btn-block">Удалить</button>
+                                </form>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
                 </div>
-                <div class="modal-body">
-                    <div class="input-group">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text">Название</span>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline-secondary btn-block" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                    Добавить группу
+                </button>
+                <form th:action="@{/AdminProducts/newGroup}" method="post">
+                    <div class="collapse" id="collapseExample">
+                        <div class="modal-body">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">Название</span>
+                                </div>
+                                <input type="text" name="prodGroup" class="form-control" aria-label="Name" required>
+                            </div>
                         </div>
-                        <input type="text" name="prodGroup" class="form-control" aria-label="Name" required>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary btn-block">Сохранить</button>
+                        </div>
                     </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="submit" class="btn btn-primary btn-block">Сохранить</button>
-                </div>
+                </form>
             </div>
         </div>
     </div>
-</form>
+</div>
 </body>
 </html>

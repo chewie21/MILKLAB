@@ -1,7 +1,7 @@
 package com.example.milk.controller;
 
 import com.example.milk.domain.User;
-import com.example.milk.domain.UserRole;
+import com.example.milk.service.OrderService;
 import com.example.milk.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -10,10 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.util.Arrays;
 import java.util.Map;
-import java.util.Set;
-import java.util.stream.Collectors;
 
 @Controller
 @PreAuthorize("hasAuthority('ADMIN')")
@@ -21,31 +18,46 @@ import java.util.stream.Collectors;
 public class ForAdminAccountsController {
     @Autowired
     private UserService userService;
+    @Autowired
+    private OrderService orderService;
 
     @GetMapping
     public String ShowUsers(Map<String, Object> model) {
         model.putIfAbsent("users", userService.findAll());
+        model.put("count", orderService.orderCount());
         return "AdminAccounts";
     }
     @GetMapping("{user}")
     public String EditAccount (@PathVariable User user, Model model) {
         model.addAttribute("user", user);
-        model.addAttribute("roles", UserRole.values());
         return "AdminAccountsEdit";
     }
     @PostMapping
     public String SaveAccount (
-            @RequestParam Map<String, String> form,
             @RequestParam String name,
             @RequestParam String surname,
             @RequestParam String username,
             @RequestParam String email,
             @RequestParam String date,
             @RequestParam String password,
-            @RequestParam("id") User user) {
-
-        userService.saveAccount(user, name, surname, username, email, date, password);
-
+            @RequestParam String role,
+            @RequestParam("id") User user,
+            Model model) {
+        if (!userService.checkEmail(user, email)) {
+            model.addAttribute("user", user);
+            model.addAttribute("error", "Такой Email уже зарегистрирован");
+            return "AdminAccountsEdit";
+        }
+        if (!userService.checkUsername(user, username)){
+            model.addAttribute("user", user);
+            model.addAttribute("error", "Такой телефон уже зарегистрирован");
+            return "AdminAccountsEdit";
+        }
+        if(!password.equals("")) {
+            userService.savePassword(user, password);
+        }
+        userService.saveRole(user, role);
+        userService.saveAccount(user, name, surname, date);
         return "redirect:/AdminAccounts";
     }
     @PostMapping("/filterAccounts")
@@ -86,18 +98,14 @@ public class ForAdminAccountsController {
     }
     @PostMapping("/newAccount")
     public String newAccount (User user, Model model) {
-        User checkUser = userService.checkAccount(user);
-        if (checkUser != null) {
+        if (!userService.registration(user)) {
             model.addAttribute("message", "Такой пользователь уже существует");
-        }
-        else {
-            userService.newAccount(user);
         }
         return "redirect:/AdminAccounts";
     }
-    @PostMapping("/deleteAccount/{user}")
+    @PostMapping("/blockAccount/{user}")
     public String deleteAccount (@PathVariable User user) {
-        userService.deleteAccount(user);
+        userService.blockAccount(user);
         return "redirect:/AdminAccounts";
     }
 }

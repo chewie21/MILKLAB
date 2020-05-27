@@ -12,7 +12,7 @@ public interface BasketRepo extends CrudRepository<Basket, Long> {
     Basket findByUserId (Long id);
 
     @Query(nativeQuery = true,
-            value = "SELECT SUM(mp.prod_coast) FROM m_basket b JOIN m_basket_products mbp on b.id = mbp.basket_id JOIN m_product mp on mbp.products_id = mp.id WHERE b.user_id =:user")
+            value = "SELECT SUM(mp.prod_coast) FROM m_basket b JOIN m_basket_products mbp on b.id = mbp.basket_id JOIN m_product mp on mbp.product_id = mp.id WHERE b.user_id =:user")
     String orderCoast (@Param("user") Long user);
 
 

@@ -3,62 +3,61 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>MILKLAB</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-    <link href="css/bootstrap-formhelpers.min.css" rel="stylesheet" media="screen">
+    <link href="/css/bootstrap-formhelpers.min.css" rel="stylesheet" media="screen">
     <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
-    <script src="js/bootstrap-formhelpers.min.js"></script>
+    <script src="/js/bootstrap-formhelpers.min.js"></script>
 </head>
 <body>
 <div class="jumbotron bg-white">
     <div class="container">
+        <div th:if="${error}">
+            <div class="container fixed-top">
+                <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                    <text th:text="${error}"></text>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            </div>
+        </div>
         <div class="container ml-0 pl-0 pb-5" style="margin-top: 56px">
             <h1 class="display-4">Личный кабинет</h1>
             <p class="lead">Редактирование информации - проверьте все еще раз.</p>
         </div>
         <form th:action="@{/account/edit}" method="post">
             <div class="form-row">
-                <label for="staticId" class="col-md-2 col-form-label-lg">Ваш ID:</label>
-                <div class="col-md-auto">
-                    <input type="text" readonly name="id" class="form-control-lg form-control-plaintext" id="staticId" th:value="${user.id}"/>
-                </div>
-            </div>
-            <div class="form-row">
                 <label for="staticName" class="col-md-2 col-form-label-lg">Имя:</label>
                 <div class="col-md-auto">
-                    <input type="text" name="name" class="form-control-lg form-control-plaintext text-primary" id="staticName" th:value="${user.name}"/>
+                    <input type="text" name="name" class="form-control-lg form-control-plaintext text-primary" id="staticName" th:value="${user.name}" required/>
                 </div>
             </div>
             <div class="form-row">
                 <label for="staticSurname" class="col-md-2 col-form-label-lg">Фамилия:</label>
                 <div class="col-md-auto">
-                    <input type="text" name="surname" class="form-control-lg form-control-plaintext text-primary" id="staticSurname" th:value="${user.surname}"/>
+                    <input type="text" name="surname" class="form-control-lg form-control-plaintext text-primary" id="staticSurname" th:value="${user.surname}" required/>
                 </div>
             </div>
             <div class="form-row">
-                <label for="staticUsername" class="col-md-2 col-form-label-lg">Телефон:</label>
+                <label for="inputPhone" class="col-md-2 col-form-label-lg">Телефон:</label>
                 <div class="col-md-auto">
-                    <input type="text" name="username" class="form-control-lg form-control-plaintext bfh-phone text-primary" data-country="RU" id="staticUsername" th:value="${user.username}"/>
+                    <input type="text" name="username" class="form-control-lg bfh-phone form-control-plaintext text-primary" data-country="RU" id="inputPhone" th:value="${user.username}" required>
                 </div>
             </div>
             <div class="form-row">
                 <label for="staticEmail" class="col-md-2 col-form-label-lg">Email:</label>
                 <div class="col-md-auto">
-                    <input type="text" name="email" class="form-control-lg form-control-plaintext text-primary" id="staticEmail" th:value="${user.email}"/>
+                    <input type="email" name="email" class="form-control-lg form-control-plaintext text-primary" id="staticEmail" th:value="${user.email}" required/>
                 </div>
             </div>
             <div class="form-row">
                 <label for="staticDate" class="col-md-2 col-form-label-lg">День рождения:</label>
                 <div class="col-md-auto">
-                    <input type="date" name="date" class="form-control-lg form-control-plaintext text-primary" id="staticDate" th:value="${user.date}" value="01.08.1998"/>
-                </div>
-            </div>
-            <div class="form-row">
-                <label for="staticPassword" class="col-md-2 col-form-label-lg">Пароль</label>
-                <div class="col-md-auto">
-                   <input type="text" name="password" class="form-control-lg form-control-plaintext text-primary" id="staticPassword" th:value="${user.password}"/>
+                    <input type="date" name="date" class="form-control-lg form-control-plaintext text-primary" id="staticDate" th:value="${user.date}" required/>
                 </div>
             </div>
             <div class="form-row pt-5 pb-5">

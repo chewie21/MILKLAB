@@ -1,31 +1,27 @@
 package com.example.milk.domain;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
 
 @Entity
-@Table(name = "product_group")
-public class ProductGroup  {
-
+@Table(name = "m_group_products")
+public class ProductGroup {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column
-    private String prodGroup;
+    @ManyToOne
+    @JoinColumn(name = "product_id")
+    private Product product;
 
-    @OneToMany(fetch = FetchType.EAGER)
-    private List<Product> products = new ArrayList<>();
-
+    @ManyToOne
+    @JoinColumn(name = "group_id")
+    private Group productGroup;
 
     public ProductGroup() {}
 
-    public ProductGroup(String prodGroup) {
-        this.prodGroup = prodGroup;
-    }
-    public ProductGroup(Long groupId) {
-        this.id = groupId;
+    public ProductGroup(Group productGroup, Product product) {
+        this.productGroup = productGroup;
+        this.product = product;
     }
 
     public Long getId() {
@@ -36,23 +32,19 @@ public class ProductGroup  {
         this.id = id;
     }
 
-    public String getProdGroup() {
-        return prodGroup;
+    public Product getProduct() {
+        return product;
     }
 
-    public void setProdGroup(String prodGroup) {
-        this.prodGroup = prodGroup;
+    public void setProduct(Product product) {
+        this.product = product;
     }
 
-    public List<Product> getProducts() {
-        return products;
+    public Group getProductGroup() {
+        return productGroup;
     }
 
-    public void setProducts(List<Product> products) {
-        this.products = products;
-    }
-
-    public boolean contains(Long productId) {
-        return true;
+    public void setProductGroup(Group productGroup) {
+        this.productGroup = productGroup;
     }
 }

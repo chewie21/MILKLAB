@@ -15,13 +15,11 @@ public class Order {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @ManyToMany(fetch = FetchType.EAGER)
-    private List<Product> product = new ArrayList<>();
-
     private Long orderCoast;
     private String address;
     private String time;
     private String date;
+    private String comment;
 
     private boolean active;
 
@@ -30,9 +28,10 @@ public class Order {
     private OrderStatusEnum status;
 
     public Order () {}
-    public Order(User user, String address, String time, String date, Long orderCoast, OrderStatusEnum status) {
+    public Order(User user, String address, String comment, String time, String date, Long orderCoast, OrderStatusEnum status) {
         this.user = user;
         this.address = address;
+        this.comment = comment;
         this.time = time;
         this.date = date;
         this.orderCoast = orderCoast;
@@ -53,14 +52,6 @@ public class Order {
 
     public void setUser(User user) {
         this.user = user;
-    }
-
-    public List<Product> getProduct() {
-        return product;
-    }
-
-    public void setProduct(List<Product> product) {
-        this.product = product;
     }
 
     public String getAddress() {
@@ -110,4 +101,13 @@ public class Order {
     public void setStatus(OrderStatusEnum status) {
         this.status = status;
     }
+
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
+    }
+
 }

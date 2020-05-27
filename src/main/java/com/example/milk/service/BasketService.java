@@ -20,7 +20,6 @@ public class BasketService {
     public Basket findByUserId(User user) {
         return basketRepo.findByUserId(user.getId());
     }
-
     public Basket newBasket(User user) {
         Basket basket = new Basket(user);
         basketRepo.save(basket);

@@ -1,9 +1,12 @@
 package com.example.milk.controller;
 
+import com.example.milk.domain.Order;
 import com.example.milk.domain.Product;
-import com.example.milk.service.ProductGroupService;
+import com.example.milk.domain.Group;
+import com.example.milk.domain.ProductStatusEnum;
+import com.example.milk.service.OrderService;
+import com.example.milk.service.GroupService;
 import com.example.milk.service.ProductService;
-import com.example.milk.service.CarouselService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -23,20 +26,26 @@ public class ForAdminsProductsController {
     @Autowired
     private ProductService productService;
     @Autowired
-    private ProductGroupService productGroupService;
+    private GroupService groupService;
+    @Autowired
+    private OrderService orderService;
 
     @GetMapping
     public String ShowProduct(Map<String, Object> model) {
         model.putIfAbsent("products", productService.findAll());
-        model.put("groups", productGroupService.findAllGroup());
+        model.put("groups", groupService.findAllGroup());
+        model.put("count", orderService.orderCount());
+        model.put("stopProductCount", productService.stopProductCount());
         return "AdminProducts";
     }
+
     @GetMapping("{product}")
     public String EditProduct (@PathVariable Product product, Model model) {
         model.addAttribute("product", product);
-        model.addAttribute("groups", productGroupService.findAllGroup());
+        model.addAttribute("groups", groupService.findAllGroup());
         return "AdminProductsEdit";
     }
+
     @PostMapping
     public String SaveProduct (
             @RequestParam String prodName,
@@ -48,7 +57,6 @@ public class ForAdminsProductsController {
         productService.saveProduct(product, groupId, prodName, prodInfo, prodCoast, file);
         return "redirect:/AdminProducts";
     }
-
 
     @PostMapping("/newProduct")
     public String NewProduct(@RequestParam String prodName,
@@ -75,7 +83,11 @@ public class ForAdminsProductsController {
             return "redirect:/AdminProducts";
         }
         else if (groupId != null) {
-            attr.addFlashAttribute("products", productService.findAllByGroup(groupId));
+            if (groupId != 0) {
+                attr.addFlashAttribute("products", productService.findAllByGroup(groupId));
+                return "redirect:/AdminProducts";
+            }
+            attr.addFlashAttribute("products", productService.findAllByGroupNot());
             return "redirect:/AdminProducts";
         }
         else if (prodCoast != null) {
@@ -87,13 +99,48 @@ public class ForAdminsProductsController {
         }
     }
     @PostMapping("/deleteProduct/{product}")
-    public String deleteAccount (@PathVariable Product product) {
+    public String deleteProduct (@PathVariable Product product) {
         productService.deleteProduct(product);
         return "redirect:/AdminProducts";
     }
+
     @PostMapping("/newGroup")
     public String saveGroup (@RequestParam String prodGroup) {
-        productGroupService.SaveGroup(prodGroup);
+        groupService.SaveGroup(prodGroup);
+        return "redirect:/AdminProducts";
+    }
+
+    @PostMapping("/deleteProductGroup/{productGroup}")
+    public String deleteProductGroup (@PathVariable Group productGroup) {
+        groupService.deleteGroup(productGroup);
+        return "redirect:/AdminProducts";
+    }
+
+    @GetMapping("/close/{product}")
+    public String closeProduct (@PathVariable Product product,
+                                ProductStatusEnum status) {
+        status = ProductStatusEnum.STOP;
+        productService.saveProductStatus(product, status);
+        return "redirect:/AdminProducts";
+    }
+
+    @GetMapping("/open/{product}")
+    public String openProduct (@PathVariable Product product,
+                                ProductStatusEnum status) {
+        status = ProductStatusEnum.ACTIVE;
+        productService.saveProductStatus(product, status);
+        return "redirect:/AdminProducts";
+    }
+
+    @PostMapping("/findActive")
+    public String showActiveProducts (RedirectAttributes attr) {
+        attr.addFlashAttribute("products", productService.findAllByStatusActive());
+        return "redirect:/AdminProducts";
+    }
+
+    @PostMapping("/findStop")
+    public String showStopProducts (RedirectAttributes attr) {
+        attr.addFlashAttribute("products", productService.findAllByStatusStop());
         return "redirect:/AdminProducts";
     }
 }

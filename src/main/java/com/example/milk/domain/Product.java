@@ -15,16 +15,17 @@ public class Product implements Serializable {
     private Long prodCoast;
     private String prodImg;
 
-
-    @ManyToOne
-    private ProductGroup productGroup;
+    @Column
+    @Enumerated(value = EnumType.STRING)
+    private ProductStatusEnum status;
 
     public Product() {}
 
-    public Product(String prodName, String prodInfo, Long prodCoast) {
+    public Product(String prodName, String prodInfo, Long prodCoast, ProductStatusEnum status) {
         this.prodName = prodName;
         this.prodInfo = prodInfo;
         this.prodCoast = prodCoast;
+        this.status = status;
     }
 
     public Product(Long productId) {
@@ -71,13 +72,11 @@ public class Product implements Serializable {
         this.prodImg = prodImg;
     }
 
-    public ProductGroup getProductGroup() {
-        return productGroup;
+    public ProductStatusEnum getStatus() {
+        return status;
     }
 
-    public void setProductGroup(ProductGroup productGroup) {
-        this.productGroup = productGroup;
+    public void setStatus(ProductStatusEnum status) {
+        this.status = status;
     }
-
-
 }

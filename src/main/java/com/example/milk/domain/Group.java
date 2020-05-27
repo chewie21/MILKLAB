@@ -5,20 +5,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
-@Table(name = "m_basket")
-public class Basket {
+@Table(name = "m_group")
+public class Group {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @OneToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "user_id")
-    private User user;
+    private String prodGroup;
 
-    public Basket() {}
+    public Group() {}
 
-    public Basket (User user) {
-        this.user = user;
+    public Group(String prodGroup) {
+        this.prodGroup = prodGroup;
     }
 
     public Long getId() {
@@ -29,13 +27,12 @@ public class Basket {
         this.id = id;
     }
 
-    public User getUser() {
-        return user;
+    public String getProdGroup() {
+        return prodGroup;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setProdGroup(String prodGroup) {
+        this.prodGroup = prodGroup;
     }
-
 
 }

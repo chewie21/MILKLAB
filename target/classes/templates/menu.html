@@ -23,7 +23,7 @@
                     <li class="nav-item">
                         <div th:if="${user}">
                             <div th:if="${user.isAdmin()}">
-                                <a href="Admin" class="nav-link">Администрирование</a>
+                                <a href="Admin" class="nav-link">Администрирование <span th:if="${countOrders}" class="badge badge-light badge-pill" th:text="${countOrders}"></span></a>
                             </div>
                         </div>
                     </li>
@@ -86,13 +86,13 @@
                 <a class="navbar-brand m-0" href="menu"><i class="fas fa-chevron-up" style="color: #007bff"></i></a>
             </li>
             <li class="nav-item" th:each="group : ${groups}">
-                <a class="nav-link" th:href="@{'/menu#' + ${group.id}}" th:text="${group.prodGroup}">Пиццы</a>
+                <a class="nav-link" th:href="@{'/menu#' + ${group.productGroup.id}}" th:text="${group.productGroup.prodGroup}"></a>
             </li>
             <li class="nav-item">
                 <div th:if="${user}">
                     <a class="navbar-brand m-0" href="basket">
                         <i class="fas fa-shopping-basket" style="color: #007bff">
-                            <span class="badge badge-primary badge-pill" th:text="${count}"></span>
+                            <span class="badge badge-primary badge-pill" th:text="${countProducts}"></span>
                         </i>
                     </a>
                 </div>
@@ -108,16 +108,16 @@
 <div class="container">
     <div data-target="#navbarMenu" data-offset="0">
         <div th:each="group : ${groups}">
-            <h4 th:id="${group.id}" class="text-muted" th:text="${group.prodGroup}"></h4>
+            <h4 th:id="${group.productGroup.id}" class="text-muted" th:text="${group.productGroup.prodGroup}"></h4>
             <div class="card-deck">
-                <div th:each="product : ${group.products}">
+                <div th:each="product : ${group.product}">
                     <div class="card mt-3 mb-3" style="width: 250px; height: 450px; box-sizing: content-box">
                         <img th:src="@{/img/{img}(img=${product.prodImg})}" style="height: 250px; width: 250px">
                         <div class="card-body">
                             <h5 class="card-title" th:text="${product.prodName}"></h5>
                             <small class="card-text text-muted" th:text="${product.prodInfo}"></small>
                         </div>
-                        <div class="card-footer">
+                        <div class="card-footer bg-white">
                             <div class="form-row justify-content-between">
                                 <div class="form-group m-0 align-self-center">
                                     <p class="card-text"><text th:text="${product.prodCoast}"></text> Руб./шт.</p>

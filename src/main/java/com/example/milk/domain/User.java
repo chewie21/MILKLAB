@@ -22,13 +22,14 @@ public class User implements UserDetails {
 
     private boolean active;
 
-    @ElementCollection(targetClass = UserRole.class, fetch = FetchType.EAGER)
-    @CollectionTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"))
+    @ElementCollection(targetClass = UserRolesEnum.class, fetch = FetchType.EAGER)
+    @CollectionTable(name = "m_user_role", joinColumns = @JoinColumn(name = "user_id"))
     @Enumerated(EnumType.STRING)
-    private Set<UserRole> userRoles;
+    private Set<UserRolesEnum> userRoles;
+
 
     public boolean isAdmin() {
-        return userRoles.contains(UserRole.ADMIN);
+        return userRoles.contains(UserRolesEnum.ADMIN);
     }
 
     public Long getId() {
@@ -86,13 +87,15 @@ public class User implements UserDetails {
         this.active = active;
     }
 
-    public Set<UserRole> getUserRoles() {
+    public Set<UserRolesEnum> getUserRoles() {
         return userRoles;
     }
 
-    public void setUserRoles(Set<UserRole> userRoles) {
+    public void setUserRoles(Set<UserRolesEnum> userRoles) {
         this.userRoles = userRoles;
     }
+
+    public String getRole () { return userRoles.toString();}
 
     public String getName() { return name; }
 

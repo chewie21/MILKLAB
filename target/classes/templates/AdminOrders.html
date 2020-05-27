@@ -28,7 +28,9 @@
                     <a href="AdminCarousels" class="nav-link">Карусель</a>
                 </li>
                 <li class="nav-item">
-                    <a href="AdminOrders" class="nav-link active">Заказы</a>
+                    <a href="AdminOrders" class="nav-link active">
+                        Заказы <span th:if="${count}" class="badge badge-dark badge-pill" th:text="${count}"></span>
+                    </a>
                 </li>
                 <li class="nav-item">
                     <a href="AdminAccounts" class="nav-link">Клиенты</a>
@@ -39,35 +41,65 @@
 </header>
 <div class="jumbotron pt-3 pb-3 m-0 sticky-top">
     <h1 class="display-4">Заказы</h1>
-    <button type="button" class="btn btn-primary mb-1" data-toggle="modal" data-target="#findOrder">
-        Найти заказ
-    </button>
-    <a href="AdminOrders" class="btn btn-secondary mb-1" role="button" aria-pressed="true">Полный список</a>
+    <div class="row">
+        <button type="button" class="btn btn-primary m-1" data-toggle="modal" data-target="#findOrder">
+            Найти заказ
+        </button>
+        <form th:action="@{/AdminOrders/findActive}" method="post">
+            <button  type="submit" class="btn btn-primary m-1">Активные заказы <span th:if="${count}" class="badge badge-light badge-pill" th:text="${count}"></span></button>
+        </form>
+        <form th:action="@{/AdminOrders/findNotActive}" method="post">
+            <button  type="submit" class="btn btn-primary m-1">Закрытые заказы</button>
+        </form>
+        <form th:action="@{/AdminOrders/findDelivery}" method="post">
+            <button type="submit" class="btn btn-primary m-1">Доставка</button>
+        </form>
+        <form th:action="@{/AdminOrders/findPickup}" method="post">
+            <button type="submit" class="btn btn-primary m-1">Самовывоз</button>
+        </form>
+        <a href="AdminOrders" class="btn btn-secondary m-1" role="button" aria-pressed="true">Полный список</a>
+    </div>
 </div>
     <div class="table-responsive">
         <table class="table table-hover">
             <thead class="text-center">
         <tr>
             <th>Номер заказа</th>
+            <th>Тип</th>
+            <th>Состояние</th>
             <th>Телефон</th>
             <th>Имя</th>
-            <th>Дата</th>
             <th>Время</th>
-            <th>Состояние</th>
+            <th>Дата</th>
             <th>Действия</th>
         </tr>
         </thead>
         <tbody class="text-center">
         <tr th:each="order : ${orders}">
             <td th:text="${order.id}"></td>
+            <td>
+                <div th:switch="${order.status}">
+                    <p th:case="${order.status.DELIVERY}">Доставка</p>
+                    <p th:case="${order.status.PICKUP}">Самовывоз</p>
+                </div>
+            </td>
+            <td>
+                <div th:if="${order.active}">
+                    Активный
+                </div>
+                <div th:unless="${order.active}">
+                    Закрытый
+                </div>
+            </td>
             <td th:text="${order.user.username}"></td>
             <td th:text="${order.user.name}"></td>
-            <td th:text="${order.date}"></td>
             <td th:text="${order.time}"></td>
-            <td th:text="${order.active}"></td>
+            <td th:text="${order.date}"></td>
             <td>
-                <a class="btn btn-secondary btn-block" th:href="@{/AdminOrders/orderInfo/{order.id}(order.id=${order.id})}">Информация</a>
-                <a class="btn btn-primary btn-block" th:href="@{/AdminOrders/close/{order.id}(order.id=${order.id})}">Закрыть</a>
+                <div class="pb-2" th:if="${order.active}">
+                    <a class="btn btn-dark btn-block" th:href="@{/AdminOrders/close/{order.id}(order.id=${order.id})}">Закрыть</a>
+                </div>
+                <a class="btn btn-primary btn-block" th:href="@{/AdminOrders/orderInfo/{order.id}(order.id=${order.id})}">Информация</a>
                 <a class="btn btn-danger btn-block" th:href="@{/AdminOrders/delete/{order.id}(order.id=${order.id})}">Удалить</a>
             </td>
         </tr>
@@ -115,14 +147,11 @@
                     </div>
                     <div class="input-group pt-3">
                         <div class="input-group-prepend">
-                            <span class="input-group-text">Статус</span>
+                            <span class="input-group-text">Цена</span>
                         </div>
-                        <select id="inputActive" class="form-control" name="active">
-                            <option th:value="true" th:text="Активные"></option>
-                            <option th:value="false" th:text="Закрытые"></option>
-                        </select>
+                        <input type="number" name="orderCoast"  class="form-control" aria-label="findCoast" aria-describedby="findCoast">
                         <div class="input-group-append">
-                            <button class="btn btn-primary" type="submit" id="findActive">Найти</button>
+                            <button class="btn btn-primary" type="submit" id="findCoast">Найти</button>
                         </div>
                     </div>
                 </div>

@@ -13,27 +13,38 @@
     <script src="js/bootstrap-formhelpers.min.js"></script>
 </head>
 <body>
-    <div class="jumbotron bg-light m-0">
+    <div class="jumbotron bg-light mb-0">
         <div class="container">
             <h1 class="display-4">Номер заказа: <text th:text="${order.id}"></text></h1>
             <hr>
+            <div th:if="${order.address}">
+                <p>Доставка</p>
+                <p>Адрес: <text th:text="${order.address}"></text></p>
+                <hr>
+            </div>
+            <div th:unless="${order.address}">
+                <p>Самовывоз</p>
+                <hr>
+            </div>
+            <div th:if="${order.active}">
+                <p>Статус: Активный</p>
+                <hr>
+            </div>
+            <div th:unless="${order.active}">
+                <p>Статус: Закрыт</p>
+                <hr>
+            </div>
             <p>Дата: <text th:text="${order.date}"></text></p>
             <p>Время: <text th:text="${order.time}"></text></p>
-            <p>Адрес: <text th:text="${order.address}"></text></p>
             <p>Сумма: <text th:text="${order.orderCoast}"></text> Руб.</p>
         </div>
     </div>
 <div class="container">
     <div class="card-deck">
-        <div th:each="product : ${order.product}">
-            <div class="card m-3" style="width: 250px; height: 500px; box-sizing: content-box">
-                <div class="card-img">
-                    <img th:src="@{/img/{img}(img=${product.prodImg})}" style="height: 250px; width: 250px">
-                </div>
-                <input type="hidden" name="productId" th:value="${product.id}"/>
+        <div th:each="product : ${orderInfo}">
+            <div class="card m-3">
                 <div class="card-body">
-                    <h5 class="card-title" th:text="${product.prodName}"></h5>
-                    <p class="card-text" th:text="${product.prodInfo}"></p>
+                    <h5 class="card-title text-muted" th:text="${product.prodName}"></h5>
                 </div>
                 <div class="card-footer">
                     <p class="card-text text-center">

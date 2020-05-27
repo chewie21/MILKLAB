@@ -2,6 +2,7 @@ package com.example.milk.controller;
 
 import com.example.milk.domain.Carousel;
 import com.example.milk.service.CarouselService;
+import com.example.milk.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -19,10 +20,13 @@ public class ForAdminCarouselsController {
 
     @Autowired
     private CarouselService carouselService;
+    @Autowired
+    private OrderService orderService;
 
     @GetMapping
     public String showCarousel(Map<String, Object> model) {
         model.put("carousels", carouselService.findAll());
+        model.put("count", orderService.orderCount());
         return "AdminCarousels";
     }
 

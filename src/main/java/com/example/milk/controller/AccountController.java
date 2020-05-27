@@ -3,9 +3,11 @@ package com.example.milk.controller;
 import com.example.milk.domain.Order;
 import com.example.milk.domain.User;
 import com.example.milk.repos.UserRepo;
+import com.example.milk.service.OrderInfoService;
 import com.example.milk.service.OrderService;
 import com.example.milk.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Import;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,12 +22,19 @@ public class AccountController {
     private UserService userService;
     @Autowired
     private OrderService orderService;
+    @Autowired
+    private OrderInfoService orderInfoService;
 
     @GetMapping
     public String ShowAccount (@AuthenticationPrincipal User user, Model model) {
         model.addAttribute("user", user);
+        model.addAttribute("countOrders", orderService.orderCount());
         model.addAttribute("active", orderService.findByTrueActive(user, true) );
         model.addAttribute("notActive", orderService.findByFalseActive(user, false));
+        model.addAttribute("lastOrder", orderService.lastOrder(user.getId()));
+        model.addAttribute("activeOrders", orderService.countUserActiveOrders(user.getId()));
+        model.addAttribute("notActiveOrders", orderService.countUserNotActiveOrders(user.getId()));
+        model.addAttribute("userOrders", orderService.countUserOrders(user.getId()));
         return "account";
     }
     @GetMapping("edit")
@@ -40,15 +49,24 @@ public class AccountController {
                                @RequestParam String username,
                                @RequestParam String email,
                                @RequestParam String date,
-                               @RequestParam String password) {
-
-        userService.saveAccount(user, name, surname, username, email, date, password);
+                               Model model) {
+        if (!userService.checkEmail(user, email)) {
+            model.addAttribute("user", user);
+            model.addAttribute("error", "Такой Email уже зарегистрирован");
+            return "accountEdit";
+        }
+        if (!userService.checkUsername(user, username)){
+            model.addAttribute("user", user);
+            model.addAttribute("error", "Такой телефон уже зарегистрирован");
+            return "accountEdit";
+        }
+        userService.saveAccount(user, name, surname, date);
         return "redirect:/account";
     }
     @GetMapping("/orderInfo/{order}")
-    public String showOrder (@AuthenticationPrincipal User user,
-                             @PathVariable Order order,
+    public String showOrder (@PathVariable Order order,
                              Model model) {
+        model.addAttribute("orderInfo", orderInfoService.findByOrderId(order.getId()));
         model.addAttribute("order", orderService.findById(order.getId()));
         return "orderInfo";
     }

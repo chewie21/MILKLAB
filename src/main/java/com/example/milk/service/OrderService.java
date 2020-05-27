@@ -1,13 +1,14 @@
 package com.example.milk.service;
 
-import com.example.milk.domain.Order;
-import com.example.milk.domain.OrderStatusEnum;
-import com.example.milk.domain.Product;
-import com.example.milk.domain.User;
+import com.example.milk.domain.*;
+import com.example.milk.repos.OrderInfoRepo;
 import com.example.milk.repos.OrderRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
@@ -17,37 +18,50 @@ public class OrderService {
 
     @Autowired
     OrderRepo orderRepo;
+    @Autowired
+    OrderInfoService orderInfoService;
 
-    public Iterable<Order> findAll() {
-        return orderRepo.findAll();
+    public Order lastOrder (Long userId) {
+        return orderRepo.lastOrder(userId);
     }
-    public Order findById (Long id) { return orderRepo.findById(id).get();}
+    public String countUserActiveOrders (Long userId) {
+        return orderRepo.countUserActiveOrders(userId).equals("0") ? null : orderRepo.countUserActiveOrders(userId);
+    }
+    public String countUserNotActiveOrders (Long userId) {
+        return orderRepo.countUserNotActiveOrders(userId).equals("0") ? null : orderRepo.countUserNotActiveOrders(userId);
+    }
+    public String countUserOrders (Long userId) {
+        return orderRepo.countUserOrders(userId).equals("0") ? null : orderRepo.countUserOrders(userId);
+    }
+    public String orderCount () {
+        return orderRepo.countOrders().equals("0") ? null : orderRepo.countOrders();
+    }
+    public String dateFormat () {
+        Date nowDate = new Date();
+        DateFormat dateFormat = new SimpleDateFormat("dd.MM.yy");
+        return dateFormat.format(nowDate);
+    }
+    public String timeFormat () {
+        Date nowDate = new Date();
+        DateFormat timeFormat = new SimpleDateFormat("HH:mm");
+        return timeFormat.format(nowDate);
+    }
 
-    public void saveOrder (User user, String address, String time, String date, Long orderCoast, List<Long> productIds) {
-        Order order = findOrder(user, address, time, date, orderCoast);
+    //Edit
+    public void saveOrder (Basket basket, User user, String address, String comment, String time, String date, Long orderCoast, OrderStatusEnum orderStatusEnum) {
+        Order order = findOrder(user, address, comment, time, date, orderCoast);
         order.setActive(true);
-        order.getProduct().addAll(productIds.stream().filter(Objects::nonNull).map(Product::new).collect(Collectors.toList()));
-        order.setStatus(OrderStatusEnum.DONE);
+        orderInfoService.newOrderInfo(basket);
+        order.setStatus(orderStatusEnum);
         orderRepo.save(order);
     }
-
-    public Order newOrder (User user, String address, String time, String date, Long orderCoast) {
-        Order order = new Order (user, address, time, date, orderCoast, OrderStatusEnum.ACTIVE);
+    public Order newOrder (User user, String address, String comment, String time, String date, Long orderCoast) {
+        Order order = new Order (user, address, comment, time, date, orderCoast, OrderStatusEnum.ACTIVE);
         orderRepo.save(order);
         return order;
     }
-    public Order findOrder (User user, String address, String time, String date, Long orderCoast) {
-        Order order = orderRepo.findByUserIdAndStatus(user.getId(), OrderStatusEnum.ACTIVE);
-        return order == null ? newOrder(user, address, time, date, orderCoast) : order;
-    }
-    public List<Order> findByTrueActive (User user, boolean active) {
-        return orderRepo.findAllByUserIdAndActive(user.getId(), true);
-    }
-    public List<Order> findByFalseActive (User user, boolean active) {
-        return orderRepo.findAllByUserIdAndActive(user.getId(), false);
-    }
-    public void deleteOrder (Long id) {
-        Order order = orderRepo.findById(id).get();
+    public void deleteOrder (Order order) {
+        orderInfoService.deleteFromOrderProductsByOrder(order);
         orderRepo.delete(order);
     }
     public void closeOrder (Long id) {
@@ -56,6 +70,17 @@ public class OrderService {
         orderRepo.save(order);
     }
 
+    //Find
+    public Iterable<Order> findAll() {
+        return orderRepo.findAll();
+    }
+    public Order findById (Long id) {
+        return orderRepo.findById(id).get();
+    }
+    public Order findOrder (User user, String address, String comment, String time, String date, Long orderCoast) {
+        Order order = orderRepo.findByUserIdAndStatus(user.getId(), OrderStatusEnum.ACTIVE);
+        return order == null ? newOrder(user, address, comment, time, date, orderCoast) : order;
+    }
     public List<Order> findAllById(Long id) {
         return orderRepo.findAllById(id);
     }
@@ -68,5 +93,27 @@ public class OrderService {
     public List<Order> activeOrders (boolean active) {
         return orderRepo.findAllByActive(active);
     }
+    public List<Order> findByTrueActive (User user, boolean active) {
+        return orderRepo.findAllByUserIdAndActive(user.getId(), true);
+    }
+    public List<Order> findByFalseActive (User user, boolean active) {
+        return orderRepo.findAllByUserIdAndActive(user.getId(), false);
+    }
+    public List<Order> findActiveOrders () {
+        return orderRepo.findAllByActive(true);
+    }
+    public List<Order> findNotActiveOrder () {
+        return orderRepo.findAllByActive(false);
+    }
+    public List<Order> findByOrderCoast (String orderCoast) {
+        return orderRepo.findAllByOrderCoast(orderCoast);
+    }
+    public List<Order> findByDelivery () {
+        return orderRepo.findAllByStatus(OrderStatusEnum.DELIVERY);
+    }
+    public List<Order> findByPickup () {
+        return orderRepo.findAllByStatus(OrderStatusEnum.PICKUP);
+    }
+
 }
 

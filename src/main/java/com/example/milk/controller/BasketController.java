@@ -8,10 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -26,13 +24,13 @@ public class BasketController {
     @Autowired
     BasketInfoService basketInfoService;
 
-
     @GetMapping
     public String showBasket (@AuthenticationPrincipal User user,
                               Map<String, Object> model) {
         model.put("user", user);
         model.put("basketInfo", basketInfoService.findBasketInfo(basketService.findBasket(user)));
         model.put("orderCoast", basketInfoService.orderCoast(user));
+        model.put("countOrders", orderService.orderCount());
         return "basket";
     }
     @GetMapping("{product}")
@@ -45,22 +43,35 @@ public class BasketController {
         model.put("orderCoast", basketInfoService.orderCoast(user));
         return "redirect:/basket";
     }
-    @PostMapping("/saveOrder")
-    public String saveOrder(@AuthenticationPrincipal User user,
+    @PostMapping("/saveOrderDelivery")
+    public String saveOrderDelivery(@AuthenticationPrincipal User user,
                             @RequestParam Long orderCoast,
                             @RequestParam String address,
-                            String time, String date) {
-        Date nowDate = new Date();
-        DateFormat timeFormat = new SimpleDateFormat("HH:mm");
-        time = timeFormat.format(nowDate);
-        DateFormat dateFormat = new SimpleDateFormat("dd.MM.yy");
-        date = dateFormat.format(nowDate);
-
+                            @RequestParam String comment,
+                            String time, String date, RedirectAttributes attr) {
+        date = orderService.dateFormat();
+        time = orderService.timeFormat();
         Basket basket = basketService.findByUserId(user);
-        List<Long> productIds = basketInfoService.findProductId(basket);
-        orderService.saveOrder(user, address, time, date, orderCoast, productIds);
+        OrderStatusEnum orderStatusEnum = OrderStatusEnum.DELIVERY;
+        orderService.saveOrder(basket, user, address, comment, time, date, orderCoast, orderStatusEnum);
         basketInfoService.deleteBasketInfo(basket);
         basketService.deleteBasket(user);
+        attr.addFlashAttribute("orderSuccess", "Ваш заказ отправлен на кухню");
+        return "redirect:/account";
+    }
+    @PostMapping("/saveOrderPickup")
+    public String saveOrderPickup(@AuthenticationPrincipal User user,
+                            @RequestParam Long orderCoast,
+                            @RequestParam String comment,
+                            String time, String date, String address, RedirectAttributes attr) {
+        date = orderService.dateFormat();
+        time = orderService.timeFormat();
+        Basket basket = basketService.findByUserId(user);
+        OrderStatusEnum orderStatusEnum = OrderStatusEnum.PICKUP;
+        orderService.saveOrder(basket, user, address, comment, time, date, orderCoast, orderStatusEnum);
+        basketInfoService.deleteBasketInfo(basket);
+        basketService.deleteBasket(user);
+        attr.addFlashAttribute("orderSuccess", "Ваш заказ отправлен на кухню");
         return "redirect:/account";
     }
     @GetMapping("/delete/{product}")

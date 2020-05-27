@@ -29,7 +29,7 @@
                     <a href="AdminCarousels" class="nav-link active">Карусель</a>
                 </li>
                 <li class="nav-item">
-                    <a href="AdminOrders" class="nav-link">Заказы</a>
+                    <a href="AdminOrders" class="nav-link">Заказы <span th:if="${count}" class="badge badge-dark badge-pill" th:text="${count}"></span></a>
                 </li>
                 <li class="nav-item">
                     <a href="AdminAccounts" class="nav-link">Клиенты</a>
@@ -40,13 +40,15 @@
 </header>
 <div class="jumbotron pt-3 pb-3 m-0 sticky-top">
     <h1 class="display-4">Карусель</h1>
-    <button type="button" class="btn btn-primary mb-1" data-toggle="modal" data-target="#newCarousel">
-        Добавить
-    </button>
+    <div class="row">
+        <button type="button" class="btn btn-primary m-1" data-toggle="modal" data-target="#newCarousel">
+            Добавить
+        </button>
+    </div>
 </div>
 <div class="container">
 <div th:each="carousel : ${carousels}">
-    <div class="card mb-3">
+    <div class="card m-3">
         <div class="card-img">
             <img th:src="@{/img/{img}(img=${carousel.carouselImg})}" class="d-block w-100" alt="/" style="height: 360px; width: 1000px">
         </div>
@@ -94,6 +96,5 @@
         </div>
     </div>
 </form>
-
 </body>
 </html>

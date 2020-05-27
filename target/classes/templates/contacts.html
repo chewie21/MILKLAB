@@ -11,7 +11,7 @@
 </head>
 <body>
 <header>
-    <nav class="navbar navbar-dark bg-primary navbar-expand-md sticky-top">
+    <nav class="navbar navbar-dark bg-primary navbar-expand-md">
         <div class="container">
             <a href="/" class="navbar-brand">MILKLAB</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive">
@@ -22,7 +22,7 @@
                     <li class="nav-item">
                         <div th:if="${user}">
                             <div th:if="${user.isAdmin()}">
-                                <a href="Admin" class="nav-link">Администрирование</a>
+                                <a href="Admin" class="nav-link">Администрирование <span th:if="${countOrders}" class="badge badge-light badge-pill" th:text="${countOrders}"></span></a>
                             </div>
                         </div>
                     </li>
@@ -33,14 +33,17 @@
                         <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Акаунт</a>
                         <div class="dropdown-menu">
                             <div th:if="${user}">
-                            <a class="dropdown-item text-center" href="account" th:text="${user.name}"></a>
-                            <div class="dropdown-divider"></div>
-                            <form th:action="@{/logout}" method="post" class="dropdown-item">
-                                <button type="submit" class="btn btn-outline-danger btn-sm btn-block">Выйти</button>
-                            </form>
+                                <form class="dropdown-item">
+                                    <a type="button" class="btn btn-block btn-sm btn-outline-primary" href="account" th:text="${user.name}"></a>
+                                </form>
+                                <form th:action="@{/logout}" method="post" class="dropdown-item">
+                                    <button type="submit" class="btn btn-outline-danger btn-sm btn-block">Выйти</button>
+                                </form>
                             </div>
                             <div th:unless="${user}">
-                                <a class="dropdown-item text-center" href="account">Вход</a>
+                                <form class="dropdown-item">
+                                    <a type="button" class="btn btn-outline-primary btn-sm btn-block" href="account">Вход</a>
+                                </form>
                             </div>
                         </div>
                     </li>

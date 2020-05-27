@@ -28,7 +28,7 @@
                     <a href="AdminCarousels" class="nav-link">Карусель</a>
                 </li>
                 <li class="nav-item">
-                    <a href="AdminOrders" class="nav-link">Заказы</a>
+                    <a href="AdminOrders" class="nav-link">Заказы <span th:if="${count}" class="badge badge-dark badge-pill" th:text="${count}"></span></a>
                 </li>
                 <li class="nav-item">
                     <a href="AdminAccounts" class="nav-link active">Клиенты</a>
@@ -38,14 +38,16 @@
     </nav>
 </header>
     <div class="jumbotron pt-3 pb-3 m-0 sticky-top">
-            <h1 class="display-4">Клиенты</h1>
-            <button type="button" class="btn btn-primary mb-1" data-toggle="modal" data-target="#findAccount">
+        <h1 class="display-4">Клиенты</h1>
+        <div class="row">
+            <button type="button" class="btn btn-primary m-1" data-toggle="modal" data-target="#findAccount">
                 Найти клиента
             </button>
-            <button type="button" class="btn btn-primary mb-1" data-toggle="modal" data-target="#newAccount">
+            <button type="button" class="btn btn-primary m-1" data-toggle="modal" data-target="#newAccount">
                 Добавить клиента
             </button>
-            <a href="AdminAccounts" class="btn btn-secondary mb-1" role="button" aria-pressed="true">Полный список</a>
+            <a href="AdminAccounts" class="btn btn-secondary m-1" role="button" aria-pressed="true">Полный список</a>
+        </div>
     </div>
 <div class="table-responsive">
     <table class="table table-hover">
@@ -69,8 +71,8 @@
             <td th:text="${user.email}"></td>
             <td th:text="${user.date}"></td>
             <td><a class="btn btn-primary btn-block mb-2" th:href="@{/AdminAccounts/{user.id}(user.id=${user.id})}">Изменить</a>
-                <form th:action="@{/AdminAccounts/deleteAccount/{user.id}(user.id=${user.id})}" method="post">
-                    <button type="submit" class="btn btn-danger btn-block">Удалить</button>
+                <form th:action="@{/AdminAccounts/blockAccount/{user.id}(user.id=${user.id})}" method="post">
+                    <button type="submit" class="btn btn-danger btn-block">Заблокировать</button>
                 </form>
             </td>
         </tr>
