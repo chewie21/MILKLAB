@@ -16,5 +16,15 @@ public interface UserRepo extends JpaRepository<User, Long> {
     List<User> findAllByUsername(String username);
     List<User> findAllByEmail(String email);
     List<User> findAllByDate(String date);
+    List<User> findAllByActive (boolean active);
 
+    @Query(nativeQuery = true,
+            value = "select * from m_user join m_user_role mur on m_user.id = mur.user_id where mur.user_roles =:role")
+    List<User> findAllByRole (@Param("role")String role);
+    @Query(nativeQuery = true,
+            value = "select count(*) from m_user")
+    String countFirstUser();
+    @Query(nativeQuery = true,
+            value = "select count(*) from m_user where active =false")
+    String countNotActiveUser();
 }

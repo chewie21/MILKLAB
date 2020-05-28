@@ -16,10 +16,13 @@ public class ProductGroupService {
     @Autowired
     private ProductGroupRepo productGroupRepo;
 
+    public ProductGroup findByGroupId (Long groupId) { return productGroupRepo.findByProductGroupId(groupId);}
+    public ProductGroup findByProductId (Product product) {
+        return productGroupRepo.findByProductId(product.getId());
+    }
     public List<ProductGroup> findProductGroupByActive() {
         return productGroupRepo.findAllByActive();
     }
-
     public void saveProductInGroup (Group group, Product product) {
         ProductGroup productGroup = new ProductGroup(group, product);
         productGroupRepo.save(productGroup);

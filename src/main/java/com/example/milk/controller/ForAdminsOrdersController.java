@@ -4,6 +4,8 @@ import com.example.milk.domain.Order;
 import com.example.milk.domain.User;
 import com.example.milk.service.OrderInfoService;
 import com.example.milk.service.OrderService;
+import com.example.milk.service.ProductService;
+import com.example.milk.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -25,14 +27,21 @@ import java.util.Map;
 public class ForAdminsOrdersController {
 
     @Autowired
-    OrderService orderService;
+    private OrderService orderService;
     @Autowired
-    OrderInfoService orderInfoService;
+    private OrderInfoService orderInfoService;
+    @Autowired
+    private UserService userService;
+    @Autowired
+    private ProductService productService;
 
     @GetMapping
     public String showOrders (Map<String, Object> model) {
         model.putIfAbsent("orders", orderService.findAll());
-        model.put("count", orderService.orderCount());
+        model.put("countNotActiveOrders", orderService.countActiveOrders());
+        model.put("countNotActiveUsers", userService.countNotActiveUsers());
+        model.put("countStopProducts", productService.countStopProducts());
+        model.putIfAbsent("title", null);
         return "AdminOrders";
     }
     @GetMapping("/delete/{order}")
@@ -56,21 +65,25 @@ public class ForAdminsOrdersController {
     @PostMapping("/findActive")
     public String showActiveOrders (RedirectAttributes attr) {
         attr.addFlashAttribute("orders", orderService.findActiveOrders());
+        attr.addFlashAttribute("title", "Активные");
         return "redirect:/AdminOrders";
     }
     @PostMapping("/findNotActive")
     public String showNotActiveOrders (RedirectAttributes attr) {
         attr.addFlashAttribute("orders", orderService.findNotActiveOrder());
+        attr.addFlashAttribute("title", "Закрытые");
         return "redirect:/AdminOrders";
     }
     @PostMapping("/findDelivery")
     public String showDeliveryOrders (RedirectAttributes attr) {
         attr.addFlashAttribute("orders", orderService.findByDelivery());
+        attr.addFlashAttribute("title", "Доставка");
         return "redirect:/AdminOrders";
     }
     @PostMapping("/findPickup")
     public String showPickupOrders (RedirectAttributes attr) {
         attr.addFlashAttribute("orders", orderService.findByPickup());
+        attr.addFlashAttribute("title", "Самовывоз");
         return "redirect:/AdminOrders";
     }
     @PostMapping("/filterOrders")
@@ -81,10 +94,12 @@ public class ForAdminsOrdersController {
                                 RedirectAttributes attr) throws ParseException {
         if (id != null) {
             attr.addFlashAttribute("orders", orderService.findAllById(id));
+            attr.addFlashAttribute("title", "id:" + id);
             return "redirect:/AdminOrders";
         }
         else if (!username.equals("+7 ")) {
             attr.addFlashAttribute("orders", orderService.findAllByUsername(username));
+            attr.addFlashAttribute("title", "Клиент:" + username);
             return "redirect:/AdminOrders";
         }
         else if (!date.equals("")) {
@@ -93,10 +108,12 @@ public class ForAdminsOrdersController {
             Date date1 = oldDateFormat.parse(date);
             String result = newDateFormat.format(date1);
             attr.addFlashAttribute("orders", orderService.findAllByDate(result));
+            attr.addFlashAttribute("title", "Дата:" + result);
             return "redirect:/AdminOrders";
         }
         else if(!orderCoast.equals("")) {
             attr.addFlashAttribute("orders", orderService.findByOrderCoast(orderCoast));
+            attr.addFlashAttribute("title", "Цена:" + orderCoast);
             return "redirect:/AdminOrders";
         }
         else {

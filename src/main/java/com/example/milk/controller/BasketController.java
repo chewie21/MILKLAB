@@ -3,6 +3,7 @@ package com.example.milk.controller;
 import com.example.milk.domain.*;
 import com.example.milk.service.BasketInfoService;
 import com.example.milk.service.BasketService;
+import com.example.milk.service.InfoService;
 import com.example.milk.service.OrderService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -23,6 +24,8 @@ public class BasketController {
     OrderService orderService;
     @Autowired
     BasketInfoService basketInfoService;
+    @Autowired
+    private InfoService infoService;
 
     @GetMapping
     public String showBasket (@AuthenticationPrincipal User user,
@@ -30,7 +33,7 @@ public class BasketController {
         model.put("user", user);
         model.put("basketInfo", basketInfoService.findBasketInfo(basketService.findBasket(user)));
         model.put("orderCoast", basketInfoService.orderCoast(user));
-        model.put("countOrders", orderService.orderCount());
+        model.put("count", infoService.countAdminActivity());
         return "basket";
     }
     @GetMapping("{product}")

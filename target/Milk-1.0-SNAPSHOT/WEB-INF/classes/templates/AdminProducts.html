@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>MILKLAB</title>
+    <link href="/css/bootstrap-formhelpers.min.css" rel="stylesheet" media="screen">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+    <script src="https://kit.fontawesome.com/792b3c2763.js" crossorigin="anonymous"></script>
+    <script src="/js/bootstrap-formhelpers.min.js"></script>
+</head>
+<body>
+<header>
+    <nav class="navbar navbar-expand-md navbar-light sticky-top bg-light">
+        <a href="/" class="navbar-brand">MILKLAB for admins</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarResponsive">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a href="AdminProducts" class="nav-link active">Товары <span th:if="${countStopProducts}" class="badge badge-dark badge-pill" th:text="${countStopProducts}"></span></a>
+                </li>
+                <li class="nav-item">
+                    <a href="AdminCarousels" class="nav-link">Карусель</a>
+                </li>
+                <li class="nav-item">
+                    <a href="AdminOrders" class="nav-link">Заказы <span th:if="${countNotActiveOrders}" class="badge badge-dark badge-pill" th:text="${countNotActiveOrders}"></span></a>
+                </li>
+                <li class="nav-item">
+                    <a href="AdminAccounts" class="nav-link">Клиенты <span th:if="${countNotActiveUsers}" class="badge badge-dark badge-pill" th:text="${countNotActiveUsers}"></span></a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+</header>
+<div class="jumbotron pt-3 pb-3 m-0 sticky-top">
+    <h1 class="display-4">Товар <span th:if="${title}">/ <span th:text="${title}"></span></span></h1>
+    <div class="row">
+        <button type="button" class="btn btn-primary m-1" data-toggle="modal" data-target="#findProduct">
+            Найти продукт
+        </button>
+        <form th:action="@{/AdminProducts/findActive}" method="post">
+            <button type="submit" class="btn btn-primary m-1">Товары в наличии</button>
+        </form>
+        <form th:action="@{/AdminProducts/findStop}" method="post">
+            <button type="submit" class="btn btn-primary m-1">Товары в стопе <span th:if="${countStopProducts}" class="badge badge-light badge-pill" th:text="${countStopProducts}"></span></button>
+        </form>
+        <button type="button" class="btn btn-primary m-1" data-toggle="modal" data-target="#newProduct">
+            Добавить продукт
+        </button>
+        <button type="button" class="btn btn-primary m-1" data-toggle="modal" data-target="#group">
+            Группы товаров
+        </button>
+        <a href="AdminProducts" class="btn btn-secondary m-1" role="button" aria-pressed="true">Полный список</a>
+    </div>
+</div>
+<div class="table-responsive">
+    <table class="table table-hover">
+        <thead class="text-center">
+        <tr>
+            <th>ID</th>
+            <th>Название</th>
+            <th>Цена</th>
+            <th>Состояние</th>
+            <th>Действия</th>
+        </tr>
+    </thead>
+    <tbody class="text-center">
+        <tr th:each="product : ${products}">
+        <td th:text="${product.id}"></td>
+        <td th:text="${product.prodName}"></td>
+        <td th:text="${product.prodCoast}"></td>
+        <td>
+            <div th:switch="${product.status}">
+                <p th:case="${product.status.ACTIVE}">В наличии</p>
+                <p th:case="${product.status.STOP}">В стопе</p>
+            </div>
+        </td>
+        <td>
+            <a class="btn btn-primary btn-block mb-2" th:href="@{/AdminProducts/{product.id}(product.id=${product.id})}">Изменить</a>
+            <div class="pb-2" th:switch="${product.status}">
+                <a th:case="${product.status.ACTIVE}" class="btn btn-dark btn-block" th:href="@{/AdminProducts/close/{product.id}(product.id=${product.id})}">В стоп</a>
+                <a th:case="${product.status.STOP}" class="btn btn-dark btn-block" th:href="@{/AdminProducts/open/{product.id}(product.id=${product.id})}">Вернуть в наличие</a>
+            </div>
+            <form th:action="@{/AdminProducts/deleteProduct/{product.id}(product.id=${product.id})}" method="post">
+                <button type="submit" class="btn btn-danger btn-block">Удалить</button>
+            </form>
+        </td>
+        </tr>
+    </tbody>
+    </table>
+</div>
+
+<!-- ModuleFind -->
+<form th:action="@{/AdminProducts/filterProducts}" method="post">
+    <div class="modal fade" id="findProduct" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+        <div class="modal-dialog" role="dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="staticBackdropLabel">Найти продукт</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">ID</span>
+                        </div>
+                        <input type="text" name="id" class="form-control" aria-label="findId" aria-describedby="findId">
+                        <div class="input-group-append">
+                            <button class="btn btn-primary" type="submit" id="findId">Найти</button>
+                        </div>
+                    </div>
+                    <div class="input-group pt-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">Группа</span>
+                        </div>
+                            <select class="custom-select" name="groupId" aria-describedby="findGroup">
+                                <option value="" selected>Не выбрано</option>
+                                <option value="0">Без группы</option>
+                                <div th:each="group : ${groups}">
+                                    <option th:value="${group.id}" th:text="${group.prodGroup}"></option>
+                                </div>
+                            </select>
+                        <div class="input-group-append">
+                            <button class="btn btn-primary" type="submit" id="findGroup">Найти</button>
+                        </div>
+                    </div>
+                    <div class="input-group pt-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">Название</span>
+                        </div>
+                        <input type="text" name="prodName" class="form-control" aria-label="findName" aria-describedby="findName">
+                        <div class="input-group-append">
+                            <button class="btn btn-primary" type="submit" id="findName">Найти</button>
+                        </div>
+                    </div>
+                    <div class="input-group pt-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">Цена</span>
+                    </div>
+                    <input type="number" name="prodCoast" class="form-control" aria-label="Coast">
+                        <div class="input-group-append">
+                            <button class="btn btn-primary" type="submit" id="findCoast">Найти</button>
+                        </div>
+                </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+<!-- ModuleNew -->
+<form th:action="@{/AdminProducts/newProduct}" method="post" enctype="multipart/form-data">
+    <div class="modal fade" id="newProduct" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel1" aria-hidden="true">
+        <div class="modal-dialog" role="dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="staticBackdropLabel1">Добавить продукт</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">Название</span>
+                        </div>
+                        <input type="text" name="prodName" class="form-control" aria-label="Name" required>
+                    </div>
+                    <div class="input-group pt-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">Описание</span>
+                        </div>
+                        <textarea type="text" name="prodInfo" class="form-control" aria-label="Info" required></textarea>
+                    </div>
+                    <div class="input-group pt-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">Группа</span>
+                        </div>
+                        <select class="custom-select" name="groupId" id="staticGroup" aria-describedby="findGroup">
+                            <option value="" selected>Без группы</option>
+                            <div th:each="group : ${groups}">
+                                <option th:value="${group.id}" th:text="${group.prodGroup}"></option>
+                            </div>
+                        </select>
+                    </div>
+                    <div class="input-group pt-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">Цена</span>
+                        </div>
+                        <input type="number" name="prodCoast" class="form-control" aria-label="Coast" required>
+                        <div class="input-group-append">
+                            <span class="input-group-text">Руб./шт.</span>
+                        </div>
+                    </div>
+                    <div class="input-group pt-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">Превью</span>
+                        </div>
+                        <div class="custom-file">
+                            <input type="file" class="custom-file-input" name="prodImg" id="inputImg" required>
+                            <label class="custom-file-label" for="inputImg" data-browse="Выбирите">Фаил...</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="submit" class="btn btn-primary btn-block">Сохранить</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</form>
+
+
+<!-- ModuleGroup -->
+<div class="modal fade" id="group" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel3" aria-hidden="true">
+    <div class="modal-dialog" role="dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="staticBackdropLabel3">Группы товаров</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="table-responsive">
+                    <table class="table table-hover">
+                        <thead class="text-center">
+                        <tr>
+                            <th>ID</th>
+                            <th>Группа</th>
+                            <th>Действия</th>
+                        </tr>
+                        </thead>
+                        <tbody class="text-center">
+                        <tr th:each="group : ${groups}">
+                            <td th:text="${group.id}"></td>
+                            <td th:text="${group.prodGroup}"></td>
+                            <td>
+                                <form th:action="@{/AdminProducts/deleteProductGroup/{productGroup.id}(productGroup.id=${group.id})}" method="post">
+                                    <button type="submit" class="btn btn-danger btn-block">Удалить</button>
+                                </form>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-outline-secondary btn-block" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+                    Добавить группу
+                </button>
+                <form th:action="@{/AdminProducts/newGroup}" method="post">
+                    <div class="collapse" id="collapseExample">
+                        <div class="modal-body">
+                            <div class="input-group">
+                                <div class="input-group-prepend">
+                                    <span class="input-group-text">Название</span>
+                                </div>
+                                <input type="text" name="prodGroup" class="form-control" aria-label="Name" required>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" class="btn btn-primary btn-block">Сохранить</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

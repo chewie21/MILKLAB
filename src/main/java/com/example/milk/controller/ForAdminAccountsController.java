@@ -2,6 +2,7 @@ package com.example.milk.controller;
 
 import com.example.milk.domain.User;
 import com.example.milk.service.OrderService;
+import com.example.milk.service.ProductService;
 import com.example.milk.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -20,11 +21,16 @@ public class ForAdminAccountsController {
     private UserService userService;
     @Autowired
     private OrderService orderService;
+    @Autowired
+    private ProductService productService;
 
     @GetMapping
     public String ShowUsers(Map<String, Object> model) {
         model.putIfAbsent("users", userService.findAll());
-        model.put("count", orderService.orderCount());
+        model.put("countNotActiveOrders", orderService.countActiveOrders());
+        model.put("countNotActiveUsers", userService.countNotActiveUsers());
+        model.put("countStopProducts", productService.countStopProducts());
+        model.putIfAbsent("title", null);
         return "AdminAccounts";
     }
     @GetMapping("{user}")
@@ -67,29 +73,41 @@ public class ForAdminAccountsController {
                                   @RequestParam String username,
                                   @RequestParam String email,
                                   @RequestParam String date,
+                                  @RequestParam String role,
                                   RedirectAttributes attr) {
         if (id != null){
             attr.addFlashAttribute("users", userService.findAllById(id));
+            attr.addFlashAttribute("title", "id:" + id);
             return "redirect:/AdminAccounts";
         }
         else if (!name.equals("")) {
             attr.addFlashAttribute("users", userService.findAllByName(name));
+            attr.addFlashAttribute("title", "Имя:" + name);
             return "redirect:/AdminAccounts";
         }
         else if (!surname.equals("")) {
             attr.addFlashAttribute("users", userService.findAllBySurname(surname));
+            attr.addFlashAttribute("title", "Фамилия:" + surname);
             return "redirect:/AdminAccounts";
         }
         else if (!username.equals("+7 ")) {
             attr.addFlashAttribute("users", userService.findAllByUsername(username));
+            attr.addFlashAttribute("title", "Телефон:" + username);
             return "redirect:/AdminAccounts";
         }
         else if (!email.equals("")) {
             attr.addFlashAttribute("users", userService.findAllByEmail(email));
+            attr.addFlashAttribute("title", "Email:" + email);
             return "redirect:/AdminAccounts";
         }
         else if (!date.equals("")) {
             attr.addFlashAttribute("users", userService.findAllByDate(date));
+            attr.addFlashAttribute("title", "Дата:" + date);
+            return "redirect:/AdminAccounts";
+        }
+        else if (!role.equals("")) {
+            attr.addFlashAttribute("users", userService.findAllByRole(role));
+            attr.addFlashAttribute("title", role);
             return "redirect:/AdminAccounts";
         }
         else {
@@ -104,8 +122,25 @@ public class ForAdminAccountsController {
         return "redirect:/AdminAccounts";
     }
     @PostMapping("/blockAccount/{user}")
-    public String deleteAccount (@PathVariable User user) {
+    public String blockAccount (@PathVariable User user) {
         userService.blockAccount(user);
+        return "redirect:/AdminAccounts";
+    }
+    @PostMapping("/activeAccount/{user}")
+    public String activeAccount (@PathVariable User user) {
+        userService.activeAccount(user);
+        return "redirect:/AdminAccounts";
+    }
+    @PostMapping("/findActive")
+    public String findActiveAccounts (RedirectAttributes attr) {
+        attr.addFlashAttribute("users", userService.findByActive());
+        attr.addFlashAttribute("title", "Активные");
+        return "redirect:/AdminAccounts";
+    }
+    @PostMapping("/findNotActive")
+    public String findNotActiveAccounts (RedirectAttributes attr) {
+        attr.addFlashAttribute("users", userService.findByNotActive());
+        attr.addFlashAttribute("title", "Заблокированные");
         return "redirect:/AdminAccounts";
     }
 }

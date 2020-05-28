@@ -22,7 +22,7 @@ public interface ProductRepo extends CrudRepository <Product, Long> {
 
    @Query(nativeQuery = true,
            value = "select count(*) from m_product where status='STOP'")
-   String stopProductCount();
+   String countStopProducts();
 
    @Query(nativeQuery = true,
            value = "select * from m_product where status='ACTIVE'")

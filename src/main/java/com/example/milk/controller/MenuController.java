@@ -18,9 +18,9 @@ public class MenuController {
     @Autowired
     BasketInfoService basketInfoService;
     @Autowired
-    OrderService orderService;
-    @Autowired
     ProductGroupService productGroupService;
+    @Autowired
+    private InfoService infoService;
 
     @GetMapping
     public String showMenu(@AuthenticationPrincipal User user,
@@ -29,7 +29,9 @@ public class MenuController {
         model.put("carousels", carouselService.findAll());
         model.put("groups", productGroupService.findProductGroupByActive());
         model.put("countProducts", basketInfoService.countProduct(user));
-        model.put("countOrders", orderService.orderCount());
+        if (user != null) {
+            model.put("count", infoService.countAdminActivity());
+        }
         return "menu";
     }
 }

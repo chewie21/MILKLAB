@@ -5,11 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>MILKLAB</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <link href="css/bootstrap-formhelpers.min.css" rel="stylesheet" media="screen">
-    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+    <script src="https://kit.fontawesome.com/792b3c2763.js" crossorigin="anonymous"></script>
     <script src="js/bootstrap-formhelpers.min.js"></script>
 </head>
 <body>
@@ -22,27 +23,33 @@
         <div class="collapse navbar-collapse" id="navbarResponsive">
             <ul class="navbar-nav ml-auto">
                 <li class="nav-item">
-                    <a href="AdminProducts" class="nav-link">Товары</a>
+                    <a href="AdminProducts" class="nav-link">Товары <span th:if="${countStopProducts}" class="badge badge-dark badge-pill" th:text="${countStopProducts}"></span></a>
                 </li>
                 <li class="nav-item">
                     <a href="AdminCarousels" class="nav-link">Карусель</a>
                 </li>
                 <li class="nav-item">
-                    <a href="AdminOrders" class="nav-link">Заказы <span th:if="${count}" class="badge badge-dark badge-pill" th:text="${count}"></span></a>
+                    <a href="AdminOrders" class="nav-link">Заказы <span th:if="${countNotActiveOrders}" class="badge badge-dark badge-pill" th:text="${countNotActiveOrders}"></span></a>
                 </li>
                 <li class="nav-item">
-                    <a href="AdminAccounts" class="nav-link active">Клиенты</a>
+                    <a href="AdminAccounts" class="nav-link active">Клиенты <span th:if="${countNotActiveUsers}" class="badge badge-dark badge-pill" th:text="${countNotActiveUsers}"></span></a>
                 </li>
             </ul>
         </div>
     </nav>
 </header>
     <div class="jumbotron pt-3 pb-3 m-0 sticky-top">
-        <h1 class="display-4">Клиенты</h1>
+        <h1 class="display-4">Клиенты <span th:if="${title}">/ <span th:text="${title}"></span></span></h1>
         <div class="row">
             <button type="button" class="btn btn-primary m-1" data-toggle="modal" data-target="#findAccount">
                 Найти клиента
             </button>
+            <form th:action="@{/AdminAccounts/findActive}" method="post">
+                <button  type="submit" class="btn btn-primary m-1">Активные клиенты</button>
+            </form>
+            <form th:action="@{/AdminAccounts/findNotActive}" method="post">
+                <button  type="submit" class="btn btn-primary m-1">Заблокированные <span th:if="${countNotActiveUsers}" class="badge badge-light badge-pill" th:text="${countNotActiveUsers}"></span></button>
+            </form>
             <button type="button" class="btn btn-primary m-1" data-toggle="modal" data-target="#newAccount">
                 Добавить клиента
             </button>
@@ -70,10 +77,18 @@
             <td th:text="${user.username}"></td>
             <td th:text="${user.email}"></td>
             <td th:text="${user.date}"></td>
-            <td><a class="btn btn-primary btn-block mb-2" th:href="@{/AdminAccounts/{user.id}(user.id=${user.id})}">Изменить</a>
-                <form th:action="@{/AdminAccounts/blockAccount/{user.id}(user.id=${user.id})}" method="post">
-                    <button type="submit" class="btn btn-danger btn-block">Заблокировать</button>
-                </form>
+            <td>
+                <a class="btn btn-primary btn-block mb-2" th:href="@{/AdminAccounts/{user.id}(user.id=${user.id})}">Изменить</a>
+                <div th:if="${user.isActive()}">
+                    <form th:action="@{/AdminAccounts/blockAccount/{user.id}(user.id=${user.id})}" method="post">
+                        <button type="submit" class="btn btn-dark btn-block">Заблокировать</button>
+                    </form>
+                </div>
+                <div th:unless="${user.isActive()}">
+                    <form th:action="@{/AdminAccounts/activeAccount/{user.id}(user.id=${user.id})}" method="post">
+                        <button type="submit" class="btn btn-dark btn-block">Разблокировать</button>
+                    </form>
+                </div>
             </td>
         </tr>
         </tbody>
@@ -146,6 +161,19 @@
                         <button class="btn btn-primary" type="submit" id="findDate">Найти</button>
                     </div>
                 </div>
+                <div class="input-group pt-3">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text">Доступ</span>
+                    </div>
+                    <select class="custom-select" name="role" aria-describedby="findDate">
+                        <option selected value="">Не выбранно</option>
+                        <option value="ADMIN">Админ</option>
+                        <option value="USER">Пользователь</option>
+                    </select>
+                    <div class="input-group-append">
+                        <button class="btn btn-primary" type="submit" id="findRole">Найти</button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -164,7 +192,7 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <div class="input-group pt-3">
+                    <div class="input-group">
                         <div class="input-group-prepend">
                             <span class="input-group-text">Имя</span>
                         </div>

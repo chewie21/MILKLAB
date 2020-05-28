@@ -1,12 +1,7 @@
 package com.example.milk.controller;
 
-import com.example.milk.domain.Order;
-import com.example.milk.domain.Product;
-import com.example.milk.domain.Group;
-import com.example.milk.domain.ProductStatusEnum;
-import com.example.milk.service.OrderService;
-import com.example.milk.service.GroupService;
-import com.example.milk.service.ProductService;
+import com.example.milk.domain.*;
+import com.example.milk.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -29,19 +24,27 @@ public class ForAdminsProductsController {
     private GroupService groupService;
     @Autowired
     private OrderService orderService;
+    @Autowired
+    private ProductGroupService productGroupService;
+    @Autowired
+    private UserService userService;
+
 
     @GetMapping
     public String ShowProduct(Map<String, Object> model) {
         model.putIfAbsent("products", productService.findAll());
         model.put("groups", groupService.findAllGroup());
-        model.put("count", orderService.orderCount());
-        model.put("stopProductCount", productService.stopProductCount());
+        model.put("countNotActiveOrders", orderService.countActiveOrders());
+        model.put("countNotActiveUsers", userService.countNotActiveUsers());
+        model.put("countStopProducts", productService.countStopProducts());
+        model.putIfAbsent("title", null);
         return "AdminProducts";
     }
 
     @GetMapping("{product}")
     public String EditProduct (@PathVariable Product product, Model model) {
         model.addAttribute("product", product);
+        model.addAttribute("productGroup", productGroupService.findByProductId(product));
         model.addAttribute("groups", groupService.findAllGroup());
         return "AdminProductsEdit";
     }
@@ -76,27 +79,46 @@ public class ForAdminsProductsController {
                                  RedirectAttributes attr) {
         if (id != null) {
             attr.addFlashAttribute("products", productService.findAllById(id));
+            attr.addFlashAttribute("title", "id:" + id);
             return "redirect:/AdminProducts";
         }
         else if (!prodName.equals("")) {
             attr.addFlashAttribute("products", productService.findAllByName(prodName));
+            attr.addFlashAttribute("title", prodName);
             return "redirect:/AdminProducts";
         }
         else if (groupId != null) {
             if (groupId != 0) {
                 attr.addFlashAttribute("products", productService.findAllByGroup(groupId));
+                ProductGroup productGroup = productGroupService.findByGroupId(groupId);
+                attr.addFlashAttribute("title", productGroup.getProductGroup().getProdGroup());
                 return "redirect:/AdminProducts";
             }
             attr.addFlashAttribute("products", productService.findAllByGroupNot());
+            attr.addFlashAttribute("title", "Без группы");
             return "redirect:/AdminProducts";
         }
         else if (prodCoast != null) {
             attr.addFlashAttribute("products", productService.findAllByCoast(prodCoast));
+            attr.addFlashAttribute("title", "Цена" + prodCoast);
             return "redirect:/AdminProducts";
         }
         else {
             return "redirect:/AdminProducts";
         }
+    }
+    @PostMapping("/findActive")
+    public String showActiveProducts (RedirectAttributes attr) {
+        attr.addFlashAttribute("products", productService.findAllByStatusActive());
+        attr.addFlashAttribute("title", "В наличии");
+        return "redirect:/AdminProducts";
+    }
+
+    @PostMapping("/findStop")
+    public String showStopProducts (RedirectAttributes attr) {
+        attr.addFlashAttribute("products", productService.findAllByStatusStop());
+        attr.addFlashAttribute("title", "В стопе");
+        return "redirect:/AdminProducts";
     }
     @PostMapping("/deleteProduct/{product}")
     public String deleteProduct (@PathVariable Product product) {
@@ -129,18 +151,6 @@ public class ForAdminsProductsController {
                                 ProductStatusEnum status) {
         status = ProductStatusEnum.ACTIVE;
         productService.saveProductStatus(product, status);
-        return "redirect:/AdminProducts";
-    }
-
-    @PostMapping("/findActive")
-    public String showActiveProducts (RedirectAttributes attr) {
-        attr.addFlashAttribute("products", productService.findAllByStatusActive());
-        return "redirect:/AdminProducts";
-    }
-
-    @PostMapping("/findStop")
-    public String showStopProducts (RedirectAttributes attr) {
-        attr.addFlashAttribute("products", productService.findAllByStatusStop());
         return "redirect:/AdminProducts";
     }
 }

@@ -21,10 +21,10 @@ public interface OrderRepo extends CrudRepository <Order, Long> {
 
     @Query(nativeQuery = true,
             value = "select count(*) from m_order where active = true")
-    String countOrders ();
+    String countActiveOrders ();
 
     @Query(nativeQuery = true,
-            value = "SELECT * FROM m_order where user_id =:user and id = (select max(id) from m_order)")
+            value = "SELECT * FROM m_order where user_id =:user and id = (select max(id) from m_order where user_id =:user)")
     Order lastOrder (@Param("user") Long user);
 
     @Query(nativeQuery = true,

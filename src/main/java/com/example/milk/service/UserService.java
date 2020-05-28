@@ -19,10 +19,8 @@ public class UserService implements UserDetailsService {
 
     @Autowired
     private UserRepo userRepo;
-
     @Autowired
     private PasswordEncoder passwordEncoder;
-
     @Autowired
     private BasketRepo basketRepo;
 
@@ -31,6 +29,10 @@ public class UserService implements UserDetailsService {
         return userRepo.findByUsername(username);
     }
 
+    //Count
+    public String countNotActiveUsers () {
+        return userRepo.countNotActiveUser().equals("0") ? null : userRepo.countNotActiveUser();
+    }
 
     //EditUser
     public boolean registration(User user) {
@@ -47,7 +49,11 @@ public class UserService implements UserDetailsService {
     }
     public void newAccount (User user) {
             user.setActive(true);
-            user.setUserRoles(Collections.singleton(UserRolesEnum.USER));
+            if (userRepo.countFirstUser().equals("0")) {
+                user.setUserRoles(Collections.singleton(UserRolesEnum.ADMIN));
+            } else {
+                user.setUserRoles(Collections.singleton(UserRolesEnum.USER));
+            }
             user.setPassword(passwordEncoder.encode(user.getPassword()));
             userRepo.save(user);
     }
@@ -58,11 +64,9 @@ public class UserService implements UserDetailsService {
         user.setActive(false);
         userRepo.save(user);
     }
-    public User checkAccountUsername (User user) {
-        return userRepo.findByUsername(user.getUsername());
-    }
-    public User checkAccountEmail (User user) {
-        return userRepo.findByEmail(user.getEmail());
+    public void activeAccount(User user) {
+        user.setActive(true);
+        userRepo.save(user);
     }
     public void saveAccount(User user, String name, String surname, String date) {
             user.setName(name);
@@ -84,6 +88,34 @@ public class UserService implements UserDetailsService {
                 user.getUserRoles().add(UserRolesEnum.USER);
             }
         }
+    }
+
+    //FindUser
+    public List<User> findAll() { return userRepo.findAll(); }
+    public List<User> findAllByName(String name) { return userRepo.findAllByName(name); }
+    public List<User> findAllById(Long id) {
+        return userRepo.findAllById(id);
+    }
+    public List<User> findAllBySurname(String surname) {
+        return userRepo.findAllBySurname(surname);
+    }
+    public List<User> findAllByUsername(String username) {
+        return userRepo.findAllByUsername(username);
+    }
+    public List<User> findAllByEmail (String email) {
+        return userRepo.findAllByEmail(email);
+    }
+    public List<User> findAllByDate (String date) { return userRepo.findAllByDate(date); }
+    public List<User> findByActive() { return userRepo.findAllByActive(true); }
+    public List<User> findByNotActive() { return userRepo.findAllByActive(false); }
+    public List<User> findAllByRole(String role) { return userRepo.findAllByRole(role);}
+
+    //Check
+    public User checkAccountUsername (User user) {
+        return userRepo.findByUsername(user.getUsername());
+    }
+    public User checkAccountEmail (User user) {
+        return userRepo.findByEmail(user.getEmail());
     }
     public boolean checkUsername (User user, String username) {
         if(user.getUsername().equals(username)) {
@@ -115,21 +147,5 @@ public class UserService implements UserDetailsService {
             }
         }
     }
-    //FindUser
-    public List<User> findAll() { return userRepo.findAll(); }
-    public List<User> findAllByName(String name) { return userRepo.findAllByName(name); }
-    public List<User> findAllById(Long id) {
-        return userRepo.findAllById(id);
-    }
-    public List<User> findAllBySurname(String surname) {
-        return userRepo.findAllBySurname(surname);
-    }
-    public List<User> findAllByUsername(String username) {
-        return userRepo.findAllByUsername(username);
-    }
-    public List<User> findAllByEmail (String email) {
-        return userRepo.findAllByEmail(email);
-    }
-    public List<User> findAllByDate (String date) { return userRepo.findAllByDate(date); }
 
 }

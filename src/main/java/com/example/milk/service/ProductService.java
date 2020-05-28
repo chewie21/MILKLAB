@@ -27,8 +27,8 @@ public class ProductService {
     @Autowired
     private GroupService groupService;
 
-    public String stopProductCount() {
-        return productRepo.stopProductCount().equals("0") ? null : productRepo.stopProductCount();
+    public String countStopProducts() {
+        return productRepo.countStopProducts().equals("0") ? null : productRepo.countStopProducts();
     }
     public List<Product> findAllByStatusActive() {
         return productRepo.findAllByStatusActive();
@@ -100,6 +100,5 @@ public class ProductService {
     public void deleteProduct(Product product) {
         productGroupService.deleteProductFromGroup(product.getId());
         productRepo.delete(product);
-
     }
 }

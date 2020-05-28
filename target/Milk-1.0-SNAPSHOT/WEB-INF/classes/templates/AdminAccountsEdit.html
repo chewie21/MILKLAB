@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>MILKLAB</title>
+    <link href="/css/bootstrap-formhelpers.min.css" rel="stylesheet" media="screen">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+    <script src="https://kit.fontawesome.com/792b3c2763.js" crossorigin="anonymous"></script>
+    <script src="/js/bootstrap-formhelpers.min.js"></script>
+</head>
+<body class="bg-light">
+    <div class="jumbotron bg-light">
+        <div th:if="${error}">
+            <div class="container fixed-top">
+                <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                    <text th:text="${error}"></text>
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <form class="form" th:action="@{/AdminAccounts}" method="post" style="width: 100%; max-width: 400px; padding: 15px; margin: auto; text-align: center;">
+            <input type="hidden" name="id" class="form-control text-primary" id="staticId" th:value="${user.id}"/>
+            <div class="pb-2">
+                <label for="staticName">Имя:</label>
+                <input type="text" name="name" class="form-control text-primary" id="staticName" th:value="${user.name}" required/>
+            </div>
+            <div class="pb-2">
+                <label for="staticSurname">Фамилия:</label>
+                <input type="text" name="surname" class="form-control text-primary" id="staticSurname" th:value="${user.surname}" required/>
+            </div>
+            <div class="pb-2">
+                <label for="staticEmail">Email:</label>
+                <input type="text" name="email" class="form-control text-primary" id="staticEmail" th:value="${user.email}" required/>
+            </div>
+            <div class="pb-2">
+                <label for="staticDate">День рождения:</label>
+                <input type="date" name="date" class="form-control text-primary" id="staticDate" th:value="${user.date}" value="01.08.1998" required/>
+            </div>
+            <div class="pb-2">
+                <label for="staticUsername">Номер телефона:</label>
+                <input type="text" name="username" class="form-control bfh-phone text-primary" data-country="RU" id="staticUsername" th:value="${user.username}" required/>
+            </div>
+            <div class="pb-2">
+                <label for="staticRole">Право доступа:</label>
+                <select class="custom-select text-primary" name="role" id="staticRole">
+                    <option selected th:value="${user.role}" th:text="${user.role}"></option>
+                    <option value="ADMIN">Админ</option>
+                    <option value="USER">Пользователь</option>
+                </select>
+            </div>
+            <div class="pb-4">
+                <label for="staticPassword">Новый пароль:</label>
+                <input type="text" name="password" class="form-control text-primary" id="staticPassword">
+            </div>
+            <button type="submit" class="btn btn-primary btn-block">Сохранить</button>
+        </form>
+    </div>
+</body>
+</html>

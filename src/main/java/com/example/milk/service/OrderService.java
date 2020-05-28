@@ -33,8 +33,8 @@ public class OrderService {
     public String countUserOrders (Long userId) {
         return orderRepo.countUserOrders(userId).equals("0") ? null : orderRepo.countUserOrders(userId);
     }
-    public String orderCount () {
-        return orderRepo.countOrders().equals("0") ? null : orderRepo.countOrders();
+    public String countActiveOrders () {
+        return orderRepo.countActiveOrders().equals("0") ? null : orderRepo.countActiveOrders();
     }
     public String dateFormat () {
         Date nowDate = new Date();

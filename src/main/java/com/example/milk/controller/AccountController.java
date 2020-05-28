@@ -3,6 +3,7 @@ package com.example.milk.controller;
 import com.example.milk.domain.Order;
 import com.example.milk.domain.User;
 import com.example.milk.repos.UserRepo;
+import com.example.milk.service.InfoService;
 import com.example.milk.service.OrderInfoService;
 import com.example.milk.service.OrderService;
 import com.example.milk.service.UserService;
@@ -24,17 +25,19 @@ public class AccountController {
     private OrderService orderService;
     @Autowired
     private OrderInfoService orderInfoService;
+    @Autowired
+    private InfoService infoService;
 
     @GetMapping
     public String ShowAccount (@AuthenticationPrincipal User user, Model model) {
         model.addAttribute("user", user);
-        model.addAttribute("countOrders", orderService.orderCount());
         model.addAttribute("active", orderService.findByTrueActive(user, true) );
         model.addAttribute("notActive", orderService.findByFalseActive(user, false));
         model.addAttribute("lastOrder", orderService.lastOrder(user.getId()));
         model.addAttribute("activeOrders", orderService.countUserActiveOrders(user.getId()));
-        model.addAttribute("notActiveOrders", orderService.countUserNotActiveOrders(user.getId()));
+        model.addAttribute("countNotActiveUsers", userService.countNotActiveUsers());
         model.addAttribute("userOrders", orderService.countUserOrders(user.getId()));
+        model.addAttribute("count", infoService.countAdminActivity());
         return "account";
     }
     @GetMapping("edit")

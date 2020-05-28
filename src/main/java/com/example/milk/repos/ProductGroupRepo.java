@@ -10,6 +10,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 public interface ProductGroupRepo extends CrudRepository <ProductGroup, Long> {
+    ProductGroup findByProductId (Long productId);
+    ProductGroup findByProductGroupId (Long groupId);
 
     @Query(nativeQuery = true,
             value = "select * from m_group_products join m_product mp on m_group_products.product_id = mp.id where status='ACTIVE'")
