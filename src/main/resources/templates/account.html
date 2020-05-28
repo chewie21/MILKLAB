@@ -135,8 +135,8 @@
                         <h4 class="d-flex justify-content-between align-items-center mb-3">
                             <span class="text-muted">Активные заказы</span>
                         </h4>
-                        <div class="list-group mb-3" th:each="a : ${active}">
-                            <a class="list-group-item d-flex justify-content-between lh-condensed list-group-item-action" th:href="@{/account/orderInfo/{order.id}(order.id=${a.id})}" >
+                        <div class="list-productGroup mb-3" th:each="a : ${active}">
+                            <a class="list-productGroup-item d-flex justify-content-between lh-condensed list-productGroup-item-action" th:href="@{/account/orderInfo/{order.id}(order.id=${a.id})}" >
                                 <div>
                                     <h6 class="my-0">
                                         <p class="text-muted">Номер заказа: <text th:text="${a.id}"></text></p>
@@ -156,8 +156,8 @@
                         <h4 class="d-flex justify-content-between align-items-center mb-3">
                             <span class="text-muted">Последний заказ</span>
                         </h4>
-                        <div class="list-group mb-3">
-                            <a class="list-group-item d-flex justify-content-between lh-condensed list-group-item-action" th:href="@{/account/orderInfo/{order.id}(order.id=${lastOrder.id})}" >
+                        <div class="list-productGroup mb-3">
+                            <a class="list-productGroup-item d-flex justify-content-between lh-condensed list-productGroup-item-action" th:href="@{/account/orderInfo/{order.id}(order.id=${lastOrder.id})}" >
                                 <div>
                                     <h6 class="my-0">
                                         <p class="text-muted">Номер заказа: <text th:text="${lastOrder.id}"></text></p>
@@ -190,8 +190,8 @@
                 </button>
             </div>
             <div class="modal-body">
-                <div class="list-group" th:each="n :${notActive}">
-                    <a th:href="@{/account/orderInfo/{order.id}(order.id=${n.id})}" class="list-group-item list-group-item-action">
+                <div class="list-productGroup" th:each="n :${notActive}">
+                    <a th:href="@{/account/orderInfo/{order.id}(order.id=${n.id})}" class="list-productGroup-item list-productGroup-item-action">
                         <div class="d-flex w-100 justify-content-between">
                             <h5 class="mb-1">Номер заказа: <text th:text="${n.id}"></text></h5>
                             <span class="fas fa-check-double" style="color: #007bff"></span>

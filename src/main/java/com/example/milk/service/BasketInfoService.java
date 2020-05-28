@@ -45,4 +45,7 @@ public class BasketInfoService {
     public String countProduct (User user) {
         return user == null ? null : basketInfoRepo.countProducts(user.getId()).equals("0") ? null : basketInfoRepo.countProducts(user.getId());
     }
+    public void deleteProduct (Long productId) {
+        basketInfoRepo.deleteProduct(productId);
+    }
 }

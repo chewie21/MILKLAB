@@ -90,7 +90,7 @@ public class ForAdminsOrdersController {
     public String filterOrders (@RequestParam Long id,
                                 @RequestParam String username,
                                 @RequestParam String date,
-                                @RequestParam String orderCoast,
+                                @RequestParam Long orderCoast,
                                 RedirectAttributes attr) throws ParseException {
         if (id != null) {
             attr.addFlashAttribute("orders", orderService.findAllById(id));
@@ -111,7 +111,7 @@ public class ForAdminsOrdersController {
             attr.addFlashAttribute("title", "Дата:" + result);
             return "redirect:/AdminOrders";
         }
-        else if(!orderCoast.equals("")) {
+        else if(orderCoast != 0) {
             attr.addFlashAttribute("orders", orderService.findByOrderCoast(orderCoast));
             attr.addFlashAttribute("title", "Цена:" + orderCoast);
             return "redirect:/AdminOrders";

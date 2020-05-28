@@ -105,7 +105,7 @@ public class OrderService {
     public List<Order> findNotActiveOrder () {
         return orderRepo.findAllByActive(false);
     }
-    public List<Order> findByOrderCoast (String orderCoast) {
+    public List<Order> findByOrderCoast (Long orderCoast) {
         return orderRepo.findAllByOrderCoast(orderCoast);
     }
     public List<Order> findByDelivery () {

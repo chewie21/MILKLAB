@@ -10,6 +10,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.List;
 
 public interface OrderInfoRepo extends CrudRepository <OrderInfo, Long> {
+    List<OrderInfo> findByOrderId (Long orderId);
+
     @Modifying
     @Transactional
     @Query(nativeQuery = true,
@@ -26,8 +28,6 @@ public interface OrderInfoRepo extends CrudRepository <OrderInfo, Long> {
     @Query(nativeQuery = true,
             value = "SELECT id FROM m_order_products where order_id =:orderId")
     List<Long> orderInfoId (@Param("orderId") Long orderId);
-
-    List<OrderInfo> findByOrderId (Long orderId);
 
     @Transactional
     @Modifying

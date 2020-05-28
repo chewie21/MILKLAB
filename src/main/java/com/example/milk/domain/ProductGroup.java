@@ -1,50 +1,44 @@
 package com.example.milk.domain;
 
 import javax.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
-@Table(name = "m_group_products")
+@Table(name = "m_product_group")
 public class ProductGroup {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+    private String prodGroup;
 
-    @ManyToOne
-    @JoinColumn(name = "product_id")
-    private Product product;
-
-    @ManyToOne
-    @JoinColumn(name = "group_id")
-    private Group productGroup;
+    @OneToMany(fetch = FetchType.EAGER)
+    private List<Product> products = new ArrayList<>();
 
     public ProductGroup() {}
 
-    public ProductGroup(Group productGroup, Product product) {
-        this.productGroup = productGroup;
-        this.product = product;
+    public ProductGroup(String prodGroup) {
+        this.prodGroup = prodGroup;
     }
 
     public Long getId() {
         return id;
     }
-
     public void setId(Long id) {
         this.id = id;
     }
-
-    public Product getProduct() {
-        return product;
+    public String getProdGroup() {
+        return prodGroup;
+    }
+    public void setProdGroup(String prodGroup) {
+        this.prodGroup = prodGroup;
     }
 
-    public void setProduct(Product product) {
-        this.product = product;
+    public List<Product> getProducts() {
+        return products;
     }
 
-    public Group getProductGroup() {
-        return productGroup;
-    }
-
-    public void setProductGroup(Group productGroup) {
-        this.productGroup = productGroup;
+    public void setProducts(List<Product> products) {
+        this.products = products;
     }
 }

@@ -5,13 +5,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>MILKLAB</title>
-    <link href="/css/bootstrap-formhelpers.min.css" rel="stylesheet" media="screen">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <link href="css/bootstrap-formhelpers.min.css" rel="stylesheet" media="screen">
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
     <script src="https://kit.fontawesome.com/792b3c2763.js" crossorigin="anonymous"></script>
-    <script src="/js/bootstrap-formhelpers.min.js"></script>
+    <script src="js/bootstrap-formhelpers.min.js"></script>
 </head>
 <body>
 <header>
@@ -53,7 +53,7 @@
         <button type="button" class="btn btn-primary m-1" data-toggle="modal" data-target="#newProduct">
             Добавить продукт
         </button>
-        <button type="button" class="btn btn-primary m-1" data-toggle="modal" data-target="#group">
+        <button type="button" class="btn btn-primary m-1" data-toggle="modal" data-target="#productGroup">
             Группы товаров
         </button>
         <a href="AdminProducts" class="btn btn-secondary m-1" role="button" aria-pressed="true">Полный список</a>
@@ -64,6 +64,7 @@
         <thead class="text-center">
         <tr>
             <th>ID</th>
+            <th>Группа</th>
             <th>Название</th>
             <th>Цена</th>
             <th>Состояние</th>
@@ -73,6 +74,14 @@
     <tbody class="text-center">
         <tr th:each="product : ${products}">
         <td th:text="${product.id}"></td>
+        <td>
+            <div th:if="${product.productGroup}">
+                <p th:text="${product.productGroup.prodGroup}"></p>
+            </div>
+            <div th:unless="${product.productGroup}">
+                <p>Без группы</p>
+            </div>
+        </td>
         <td th:text="${product.prodName}"></td>
         <td th:text="${product.prodCoast}"></td>
         <td>
@@ -117,36 +126,36 @@
                             <button class="btn btn-primary" type="submit" id="findId">Найти</button>
                         </div>
                     </div>
-                    <div class="input-group pt-3">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text">Группа</span>
+                    <div class="input-productGroup pt-3">
+                        <div class="input-productGroup-prepend">
+                            <span class="input-productGroup-text">Группа</span>
                         </div>
                             <select class="custom-select" name="groupId" aria-describedby="findGroup">
                                 <option value="" selected>Не выбрано</option>
                                 <option value="0">Без группы</option>
-                                <div th:each="group : ${groups}">
-                                    <option th:value="${group.id}" th:text="${group.prodGroup}"></option>
+                                <div th:each="productGroup : ${groups}">
+                                    <option th:value="${productGroup.id}" th:text="${productGroup.prodGroup}"></option>
                                 </div>
                             </select>
-                        <div class="input-group-append">
+                        <div class="input-productGroup-append">
                             <button class="btn btn-primary" type="submit" id="findGroup">Найти</button>
                         </div>
                     </div>
-                    <div class="input-group pt-3">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text">Название</span>
+                    <div class="input-productGroup pt-3">
+                        <div class="input-productGroup-prepend">
+                            <span class="input-productGroup-text">Название</span>
                         </div>
                         <input type="text" name="prodName" class="form-control" aria-label="findName" aria-describedby="findName">
-                        <div class="input-group-append">
+                        <div class="input-productGroup-append">
                             <button class="btn btn-primary" type="submit" id="findName">Найти</button>
                         </div>
                     </div>
-                    <div class="input-group pt-3">
-                    <div class="input-group-prepend">
-                        <span class="input-group-text">Цена</span>
+                    <div class="input-productGroup pt-3">
+                    <div class="input-productGroup-prepend">
+                        <span class="input-productGroup-text">Цена</span>
                     </div>
                     <input type="number" name="prodCoast" class="form-control" aria-label="Coast">
-                        <div class="input-group-append">
+                        <div class="input-productGroup-append">
                             <button class="btn btn-primary" type="submit" id="findCoast">Найти</button>
                         </div>
                 </div>
@@ -169,41 +178,41 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <div class="input-group">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text">Название</span>
+                    <div class="input-productGroup">
+                        <div class="input-productGroup-prepend">
+                            <span class="input-productGroup-text">Название</span>
                         </div>
                         <input type="text" name="prodName" class="form-control" aria-label="Name" required>
                     </div>
-                    <div class="input-group pt-3">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text">Описание</span>
+                    <div class="input-productGroup pt-3">
+                        <div class="input-productGroup-prepend">
+                            <span class="input-productGroup-text">Описание</span>
                         </div>
                         <textarea type="text" name="prodInfo" class="form-control" aria-label="Info" required></textarea>
                     </div>
-                    <div class="input-group pt-3">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text">Группа</span>
+                    <div class="input-productGroup pt-3">
+                        <div class="input-productGroup-prepend">
+                            <span class="input-productGroup-text">Группа</span>
                         </div>
                         <select class="custom-select" name="groupId" id="staticGroup" aria-describedby="findGroup">
-                            <option value="" selected>Без группы</option>
-                            <div th:each="group : ${groups}">
-                                <option th:value="${group.id}" th:text="${group.prodGroup}"></option>
+                            <option value="0" selected>Без группы</option>
+                            <div th:each="productGroup : ${groups}">
+                                <option th:value="${productGroup.id}" th:text="${productGroup.prodGroup}"></option>
                             </div>
                         </select>
                     </div>
-                    <div class="input-group pt-3">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text">Цена</span>
+                    <div class="input-productGroup pt-3">
+                        <div class="input-productGroup-prepend">
+                            <span class="input-productGroup-text">Цена</span>
                         </div>
                         <input type="number" name="prodCoast" class="form-control" aria-label="Coast" required>
-                        <div class="input-group-append">
-                            <span class="input-group-text">Руб./шт.</span>
+                        <div class="input-productGroup-append">
+                            <span class="input-productGroup-text">Руб./шт.</span>
                         </div>
                     </div>
-                    <div class="input-group pt-3">
-                        <div class="input-group-prepend">
-                            <span class="input-group-text">Превью</span>
+                    <div class="input-productGroup pt-3">
+                        <div class="input-productGroup-prepend">
+                            <span class="input-productGroup-text">Превью</span>
                         </div>
                         <div class="custom-file">
                             <input type="file" class="custom-file-input" name="prodImg" id="inputImg" required>
@@ -221,7 +230,7 @@
 
 
 <!-- ModuleGroup -->
-<div class="modal fade" id="group" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel3" aria-hidden="true">
+<div class="modal fade" id="productGroup" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel3" aria-hidden="true">
     <div class="modal-dialog" role="dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -241,11 +250,11 @@
                         </tr>
                         </thead>
                         <tbody class="text-center">
-                        <tr th:each="group : ${groups}">
-                            <td th:text="${group.id}"></td>
-                            <td th:text="${group.prodGroup}"></td>
+                        <tr th:each="productGroup : ${groups}">
+                            <td th:text="${productGroup.id}"></td>
+                            <td th:text="${productGroup.prodGroup}"></td>
                             <td>
-                                <form th:action="@{/AdminProducts/deleteProductGroup/{productGroup.id}(productGroup.id=${group.id})}" method="post">
+                                <form th:action="@{/AdminProducts/deleteProductGroup/{productGroup.id}(productGroup.id=${productGroup.id})}" method="post">
                                     <button type="submit" class="btn btn-danger btn-block">Удалить</button>
                                 </form>
                             </td>
@@ -261,9 +270,9 @@
                 <form th:action="@{/AdminProducts/newGroup}" method="post">
                     <div class="collapse" id="collapseExample">
                         <div class="modal-body">
-                            <div class="input-group">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text">Название</span>
+                            <div class="input-productGroup">
+                                <div class="input-productGroup-prepend">
+                                    <span class="input-productGroup-text">Название</span>
                                 </div>
                                 <input type="text" name="prodGroup" class="form-control" aria-label="Name" required>
                             </div>

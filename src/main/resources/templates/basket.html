@@ -71,25 +71,25 @@
         <div class="container">
             <div th:if="${orderCoast}">
                 <div class="form-row col-md-7" th:each="basket : ${basketInfo}">
-                    <div class="form-group col-md-7">
+                    <div class="form-productGroup col-md-7">
                         <span th:text="${basket.product.prodName}"></span>
                     </div>
-                    <div class="form-group col-md-4 text-center">
+                    <div class="form-productGroup col-md-4 text-center">
                         <p> <text th:text="${basket.product.prodCoast}"></text>
                         Руб./шт.
                         </p>
                     </div>
-                    <div class="form-group col-md-auto align-items-center">
+                    <div class="form-productGroup col-md-auto align-items-center">
                         <a class="far fa-window-close" style="color: #ff0000" th:href="@{/basket/delete/{product.id}(product.id=${basket.product.id})}"></a>
                     </div>
                 </div>
                 <div class="form-row col-md-6">
-                    <div class="form-group col-md-12">
+                    <div class="form-productGroup col-md-12">
                         <hr>
                     </div>
                 </div>
                 <div class="form-row col-md-6 justify-content-end">
-                    <div class="form-group col-md-3">
+                    <div class="form-productGroup col-md-3">
                         <p class="text-center m-0">
                             Итог:
                             <text th:text="${orderCoast}"></text>
@@ -98,15 +98,15 @@
                     </div>
                 </div>
                 <div class="form-row col-md-6">
-                    <div class="form-group col-md-12">
+                    <div class="form-productGroup col-md-12">
                         <hr>
                     </div>
                 </div>
                 <div class="form-row col-md-6 justify-content-between">
-                    <div class="form-group col-md-4">
+                    <div class="form-productGroup col-md-4">
                         <a type="button" class="btn btn-block btn-outline-secondary" th:href="@{/menu}">Вернутся в меню</a>
                     </div>
-                    <div class="form-group col-md-4">
+                    <div class="form-productGroup col-md-4">
                         <button type="button" class="btn btn-primary btn-block" data-toggle="modal" data-target="#staticBackdrop">Оформить заказ</button>
                     </div>
                 </div>
@@ -144,15 +144,15 @@
                     <div class="tab-pane fade show active" id="delivery" role="tabpanel" aria-labelledby="delivery-tab">
                         <form th:action="@{/basket/saveOrderDelivery}" method="post">
                             <input type="hidden" name="orderCoast" th:value="${orderCoast}">
-                            <div class="input-group pt-3">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text">Адрес</span>
+                            <div class="input-productGroup pt-3">
+                                <div class="input-productGroup-prepend">
+                                    <span class="input-productGroup-text">Адрес</span>
                                 </div>
                                 <input type="text" class="form-control" placeholder="Улица, дом, квартира" name="address" aria-label="address" required>
                             </div>
-                            <div class="input-group pt-3">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text">Комментарий</span>
+                            <div class="input-productGroup pt-3">
+                                <div class="input-productGroup-prepend">
+                                    <span class="input-productGroup-text">Комментарий</span>
                                 </div>
                                 <input type="text" class="form-control" placeholder="Ваши пожелания" name="comment" aria-label="comment">
                             </div>
@@ -163,9 +163,9 @@
                     <div class="tab-pane fade" id="pickup" role="tabpanel" aria-labelledby="pickup-tab">
                         <form th:action="@{/basket/saveOrderPickup}" method="post">
                             <input type="hidden" name="orderCoast" th:value="${orderCoast}">
-                            <div class="input-group pt-3">
-                                <div class="input-group-prepend">
-                                    <span class="input-group-text">Комментарий</span>
+                            <div class="input-productGroup pt-3">
+                                <div class="input-productGroup-prepend">
+                                    <span class="input-productGroup-text">Комментарий</span>
                                 </div>
                                 <input type="text" class="form-control" placeholder="Ваши пожелания" name="comment" aria-label="comment">
                             </div>

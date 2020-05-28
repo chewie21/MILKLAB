@@ -89,7 +89,9 @@
                 <a class="navbar-brand m-0" href="menu"><i class="fas fa-chevron-up" style="color: #007bff"></i></a>
             </li>
             <li class="nav-item" th:each="group : ${groups}">
-                <a class="nav-link" th:href="@{'/menu#' + ${group.productGroup.id}}" th:text="${group.productGroup.prodGroup}"></a>
+                <div th:unless="${group.products.empty}">
+                    <a class="nav-link" th:href="@{'/menu#' + ${group.id}}" th:text="${group.prodGroup}"></a>
+                </div>
             </li>
             <li class="nav-item">
                 <div th:if="${user}">
@@ -111,22 +113,26 @@
 <div class="container">
     <div data-target="#navbarMenu" data-offset="0">
         <div th:each="group : ${groups}">
-            <h4 th:id="${group.productGroup.id}" class="text-muted" th:text="${group.productGroup.prodGroup}"></h4>
-            <div class="card-deck">
-                <div th:each="product : ${group.product}">
-                    <div class="card mt-3 mb-3" style="width: 250px; height: 450px; box-sizing: content-box">
-                        <img th:src="@{/img/{img}(img=${product.prodImg})}" style="height: 250px; width: 250px">
-                        <div class="card-body">
-                            <h5 class="card-title" th:text="${product.prodName}"></h5>
-                            <small class="card-text text-muted" th:text="${product.prodInfo}"></small>
-                        </div>
-                        <div class="card-footer bg-white">
-                            <div class="form-row justify-content-between">
-                                <div class="form-group m-0 align-self-center">
-                                    <p class="card-text"><text th:text="${product.prodCoast}"></text> Руб./шт.</p>
+            <div th:unless="${group.products.empty}">
+                <h4 th:id="${group.id}" class="text-muted" th:text="${group.prodGroup}"></h4>
+                <div class="card-deck">
+                    <div th:each="product : ${group.products}">
+                        <div th:if="${product.isActive()}">
+                            <div class="card mt-3 mb-3" style="width: 250px; height: 450px; box-sizing: content-box">
+                                <img th:src="@{/img/{img}(img=${product.prodImg})}" style="height: 250px; width: 250px">
+                                <div class="card-body">
+                                    <h5 class="card-title" th:text="${product.prodName}"></h5>
+                                    <small class="card-text text-muted" th:text="${product.prodInfo}"></small>
                                 </div>
-                                <div class="form-group m-0">
-                                    <a th:href="@{/basket/{product}(product=${product.id})}" type="button" class="btn btn-primary"><i class="fas fa-dolly-flatbed"></i></a>
+                                <div class="card-footer">
+                                    <div class="form-row justify-content-between">
+                                        <div class="form-group m-0 align-self-center">
+                                            <p class="card-text"><text th:text="${product.prodCoast}"></text> Руб./шт.</p>
+                                        </div>
+                                        <div class="form-group m-0">
+                                            <a th:href="@{/basket/{product}(product=${product.id})}" type="button" class="btn btn-primary"><i class="fas fa-dolly-flatbed"></i></a>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -136,6 +142,5 @@
         </div>
     </div>
 </div>
-<p class="text-muted text-center">©MILKLAB</p>
 </body>
 </html>

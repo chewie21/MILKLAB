@@ -1,31 +1,31 @@
 package com.example.milk.service;
 
-import com.example.milk.domain.Group;
+import com.example.milk.domain.ProductGroup;
 import com.example.milk.domain.Product;
 import com.example.milk.domain.ProductStatusEnum;
 import com.example.milk.repos.ProductRepo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+import java.util.Objects;
+import java.util.stream.Collectors;
 
 @Service
 public class ProductService {
 
     @Value("${upload.path}")
     private String uploadPath;
-
     @Autowired
     private ProductRepo productRepo;
     @Autowired
     private ProductGroupService productGroupService;
     @Autowired
-    private GroupService groupService;
+    private BasketInfoService basketInfoService;
 
     public String countStopProducts() {
         return productRepo.countStopProducts().equals("0") ? null : productRepo.countStopProducts();
@@ -48,22 +48,22 @@ public class ProductService {
             product.setProdImg(file.getOriginalFilename());
         }
         productRepo.save(product);
-        if (groupId != null) {
-            Group group = groupService.findById(groupId);
-            productGroupService.saveProductInGroup(group, product);
+        if (groupId != 0) {
+            productGroupService.SaveProductInGroup(groupId, product.getId());
         }
     }
     public void saveProduct(Product product, Long groupId, String prodName, String prodInfo, Long prodCoast, MultipartFile file) throws IOException {
         product.setProdName(prodName);
         product.setProdInfo(prodInfo);
         product.setProdCoast(prodCoast);
-        if (!productGroupService.checkProductInGroup(groupId, product.getId()).equals("1")) {
-            productGroupService.deleteProductFromGroup(product.getId());
-            Group group = groupService.findById(groupId);
-            productGroupService.saveProductInGroup(group, product);
-        }
         if (checkImg(file)) {
             product.setProdImg(file.getOriginalFilename());
+        }
+        if (!productGroupService.checkProductInGroup(groupId, product.getId())) {
+            productGroupService.deleteProductFromGroup(product.getId());
+            if (groupId != 0) {
+                productGroupService.SaveProductInGroup(groupId, product.getId());
+            }
         }
         productRepo.save(product);
     }
@@ -76,6 +76,11 @@ public class ProductService {
             file.transferTo(new File(uploadPath + "/" + file.getOriginalFilename()));
             return true;
         } else return false;
+    }
+    public void deleteProduct(Product product) {
+        productGroupService.deleteProductFromGroup(product.getId());
+        basketInfoService.deleteProduct(product.getId());
+        productRepo.delete(product);
     }
 
     //Find
@@ -92,13 +97,9 @@ public class ProductService {
         return productRepo.findAllByProdCoast(prodCoast);
     }
     public List<Product> findAllByGroup(Long groupId) {
-        return productRepo.findAllByProductGroup(groupId);
+        return productRepo.findAllByProductGroupId(groupId);
     }
     public List<Product> findAllByGroupNot() {
         return productRepo.findAllByProductNotGroup();
-    }
-    public void deleteProduct(Product product) {
-        productGroupService.deleteProductFromGroup(product.getId());
-        productRepo.delete(product);
     }
 }

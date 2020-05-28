@@ -10,13 +10,14 @@ import java.util.List;
 import java.util.Optional;
 
 public interface OrderRepo extends CrudRepository <Order, Long> {
-    List<Order> findAllByUserIdAndActive(Long userId, boolean active);
     Order findByUserIdAndStatus (Long user, OrderStatusEnum orderStatusEnum);
+
+    List<Order> findAllByUserIdAndActive(Long userId, boolean active);
     List<Order> findAllByActive (boolean active);
     List<Order> findAllById (Long id);
     List<Order> findAllByUserUsername (String username);
     List<Order> findAllByDate (String date);
-    List<Order> findAllByOrderCoast (String orderCoast);
+    List<Order> findAllByOrderCoast(Long orderCoast);
     List<Order> findAllByStatus (OrderStatusEnum status);
 
     @Query(nativeQuery = true,

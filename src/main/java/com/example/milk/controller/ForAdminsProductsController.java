@@ -21,11 +21,9 @@ public class ForAdminsProductsController {
     @Autowired
     private ProductService productService;
     @Autowired
-    private GroupService groupService;
+    private ProductGroupService productGroupService;
     @Autowired
     private OrderService orderService;
-    @Autowired
-    private ProductGroupService productGroupService;
     @Autowired
     private UserService userService;
 
@@ -33,7 +31,7 @@ public class ForAdminsProductsController {
     @GetMapping
     public String ShowProduct(Map<String, Object> model) {
         model.putIfAbsent("products", productService.findAll());
-        model.put("groups", groupService.findAllGroup());
+        model.put("groups", productGroupService.findAllGroup());
         model.put("countNotActiveOrders", orderService.countActiveOrders());
         model.put("countNotActiveUsers", userService.countNotActiveUsers());
         model.put("countStopProducts", productService.countStopProducts());
@@ -44,8 +42,7 @@ public class ForAdminsProductsController {
     @GetMapping("{product}")
     public String EditProduct (@PathVariable Product product, Model model) {
         model.addAttribute("product", product);
-        model.addAttribute("productGroup", productGroupService.findByProductId(product));
-        model.addAttribute("groups", groupService.findAllGroup());
+        model.addAttribute("groups", productGroupService.findAllGroup());
         return "AdminProductsEdit";
     }
 
@@ -90,8 +87,7 @@ public class ForAdminsProductsController {
         else if (groupId != null) {
             if (groupId != 0) {
                 attr.addFlashAttribute("products", productService.findAllByGroup(groupId));
-                ProductGroup productGroup = productGroupService.findByGroupId(groupId);
-                attr.addFlashAttribute("title", productGroup.getProductGroup().getProdGroup());
+                attr.addFlashAttribute("title", productGroupService.findById(groupId).getProdGroup());
                 return "redirect:/AdminProducts";
             }
             attr.addFlashAttribute("products", productService.findAllByGroupNot());
@@ -128,13 +124,13 @@ public class ForAdminsProductsController {
 
     @PostMapping("/newGroup")
     public String saveGroup (@RequestParam String prodGroup) {
-        groupService.SaveGroup(prodGroup);
+        productGroupService.SaveGroup(prodGroup);
         return "redirect:/AdminProducts";
     }
 
     @PostMapping("/deleteProductGroup/{productGroup}")
-    public String deleteProductGroup (@PathVariable Group productGroup) {
-        groupService.deleteGroup(productGroup);
+    public String deleteProductGroup (@PathVariable ProductGroup productGroup) {
+        productGroupService.deleteGroup(productGroup);
         return "redirect:/AdminProducts";
     }
 

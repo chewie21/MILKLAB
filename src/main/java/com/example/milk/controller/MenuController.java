@@ -18,16 +18,16 @@ public class MenuController {
     @Autowired
     BasketInfoService basketInfoService;
     @Autowired
-    ProductGroupService productGroupService;
-    @Autowired
     private InfoService infoService;
+    @Autowired
+    private ProductGroupService productGroupService;
 
     @GetMapping
     public String showMenu(@AuthenticationPrincipal User user,
                            Map<String, Object> model) {
         model.put("user", user);
         model.put("carousels", carouselService.findAll());
-        model.put("groups", productGroupService.findProductGroupByActive());
+        model.put("groups", productGroupService.findAllGroup());
         model.put("countProducts", basketInfoService.countProduct(user));
         if (user != null) {
             model.put("count", infoService.countAdminActivity());

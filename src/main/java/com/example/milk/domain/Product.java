@@ -2,7 +2,6 @@ package com.example.milk.domain;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.util.List;
 
 @Entity
 @Table(name = "m_product")
@@ -19,6 +18,9 @@ public class Product implements Serializable {
     @Enumerated(value = EnumType.STRING)
     private ProductStatusEnum status;
 
+    @ManyToOne
+    private ProductGroup productGroup;
+
     public Product() {}
 
     public Product(String prodName, String prodInfo, Long prodCoast, ProductStatusEnum status) {
@@ -31,6 +33,8 @@ public class Product implements Serializable {
     public Product(Long productId) {
         this.id = productId;
     }
+
+    public boolean isActive() { return status.equals(ProductStatusEnum.ACTIVE);}
 
     public Long getId() {
         return id;
@@ -78,5 +82,13 @@ public class Product implements Serializable {
 
     public void setStatus(ProductStatusEnum status) {
         this.status = status;
+    }
+
+    public ProductGroup getProductGroup() {
+        return productGroup;
+    }
+
+    public void setProductGroup(ProductGroup productGroup) {
+        this.productGroup = productGroup;
     }
 }

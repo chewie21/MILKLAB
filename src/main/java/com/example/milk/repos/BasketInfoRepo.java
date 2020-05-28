@@ -13,7 +13,6 @@ import java.util.List;
 
 public interface BasketInfoRepo extends CrudRepository <BasketInfo, Long> {
 
-    BasketInfo findByBasketId (Long basketId);
     List<BasketInfo> findAllByBasketId (Long basketId);
 
     @Query(nativeQuery = true,
@@ -34,5 +33,9 @@ public interface BasketInfoRepo extends CrudRepository <BasketInfo, Long> {
             value = "DELETE FROM m_basket_products WHERE product_id =:pid AND basket_id =:bid LIMIT 1")
     void deleteFromBasket (@Param("pid") Long productId, @Param("bid") Long basketId);
 
-
+    @Transactional
+    @Modifying
+    @Query(nativeQuery = true,
+            value = "DELETE FROM m_basket_products WHERE product_id =:productId")
+    void deleteProduct (@Param("productId") Long productId);
 }

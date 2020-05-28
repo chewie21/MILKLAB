@@ -25,11 +25,12 @@
                 <div class="card-text pb-2">
                     <label for="staticGroup">Группа</label>
                     <select class="custom-select text-primary" name="groupId" id="staticGroup" aria-describedby="findGroup">
-                        <div th:if="${productGroup}">
-                            <option class="active" th:value="${productGroup.productGroup.id}" th:text="${productGroup.productGroup.prodGroup}"></option>
+                        <div th:if="${product.productGroup}">
+                            <option class="active" th:value="${product.productGroup.id}" th:text="${product.productGroup.prodGroup}"></option>
                         </div>
-                        <div th:each="group : ${groups}">
-                            <option th:value="${group.id}" th:text="${group.prodGroup}"></option>
+                        <option value="0">Без группы</option>
+                        <div th:each="productGroup : ${groups}">
+                            <option th:value="${productGroup.id}" th:text="${productGroup.prodGroup}"></option>
                         </div>
                     </select>
                 </div>

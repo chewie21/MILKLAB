@@ -14,7 +14,7 @@ import java.util.Map;
 @RequestMapping("/Admin")
 public class AdminController {
     @Autowired
-    OrderService orderService;
+    private OrderService orderService;
     @Autowired
     private UserService userService;
     @Autowired
