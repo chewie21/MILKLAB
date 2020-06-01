@@ -13,56 +13,56 @@
     <script src="https://kit.fontawesome.com/792b3c2763.js" crossorigin="anonymous"></script>
     <script src="js/bootstrap-formhelpers.min.js"></script>
 </head>
-    <body class="bg-light">
-        <div class="jumbotron bg-light">
-            <div th:if="${message}">
-                <div class="container fixed-top">
-                    <div class="alert alert-warning alert-dismissible fade show" role="alert">
-                        <text th:text="${message}"></text>
-                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </div>
-                </div>
-            </div>
-            <div class="container">
-                <h1 class="display-4">Регистрация</h1>
-                <p class="lead">Заполните все поля, чтобы мы смогли сделать Ваш визит безупречным.</p>
-                <form th:action="@{/registration}" method="post">
-                    <div class="form-row">
-                        <div class="form-productGroup col-md-6">
-                            <label for="inputName">Имя</label>
-                            <input type="text" name="name" class="form-control" id="inputName" placeholder="Имя" required>
-                        </div>
-                        <div class="form-productGroup col-md-6">
-                            <label for="inputSurname">Фамилия</label>
-                            <input type="text" name="surname" class="form-control" id="inputSurname" placeholder="Фамилия" required>
-                        </div>
-                    </div>
-                    <div class="form-productGroup">
-                        <label for="inputEmail">Email</label>
-                        <input type="email" name="email" class="form-control" id="inputEmail" aria-describedby="emailHelp" placeholder="Email" required>
-                        <small id="emailHelp" class="form-text text-muted">Мы никогда никому не передадим Вашу электронную почту.</small>
-                    </div>
-                    <div class="form-productGroup">
-                        <label for="inputDate">День рождения</label>
-                        <input type="date" name="date" class="form-control" id="inputDate" aria-describedby="dateHelp" placeholder="Дата" required>
-                        <small id="dateHelp" class="form-text text-muted">Специальные предложения в Ваш день!</small>
-                    </div>
-                    <div class="form-productGroup">
-                        <label for="inputPhone">Номер телефона</label>
-                        <input type="text" name="username" class="form-control bfh-phone" data-country="RU" id="inputPhone" aria-describedby="phoneHelp" placeholder="Номер телефона" required>
-                        <small id="phoneHelp" class="form-text text-muted">Будет использоватся Вами для входа в аккаунт.</small>
-                    </div>
-                    <div class="form-productGroup">
-                        <label for="inputPassword">Пароль</label>
-                        <input type="password" name="password" class="form-control" id="inputPassword" aria-describedby="passwordHelp" placeholder="Пароль" required>
-                        <small id="passwordHelp" class="form-text text-muted">Только тс-с...</small>
-                    </div>
-                    <button type="submit" class="btn btn-primary btn-block">Зарегистрироваться</button>
-                    <a type="button" class="btn btn-block btn-secondary" th:href="@{/login}">Назад</a>
-                </form>
+<body class="bg-light">
+<div class="jumbotron bg-light">
+    <div th:if="${message}">
+        <div class="container fixed-top">
+            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                <text th:text="${message}"></text>
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
         </div>
-    </body>
+    </div>
+    <div class="container">
+        <h1 class="display-4">Регистрация</h1>
+        <p class="lead">Заполните все поля, чтобы мы смогли сделать Ваш визит безупречным.</p>
+        <form th:action="@{/registration}" method="post">
+            <div class="form-row">
+                <div class="form-group col-md-6">
+                    <label for="inputName">Имя</label>
+                    <input type="text" name="name" class="form-control" id="inputName" placeholder="Имя" required>
+                </div>
+                <div class="form-group col-md-6">
+                    <label for="inputSurname">Фамилия</label>
+                    <input type="text" name="surname" class="form-control" id="inputSurname" placeholder="Фамилия" required>
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="inputEmail">Email</label>
+                <input type="email" name="email" class="form-control" id="inputEmail" aria-describedby="emailHelp" placeholder="Email" required>
+                <small id="emailHelp" class="form-text text-muted">Мы никогда никому не передадим Вашу электронную почту.</small>
+            </div>
+            <div class="form-group">
+                <label for="inputDate">День рождения</label>
+                <input type="date" name="date" class="form-control" id="inputDate" aria-describedby="dateHelp" placeholder="Дата" required>
+                <small id="dateHelp" class="form-text text-muted">Специальные предложения в Ваш день!</small>
+            </div>
+            <div class="form-group">
+                <label for="inputPhone">Номер телефона</label>
+                <input type="text" name="username" class="form-control bfh-phone" data-country="RU" id="inputPhone" aria-describedby="phoneHelp" placeholder="Номер телефона" required>
+                <small id="phoneHelp" class="form-text text-muted">Будет использоватся Вами для входа в аккаунт.</small>
+            </div>
+            <div class="form-group">
+                <label for="inputPassword">Пароль</label>
+                <input type="password" name="password" class="form-control" id="inputPassword" aria-describedby="passwordHelp" placeholder="Пароль" required>
+                <small id="passwordHelp" class="form-text text-muted">Только тс-с...</small>
+            </div>
+            <button type="submit" class="btn btn-primary btn-block">Зарегистрироваться</button>
+            <a type="button" class="btn btn-block btn-secondary" th:href="@{/login}">Назад</a>
+        </form>
+    </div>
+</div>
+</body>
 </html>

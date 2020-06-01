@@ -119,7 +119,9 @@
                     <div th:each="product : ${group.products}">
                         <div th:if="${product.isActive()}">
                             <div class="card mt-3 mb-3" style="width: 250px; height: 450px; box-sizing: content-box">
-                                <img th:src="@{/img/{img}(img=${product.prodImg})}" style="height: 250px; width: 250px">
+                                <div th:if="${product.prodImg}">
+                                    <img th:src="@{/img/{img}(img=${product.prodImg})}" style="height: 250px; width: 250px">
+                                </div>
                                 <div class="card-body">
                                     <h5 class="card-title" th:text="${product.prodName}"></h5>
                                     <small class="card-text text-muted" th:text="${product.prodInfo}"></small>

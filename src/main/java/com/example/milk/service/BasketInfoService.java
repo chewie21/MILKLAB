@@ -17,9 +17,9 @@ import java.util.List;
 public class BasketInfoService {
 
     @Autowired
-    BasketInfoRepo basketInfoRepo;
+    private BasketInfoRepo basketInfoRepo;
     @Autowired
-    EntityManager entityManager;
+    private EntityManager entityManager;
 
     public List<BasketInfo> findBasketInfo (Basket basket) {
         return basketInfoRepo.findAllByBasketId(basket.getId());
@@ -38,9 +38,6 @@ public class BasketInfoService {
     }
     public void deleteBasketInfo (Basket basket) {
         basketInfoRepo.deleteAll(basketInfoRepo.findAllByBasketId(basket.getId()));
-    }
-    public List<Long> findProductId (Basket basket) {
-       return basketInfoRepo.findProductId(basket.getId());
     }
     public String countProduct (User user) {
         return user == null ? null : basketInfoRepo.countProducts(user.getId()).equals("0") ? null : basketInfoRepo.countProducts(user.getId());

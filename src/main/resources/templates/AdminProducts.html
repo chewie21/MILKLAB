@@ -53,7 +53,7 @@
         <button type="button" class="btn btn-primary m-1" data-toggle="modal" data-target="#newProduct">
             Добавить продукт
         </button>
-        <button type="button" class="btn btn-primary m-1" data-toggle="modal" data-target="#productGroup">
+        <button type="button" class="btn btn-primary m-1" data-toggle="modal" data-target="#group">
             Группы товаров
         </button>
         <a href="AdminProducts" class="btn btn-secondary m-1" role="button" aria-pressed="true">Полный список</a>
@@ -70,38 +70,38 @@
             <th>Состояние</th>
             <th>Действия</th>
         </tr>
-    </thead>
-    <tbody class="text-center">
+        </thead>
+        <tbody class="text-center">
         <tr th:each="product : ${products}">
-        <td th:text="${product.id}"></td>
-        <td>
-            <div th:if="${product.productGroup}">
-                <p th:text="${product.productGroup.prodGroup}"></p>
-            </div>
-            <div th:unless="${product.productGroup}">
-                <p>Без группы</p>
-            </div>
-        </td>
-        <td th:text="${product.prodName}"></td>
-        <td th:text="${product.prodCoast}"></td>
-        <td>
-            <div th:switch="${product.status}">
-                <p th:case="${product.status.ACTIVE}">В наличии</p>
-                <p th:case="${product.status.STOP}">В стопе</p>
-            </div>
-        </td>
-        <td>
-            <a class="btn btn-primary btn-block mb-2" th:href="@{/AdminProducts/{product.id}(product.id=${product.id})}">Изменить</a>
-            <div class="pb-2" th:switch="${product.status}">
-                <a th:case="${product.status.ACTIVE}" class="btn btn-dark btn-block" th:href="@{/AdminProducts/close/{product.id}(product.id=${product.id})}">В стоп</a>
-                <a th:case="${product.status.STOP}" class="btn btn-dark btn-block" th:href="@{/AdminProducts/open/{product.id}(product.id=${product.id})}">Вернуть в наличие</a>
-            </div>
-            <form th:action="@{/AdminProducts/deleteProduct/{product.id}(product.id=${product.id})}" method="post">
-                <button type="submit" class="btn btn-danger btn-block">Удалить</button>
-            </form>
-        </td>
+            <td th:text="${product.id}"></td>
+            <td>
+                <div th:if="${product.productGroup}">
+                    <p th:text="${product.productGroup.prodGroup}"></p>
+                </div>
+                <div th:unless="${product.productGroup}">
+                    <p>Без группы</p>
+                </div>
+            </td>
+            <td th:text="${product.prodName}"></td>
+            <td th:text="${product.prodCoast}"></td>
+            <td>
+                <div th:switch="${product.status}">
+                    <p th:case="${product.status.ACTIVE}">В наличии</p>
+                    <p th:case="${product.status.STOP}">В стопе</p>
+                </div>
+            </td>
+            <td>
+                <a class="btn btn-primary btn-block mb-2" th:href="@{/AdminProducts/{product.id}(product.id=${product.id})}">Изменить</a>
+                <div class="pb-2" th:switch="${product.status}">
+                    <a th:case="${product.status.ACTIVE}" class="btn btn-dark btn-block" th:href="@{/AdminProducts/close/{product.id}(product.id=${product.id})}">В стоп</a>
+                    <a th:case="${product.status.STOP}" class="btn btn-dark btn-block" th:href="@{/AdminProducts/open/{product.id}(product.id=${product.id})}">Вернуть в наличие</a>
+                </div>
+                <form th:action="@{/AdminProducts/deleteProduct/{product.id}(product.id=${product.id})}" method="post">
+                    <button type="submit" class="btn btn-danger btn-block">Удалить</button>
+                </form>
+            </td>
         </tr>
-    </tbody>
+        </tbody>
     </table>
 </div>
 
@@ -126,39 +126,38 @@
                             <button class="btn btn-primary" type="submit" id="findId">Найти</button>
                         </div>
                     </div>
-                    <div class="input-productGroup pt-3">
-                        <div class="input-productGroup-prepend">
-                            <span class="input-productGroup-text">Группа</span>
+                    <div class="input-group pt-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">Группа</span>
                         </div>
-                            <select class="custom-select" name="groupId" aria-describedby="findGroup">
-                                <option value="" selected>Не выбрано</option>
-                                <option value="0">Без группы</option>
-                                <div th:each="productGroup : ${groups}">
-                                    <option th:value="${productGroup.id}" th:text="${productGroup.prodGroup}"></option>
-                                </div>
-                            </select>
-                        <div class="input-productGroup-append">
+                        <select class="custom-select" name="groupId" aria-describedby="findGroup">
+                            <option value="" selected>Не выбрано</option>
+                            <option value="0">Без группы</option>
+                            <div th:each="group : ${groups}">
+                                <option th:value="${group.id}" th:text="${group.prodGroup}"></option>
+                            </div>
+                        </select>
+                        <div class="input-group-append">
                             <button class="btn btn-primary" type="submit" id="findGroup">Найти</button>
                         </div>
                     </div>
-                    <div class="input-productGroup pt-3">
-                        <div class="input-productGroup-prepend">
-                            <span class="input-productGroup-text">Название</span>
+                    <div class="input-group pt-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">Название</span>
                         </div>
                         <input type="text" name="prodName" class="form-control" aria-label="findName" aria-describedby="findName">
-                        <div class="input-productGroup-append">
+                        <div class="input-group-append">
                             <button class="btn btn-primary" type="submit" id="findName">Найти</button>
                         </div>
                     </div>
-                    <div class="input-productGroup pt-3">
-                    <div class="input-productGroup-prepend">
-                        <span class="input-productGroup-text">Цена</span>
-                    </div>
-                    <input type="number" name="prodCoast" class="form-control" aria-label="Coast">
-                        <div class="input-productGroup-append">
+                    <div class="input-group pt-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">Цена</span>
+                        </div>
+                        <input type="number" name="prodCoast" class="form-control" aria-label="Coast">
+                        <div class="input-group-append">
                             <button class="btn btn-primary" type="submit" id="findCoast">Найти</button>
                         </div>
-                </div>
                     </div>
                 </div>
             </div>
@@ -178,44 +177,44 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <div class="input-productGroup">
-                        <div class="input-productGroup-prepend">
-                            <span class="input-productGroup-text">Название</span>
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">Название</span>
                         </div>
                         <input type="text" name="prodName" class="form-control" aria-label="Name" required>
                     </div>
-                    <div class="input-productGroup pt-3">
-                        <div class="input-productGroup-prepend">
-                            <span class="input-productGroup-text">Описание</span>
+                    <div class="input-group pt-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">Описание</span>
                         </div>
-                        <textarea type="text" name="prodInfo" class="form-control" aria-label="Info" required></textarea>
+                        <textarea type="text" name="prodInfo" class="form-control" aria-label="Info"></textarea>
                     </div>
-                    <div class="input-productGroup pt-3">
-                        <div class="input-productGroup-prepend">
-                            <span class="input-productGroup-text">Группа</span>
+                    <div class="input-group pt-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">Группа</span>
                         </div>
                         <select class="custom-select" name="groupId" id="staticGroup" aria-describedby="findGroup">
                             <option value="0" selected>Без группы</option>
-                            <div th:each="productGroup : ${groups}">
-                                <option th:value="${productGroup.id}" th:text="${productGroup.prodGroup}"></option>
+                            <div th:each="group : ${groups}">
+                                <option th:value="${group.id}" th:text="${group.prodGroup}"></option>
                             </div>
                         </select>
                     </div>
-                    <div class="input-productGroup pt-3">
-                        <div class="input-productGroup-prepend">
-                            <span class="input-productGroup-text">Цена</span>
+                    <div class="input-group pt-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">Цена</span>
                         </div>
                         <input type="number" name="prodCoast" class="form-control" aria-label="Coast" required>
-                        <div class="input-productGroup-append">
-                            <span class="input-productGroup-text">Руб./шт.</span>
+                        <div class="input-group-append">
+                            <span class="input-group-text">Руб./шт.</span>
                         </div>
                     </div>
-                    <div class="input-productGroup pt-3">
-                        <div class="input-productGroup-prepend">
-                            <span class="input-productGroup-text">Превью</span>
+                    <div class="input-group pt-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">Превью</span>
                         </div>
                         <div class="custom-file">
-                            <input type="file" class="custom-file-input" name="prodImg" id="inputImg" required>
+                            <input type="file" class="custom-file-input" name="prodImg" id="inputImg">
                             <label class="custom-file-label" for="inputImg" data-browse="Выбирите">Фаил...</label>
                         </div>
                     </div>
@@ -228,9 +227,8 @@
     </div>
 </form>
 
-
 <!-- ModuleGroup -->
-<div class="modal fade" id="productGroup" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel3" aria-hidden="true">
+<div class="modal fade" id="group" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel3" aria-hidden="true">
     <div class="modal-dialog" role="dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -250,11 +248,11 @@
                         </tr>
                         </thead>
                         <tbody class="text-center">
-                        <tr th:each="productGroup : ${groups}">
-                            <td th:text="${productGroup.id}"></td>
-                            <td th:text="${productGroup.prodGroup}"></td>
+                        <tr th:each="group : ${groups}">
+                            <td th:text="${group.id}"></td>
+                            <td th:text="${group.prodGroup}"></td>
                             <td>
-                                <form th:action="@{/AdminProducts/deleteProductGroup/{productGroup.id}(productGroup.id=${productGroup.id})}" method="post">
+                                <form th:action="@{/AdminProducts/deleteProductGroup/{productGroup.id}(productGroup.id=${group.id})}" method="post">
                                     <button type="submit" class="btn btn-danger btn-block">Удалить</button>
                                 </form>
                             </td>
@@ -267,22 +265,22 @@
                 <button class="btn btn-outline-secondary btn-block" type="button" data-toggle="collapse" data-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
                     Добавить группу
                 </button>
-                <form th:action="@{/AdminProducts/newGroup}" method="post">
-                    <div class="collapse" id="collapseExample">
-                        <div class="modal-body">
-                            <div class="input-productGroup">
-                                <div class="input-productGroup-prepend">
-                                    <span class="input-productGroup-text">Название</span>
-                                </div>
-                                <input type="text" name="prodGroup" class="form-control" aria-label="Name" required>
+            </div>
+            <form th:action="@{/AdminProducts/newGroup}" method="post">
+                <div class="collapse" id="collapseExample">
+                    <div class="modal-body">
+                        <div class="input-group">
+                            <div class="input-group-prepend">
+                                <span class="input-group-text">Название</span>
                             </div>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="submit" class="btn btn-primary btn-block">Сохранить</button>
+                            <input type="text" name="prodGroup" class="form-control" aria-label="Name" required>
                         </div>
                     </div>
-                </form>
-            </div>
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-primary btn-block">Сохранить</button>
+                    </div>
+                </div>
+            </form>
         </div>
     </div>
 </div>

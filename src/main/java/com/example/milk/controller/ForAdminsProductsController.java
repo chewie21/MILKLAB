@@ -27,7 +27,6 @@ public class ForAdminsProductsController {
     @Autowired
     private UserService userService;
 
-
     @GetMapping
     public String ShowProduct(Map<String, Object> model) {
         model.putIfAbsent("products", productService.findAll());

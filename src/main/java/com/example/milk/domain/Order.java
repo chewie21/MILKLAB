@@ -20,7 +20,6 @@ public class Order {
     private String time;
     private String date;
     private String comment;
-
     private boolean active;
 
     @Column
@@ -28,6 +27,7 @@ public class Order {
     private OrderStatusEnum status;
 
     public Order () {}
+
     public Order(User user, String address, String comment, String time, String date, Long orderCoast, OrderStatusEnum status) {
         this.user = user;
         this.address = address;

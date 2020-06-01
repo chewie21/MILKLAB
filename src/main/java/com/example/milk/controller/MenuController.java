@@ -14,9 +14,9 @@ import java.util.*;
 public class MenuController {
 
     @Autowired
-    CarouselService carouselService;
+    private CarouselService carouselService;
     @Autowired
-    BasketInfoService basketInfoService;
+    private BasketInfoService basketInfoService;
     @Autowired
     private InfoService infoService;
     @Autowired

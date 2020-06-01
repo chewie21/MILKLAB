@@ -30,18 +30,13 @@ public class ProductService {
     public String countStopProducts() {
         return productRepo.countStopProducts().equals("0") ? null : productRepo.countStopProducts();
     }
-    public List<Product> findAllByStatusActive() {
-        return productRepo.findAllByStatusActive();
-    }
-    public List<Product> findAllByStatusStop() {
-        return productRepo.findAllByStatusStop();
-    }
 
     //Edit
     public void saveProductStatus(Product product, ProductStatusEnum status) {
         product.setStatus(status);
         productRepo.save(product);
     }
+
     public void newProduct(Long groupId, String prodName, Long prodCoast, String prodInfo, MultipartFile file) throws IOException {
         Product product = new Product(prodName, prodInfo, prodCoast, ProductStatusEnum.ACTIVE);
         if (checkImg(file)) {
@@ -52,6 +47,7 @@ public class ProductService {
             productGroupService.SaveProductInGroup(groupId, product.getId());
         }
     }
+
     public void saveProduct(Product product, Long groupId, String prodName, String prodInfo, Long prodCoast, MultipartFile file) throws IOException {
         product.setProdName(prodName);
         product.setProdInfo(prodInfo);
@@ -67,6 +63,7 @@ public class ProductService {
         }
         productRepo.save(product);
     }
+
     public boolean checkImg(MultipartFile file) throws IOException {
         if (!file.getOriginalFilename().isEmpty()) {
             File uploadDir = new File(uploadPath);
@@ -77,6 +74,7 @@ public class ProductService {
             return true;
         } else return false;
     }
+
     public void deleteProduct(Product product) {
         productGroupService.deleteProductFromGroup(product.getId());
         basketInfoService.deleteProduct(product.getId());
@@ -87,19 +85,32 @@ public class ProductService {
     public Iterable<Product> findAll() {
         return productRepo.findAll();
     }
+
     public List<Product> findAllById(Long id) {
         return productRepo.findAllById(id);
     }
+
     public List<Product> findAllByName(String prodName) {
         return productRepo.findAllByProdName(prodName);
     }
+
     public List<Product> findAllByCoast(Long prodCoast) {
         return productRepo.findAllByProdCoast(prodCoast);
     }
+
     public List<Product> findAllByGroup(Long groupId) {
         return productRepo.findAllByProductGroupId(groupId);
     }
+
     public List<Product> findAllByGroupNot() {
         return productRepo.findAllByProductNotGroup();
+    }
+
+    public List<Product> findAllByStatusActive() {
+        return productRepo.findAllByStatusActive();
+    }
+
+    public List<Product> findAllByStatusStop() {
+        return productRepo.findAllByStatusStop();
     }
 }

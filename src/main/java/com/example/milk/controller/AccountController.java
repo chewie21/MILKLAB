@@ -34,8 +34,8 @@ public class AccountController {
         model.addAttribute("active", orderService.findByTrueActive(user, true) );
         model.addAttribute("notActive", orderService.findByFalseActive(user, false));
         model.addAttribute("lastOrder", orderService.lastOrder(user.getId()));
-        model.addAttribute("activeOrders", orderService.countUserActiveOrders(user.getId()));
-        model.addAttribute("countNotActiveUsers", userService.countNotActiveUsers());
+        model.addAttribute("countUserActiveOrders", orderService.countUserActiveOrders(user.getId()));
+        model.addAttribute("countUserNotActiveOrders", orderService.countUserNotActiveOrders(user.getId()));
         model.addAttribute("userOrders", orderService.countUserOrders(user.getId()));
         model.addAttribute("count", infoService.countAdminActivity());
         return "account";

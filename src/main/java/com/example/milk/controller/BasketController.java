@@ -19,11 +19,11 @@ import java.util.Map;
 public class BasketController {
 
     @Autowired
-    BasketService basketService;
+    private BasketService basketService;
     @Autowired
-    OrderService orderService;
+    private OrderService orderService;
     @Autowired
-    BasketInfoService basketInfoService;
+    private BasketInfoService basketInfoService;
     @Autowired
     private InfoService infoService;
 

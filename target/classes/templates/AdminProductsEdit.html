@@ -17,7 +17,7 @@
 <div class="jumbotron bg-light">
     <form class="form" th:action="@{/AdminProducts}" method="post" enctype="multipart/form-data" style="width: 100%; max-width: 400px; padding: 15px; margin: auto; text-align: center;">
         <div class="card">
-            <div class="card-footer">
+            <div class="card-footer" th:if="${product.prodImg}">
                 <img th:src="@{/img/{img}(img=${product.prodImg})}" style="height: 300px; width: 328px" alt="Нет картинки :(">
             </div>
             <div class="card-body">
@@ -29,8 +29,8 @@
                             <option class="active" th:value="${product.productGroup.id}" th:text="${product.productGroup.prodGroup}"></option>
                         </div>
                         <option value="0">Без группы</option>
-                        <div th:each="productGroup : ${groups}">
-                            <option th:value="${productGroup.id}" th:text="${productGroup.prodGroup}"></option>
+                        <div th:each="group : ${groups}">
+                            <option th:value="${group.id}" th:text="${group.prodGroup}"></option>
                         </div>
                     </select>
                 </div>
@@ -56,6 +56,7 @@
             </div>
             <div class="card-footer">
                 <button type="submit" class="btn btn-primary btn-block">Сохранить</button>
+                <input type="button" class="btn btn-secondary btn-block" onclick="history.back();" value="Назад"/>
             </div>
         </div>
     </form>

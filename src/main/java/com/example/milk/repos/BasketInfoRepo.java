@@ -16,10 +16,6 @@ public interface BasketInfoRepo extends CrudRepository <BasketInfo, Long> {
     List<BasketInfo> findAllByBasketId (Long basketId);
 
     @Query(nativeQuery = true,
-            value = "SELECT m.product_id FROM m_basket_products m where basket_id =:basket")
-    List<Long> findProductId (@Param("basket") Long basketId);
-
-    @Query(nativeQuery = true,
             value = "SELECT SUM(mp.prod_coast) FROM m_basket_products mbp JOIN m_basket mb on mbp.basket_id = mb.id JOIN m_product mp on mbp.product_id = mp.id  WHERE user_id =:user")
     String orderCoast (@Param("user") Long user);
 

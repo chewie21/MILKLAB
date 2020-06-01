@@ -14,33 +14,34 @@
     <script src="/js/bootstrap-formhelpers.min.js"></script>
 </head>
 <body class="bg-light">
-<div class="jumbotron bg-light">
-    <div class="container">
-    <form class="form" th:action="@{/AdminCarousels}" method="post" enctype="multipart/form-data" style="padding: 15px; margin: auto; text-align: center;">
-        <div class="card">
-            <div class="card-footer">
-                <img th:src="@{/img/{img}(img=${carousel.carouselImg})}" class="d-block w-100" alt="/" style="height: 360px; width: 1000px">
-            </div>
-            <div class="card-body">
-                <input type="hidden" name="id" th:value="${carousel.id}">
-                <div class="card-text pb-2">
-                    <label for="staticName">Описание</label>
-                    <input type="text" name="carouselInfo" class="form-control text-primary" id="staticName" th:value="${carousel.carouselInfo}"/>
-                </div>
-                <div class="card-text pb-2">
-                    <label for="inputImg">Картинка</label>
-                    <div class="custom-file">
-                        <input type="file" class="custom-file-input" name="carouselImg" id="inputImg">
-                        <label class="custom-file-label" for="inputImg" data-browse="Выбирите"></label>
+    <div class="jumbotron bg-light">
+        <div class="container">
+            <form class="form" th:action="@{/AdminCarousels}" method="post" enctype="multipart/form-data" style="padding: 15px; margin: auto; text-align: center;">
+                <div class="card">
+                    <div class="card-footer">
+                        <img th:src="@{/img/{img}(img=${carousel.carouselImg})}" class="d-block w-100" alt="/" style="height: 360px; width: 1000px">
+                    </div>
+                    <div class="card-body">
+                        <input type="hidden" name="id" th:value="${carousel.id}">
+                        <div class="card-text pb-2">
+                            <label for="staticName">Описание</label>
+                            <input type="text" name="carouselInfo" class="form-control text-primary" id="staticName" th:value="${carousel.carouselInfo}"/>
+                        </div>
+                        <div class="card-text pb-2">
+                            <label for="inputImg">Картинка</label>
+                            <div class="custom-file">
+                                <input type="file" class="custom-file-input" name="carouselImg" id="inputImg">
+                                <label class="custom-file-label" for="inputImg" data-browse="Выбирите"></label>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card-footer">
+                        <button type="submit" class="btn btn-primary btn-block">Сохранить</button>
+                        <input type="button" class="btn btn-secondary btn-block" onclick="history.back();" value="Назад"/>
                     </div>
                 </div>
-            </div>
-            <div class="card-footer">
-                <button type="submit" class="btn btn-primary btn-block">Сохранить</button>
-            </div>
+            </form>
         </div>
-    </form>
-</div>
-</div>
+    </div>
 </body>
 </html>

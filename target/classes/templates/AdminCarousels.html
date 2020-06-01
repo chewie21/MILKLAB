@@ -47,20 +47,20 @@
     </div>
 </div>
 <div class="container">
-<div th:each="carousel : ${carousels}">
-    <div class="card m-3">
-        <div class="card-img">
-            <img th:src="@{/img/{img}(img=${carousel.carouselImg})}" class="d-block w-100" alt="/" style="height: 360px; width: 1000px">
+    <div th:each="carousel : ${carousels}">
+        <div class="card m-3">
+            <div class="card-img">
+                <img th:src="@{/img/{img}(img=${carousel.carouselImg})}" class="d-block w-100" alt="/" style="height: 360px; width: 1000px">
+            </div>
+            <div class="card-body">
+                <p class="card-text" th:text="${carousel.carouselInfo}"></p>
+            </div>
+            <a class="btn btn-primary btn-block mb-2" th:href="@{/AdminCarousels/{carousel.id}(carousel.id=${carousel.id})}">Изменить</a>
+            <form th:action="@{/AdminCarousels/deleteCarousel/{carousel.id}(carousel.id=${carousel.id})}" method="post">
+                <button type="submit" class="btn btn-danger btn-block">Удалить</button>
+            </form>
         </div>
-        <div class="card-body">
-            <p class="card-text" th:text="${carousel.carouselInfo}"></p>
-        </div>
-        <a class="btn btn-primary btn-block mb-2" th:href="@{/AdminCarousels/{carousel.id}(carousel.id=${carousel.id})}">Изменить</a>
-        <form th:action="@{/AdminCarousels/deleteCarousel/{carousel.id}(carousel.id=${carousel.id})}" method="post">
-            <button type="submit" class="btn btn-danger btn-block">Удалить</button>
-        </form>
     </div>
-</div>
 </div>
 <form th:action="@{/AdminCarousels/newCarousel}" method="post" enctype="multipart/form-data">
     <div class="modal fade" id="newCarousel" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
@@ -73,15 +73,15 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <div class="input-productGroup">
-                        <div class="input-productGroup-prepend">
-                            <span class="input-productGroup-text">Информация</span>
+                    <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">Информация</span>
                         </div>
                         <input type="text" name="carouselInfo" class="form-control" aria-label="Name" required>
                     </div>
-                    <div class="input-productGroup pt-3">
-                        <div class="input-productGroup-prepend">
-                            <span class="input-productGroup-text">Картика</span>
+                    <div class="input-group pt-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">Картика</span>
                         </div>
                         <div class="custom-file">
                             <input type="file" class="custom-file-input" name="carouselImg" id="inputImg" required>

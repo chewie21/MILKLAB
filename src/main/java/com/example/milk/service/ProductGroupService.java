@@ -29,7 +29,6 @@ public class ProductGroupService {
     public ProductGroup findById (Long groupId) {
         return productGroupRepo.findById(groupId).get();
     }
-
     //Edit
     public void SaveGroup(String prodGroup) {
         ProductGroup productGroup = new ProductGroup(prodGroup);

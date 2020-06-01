@@ -12,18 +12,14 @@ import java.util.List;
 @Service
 public class OrderInfoService {
     @Autowired
-    OrderInfoRepo orderInfoRepo;
+    private OrderInfoRepo orderInfoRepo;
 
     public void newOrderInfo (Basket basket) {
         orderInfoRepo.ProductToOrderInfo(basket.getId());
     }
-    public List<Long> orderInfoId (Long orderId) {
-        return orderInfoRepo.orderInfoId(orderId);
-    }
     public List<OrderInfo> findByOrderId (Long orderId) {
         return orderInfoRepo.findByOrderId(orderId);
     }
-
     public void deleteFromOrderProductsByOrder (Order order) {
         orderInfoRepo.deleteFromOrderProductsByOrder(order.getId());
     }

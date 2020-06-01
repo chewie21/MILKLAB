@@ -27,6 +27,14 @@ public class BasketInfo {
         this.product = product;
     }
 
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
     public Basket getBasket() {
         return basket;
     }

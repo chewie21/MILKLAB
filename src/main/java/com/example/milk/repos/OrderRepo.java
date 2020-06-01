@@ -31,6 +31,7 @@ public interface OrderRepo extends CrudRepository <Order, Long> {
     @Query(nativeQuery = true,
             value = "select count(*) from m_order where user_id =:user and active = true")
     String countUserActiveOrders (@Param("user") Long user);
+
     @Query(nativeQuery = true,
             value = "select count(*) from m_order where user_id =:user and active = false ")
     String countUserNotActiveOrders (@Param("user") Long user);

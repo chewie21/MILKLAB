@@ -12,6 +12,7 @@ import java.util.Map;
 
 @Controller
 public class MainController {
+
     @Autowired
     private InfoService infoService;
 

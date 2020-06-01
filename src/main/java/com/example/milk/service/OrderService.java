@@ -90,9 +90,6 @@ public class OrderService {
     public List<Order> findAllByDate (String date) {
         return orderRepo.findAllByDate(date);
     }
-    public List<Order> activeOrders (boolean active) {
-        return orderRepo.findAllByActive(active);
-    }
     public List<Order> findByTrueActive (User user, boolean active) {
         return orderRepo.findAllByUserIdAndActive(user.getId(), true);
     }

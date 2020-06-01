@@ -40,4 +40,5 @@ public class Carousel {
     public void setCarouselImg(String carouselImg) {
         this.carouselImg = carouselImg;
     }
+
 }

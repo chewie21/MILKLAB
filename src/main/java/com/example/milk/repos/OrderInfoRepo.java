@@ -25,11 +25,6 @@ public interface OrderInfoRepo extends CrudRepository <OrderInfo, Long> {
     void ProductToOrderInfo (@Param("basketId") Long basketId);
 
     @Transactional
-    @Query(nativeQuery = true,
-            value = "SELECT id FROM m_order_products where order_id =:orderId")
-    List<Long> orderInfoId (@Param("orderId") Long orderId);
-
-    @Transactional
     @Modifying
     @Query(nativeQuery = true,
             value = "DELETE FROM m_order_products WHERE order_id =:orderId")

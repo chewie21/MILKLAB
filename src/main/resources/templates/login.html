@@ -14,24 +14,24 @@
     <script src="js/bootstrap-formhelpers.min.js"></script>
 </head>
 <body class="bg-light">
-    <div class="jumbotron bg-light">
-        <form class="form" th:action="@{/login}" method="post" style="width: 100%; max-width: 330px; padding: 15px; margin: auto; text-align: center;">
-            <h1 class="display-4 mb-3 font-weight-light">Вход</h1>
-            <label for="inputUsername" class="sr-only">Телефон</label>
-            <input type="text" name="username" class="form-control bfh-phone" data-country="RU" id="inputUsername" placeholder="Номер телефона" required autofocus="">
-            <label for="inputPassword" class="sr-only">Пароль</label>
-            <input type="password" name="password" class="form-control" style="margin-bottom: 1rem" id="inputPassword" aria-describedby="passwordHelp" placeholder="Пароль" required>
-            <button type="submit" class="btn btn-primary btn-lg btn-block">Войти</button>
-            <div class="col-md-12 ">
-                <div class="login-or">
-                    <hr class="hr-or">
-                </div>
-                <p class="lead pt-3">Еще нет аккаунта? Скорее жми на кнопку!</p>
-                <a href="registration" class="btn btn-secondary btn-block" role="button" aria-pressed="true">Регистрация</a>
-                <hr>
-                <input type="button" class="btn btn-outline-secondary btn-block" onclick="history.back();" value="Назад"/>
+<div class="jumbotron bg-light">
+    <form class="form" th:action="@{/login}" method="post" style="width: 100%; max-width: 330px; padding: 15px; margin: auto; text-align: center;">
+        <h1 class="display-4 mb-3 font-weight-light">Вход</h1>
+        <label for="inputUsername" class="sr-only">Телефон</label>
+        <input type="text" name="username" class="form-control bfh-phone" data-country="RU" id="inputUsername" placeholder="Номер телефона" required autofocus="">
+        <label for="inputPassword" class="sr-only">Пароль</label>
+        <input type="password" name="password" class="form-control" style="margin-bottom: 1rem" id="inputPassword" aria-describedby="passwordHelp" placeholder="Пароль" required>
+        <button type="submit" class="btn btn-primary btn-lg btn-block">Войти</button>
+        <div class="col-md-12 ">
+            <div class="login-or">
+                <hr class="hr-or">
             </div>
-        </form>
-    </div>
+            <p class="lead pt-3">Еще нет аккаунта? Скорее жми на кнопку!</p>
+            <a href="registration" class="btn btn-secondary btn-block" role="button" aria-pressed="true">Регистрация</a>
+            <hr>
+            <input type="button" class="btn btn-outline-secondary btn-block" onclick="history.back();" value="Назад"/>
+        </div>
+    </form>
+</div>
 </body>
 </html>
