@@ -34,6 +34,9 @@
                 <li class="nav-item">
                     <a href="AdminAccounts" class="nav-link">Клиенты <span th:if="${countNotActiveUsers}" class="badge badge-dark badge-pill" th:text="${countNotActiveUsers}"></span></a>
                 </li>
+                <li class="nav-item">
+                    <a href="AdminReviews" class="nav-link">Отзывы <span th:if="${countNewReviews}" class="badge badge-dark badge-pill" th:text="${countNewReviews}"></span></a></a>
+                </li>
             </ul>
         </div>
     </nav>

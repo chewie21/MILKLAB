@@ -17,9 +17,11 @@ import java.util.stream.Collectors;
 public class OrderService {
 
     @Autowired
-    OrderRepo orderRepo;
+    private OrderRepo orderRepo;
     @Autowired
-    OrderInfoService orderInfoService;
+    private OrderInfoService orderInfoService;
+    @Autowired
+    private ReviewService reviewService;
 
     public Order lastOrder (Long userId) {
         return orderRepo.lastOrder(userId);
@@ -54,6 +56,7 @@ public class OrderService {
         orderInfoService.newOrderInfo(basket);
         order.setStatus(orderStatusEnum);
         orderRepo.save(order);
+        reviewService.closeDiscount(user);
     }
     public Order newOrder (User user, String address, String comment, String time, String date, Long orderCoast) {
         Order order = new Order (user, address, comment, time, date, orderCoast, OrderStatusEnum.ACTIVE);

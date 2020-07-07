@@ -11,11 +11,14 @@ public class InfoService {
     private UserService userService;
     @Autowired
     private ProductService productService;
+    @Autowired
+    private ReviewService reviewService;
 
     public int countAdminActivity () {
         int orders = 0;
         int users = 0;
         int products = 0;
+        int reviews = 0;
         if (orderService.countActiveOrders() != null) {
              orders = Integer.parseInt(orderService.countActiveOrders());
         }
@@ -25,6 +28,9 @@ public class InfoService {
         if (productService.countStopProducts() != null) {
              products = Integer.parseInt(productService.countStopProducts());
         }
-        return orders + users + products;
+        if (reviewService.countNewReviews() !=null) {
+            reviews = Integer.parseInt(reviewService.countNewReviews());
+        }
+        return orders + users + products + reviews;
     }
 }

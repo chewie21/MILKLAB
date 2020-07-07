@@ -20,6 +20,8 @@ public class BasketInfoService {
     private BasketInfoRepo basketInfoRepo;
     @Autowired
     private EntityManager entityManager;
+    @Autowired
+    private ReviewService reviewService;
 
     public List<BasketInfo> findBasketInfo (Basket basket) {
         return basketInfoRepo.findAllByBasketId(basket.getId());
@@ -33,6 +35,7 @@ public class BasketInfoService {
     public String orderCoast (User user) {
         return basketInfoRepo.orderCoast(user.getId());
     }
+
     public void deleteProductFromBasket (Long productId, Long basketId) {
         basketInfoRepo.deleteFromBasket(productId, basketId);
     }

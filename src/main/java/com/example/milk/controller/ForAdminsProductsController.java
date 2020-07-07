@@ -26,6 +26,8 @@ public class ForAdminsProductsController {
     private OrderService orderService;
     @Autowired
     private UserService userService;
+    @Autowired
+    private ReviewService reviewService;
 
     @GetMapping
     public String ShowProduct(Map<String, Object> model) {
@@ -34,6 +36,7 @@ public class ForAdminsProductsController {
         model.put("countNotActiveOrders", orderService.countActiveOrders());
         model.put("countNotActiveUsers", userService.countNotActiveUsers());
         model.put("countStopProducts", productService.countStopProducts());
+        model.put("countNewReviews", reviewService.countNewReviews());
         model.putIfAbsent("title", null);
         return "AdminProducts";
     }

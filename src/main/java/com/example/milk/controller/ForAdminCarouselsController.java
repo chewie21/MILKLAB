@@ -3,10 +3,7 @@ package com.example.milk.controller;
 import com.example.milk.domain.Carousel;
 import com.example.milk.domain.Product;
 import com.example.milk.domain.ProductStatusEnum;
-import com.example.milk.service.CarouselService;
-import com.example.milk.service.OrderService;
-import com.example.milk.service.ProductService;
-import com.example.milk.service.UserService;
+import com.example.milk.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -30,6 +27,8 @@ public class ForAdminCarouselsController {
     private UserService userService;
     @Autowired
     private ProductService productService;
+    @Autowired
+    private ReviewService reviewService;
 
     @GetMapping
     public String showCarousel(Map<String, Object> model) {
@@ -37,6 +36,7 @@ public class ForAdminCarouselsController {
         model.put("countNotActiveOrders", orderService.countActiveOrders());
         model.put("countNotActiveUsers", userService.countNotActiveUsers());
         model.put("countStopProducts", productService.countStopProducts());
+        model.put("countNewReviews", reviewService.countNewReviews());
         return "AdminCarousels";
     }
 

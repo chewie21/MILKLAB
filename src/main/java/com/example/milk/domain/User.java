@@ -27,7 +27,6 @@ public class User implements UserDetails {
     @Enumerated(EnumType.STRING)
     private Set<UserRolesEnum> userRoles;
 
-
     public boolean isAdmin() {
         return userRoles.contains(UserRolesEnum.ADMIN);
     }
@@ -42,6 +41,10 @@ public class User implements UserDetails {
 
     public String getUsername() {
         return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     @Override
@@ -60,10 +63,6 @@ public class User implements UserDetails {
     @Override
     public boolean isEnabled() {
         return isActive();
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
     }
 
     @Override

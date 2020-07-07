@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>MILKLAB</title>
+    <link href="/css/bootstrap-formhelpers.min.css" rel="stylesheet" media="screen">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+    <script src="https://kit.fontawesome.com/792b3c2763.js" crossorigin="anonymous"></script>
+    <script src="/js/bootstrap-formhelpers.min.js"></script>
+</head>
+<body>
+<div class="jumbotron bg-light mb-0">
+    <div class="container">
+        <h1 class="display-4">Отзыв</h1>
+        <hr>
+        <p>Дата: <text th:text="${review.date}"></text></p>
+        <p>Имя: <text th:text="${review.name}"></text></p>
+        <p>Телефон: <text th:text="${review.username}"></text></p>
+        <p>Оценка: <text th:text="${review.rating}"></text></p>
+        <hr>
+    </div>
+</div>
+<div class="container">
+    <p th:text="${review.text}" class="mt-md-4"></p>
+    <input type="button" class="btn btn-outline-secondary btn-block" onclick="history.back();" value="Назад"/>
+</div>
+</body>
+</html>

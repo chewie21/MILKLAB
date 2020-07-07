@@ -26,7 +26,7 @@
                     <li class="nav-item">
                         <div th:if="${user}">
                             <div th:if="${user.isAdmin()}">
-                                <a href="Admin" class="nav-link">Администрирование <span th:if="${count}" class="badge badge-light badge-pill" th:text="${count}"></span></a>
+                                <a th:href="Admin" class="nav-link">Администрирование <span th:if="${count}" class="badge badge-light badge-pill" th:text="${count}"></span></a>
                             </div>
                         </div>
                     </li>
@@ -38,7 +38,7 @@
                         <div class="dropdown-menu">
                             <div th:if="${user}">
                                 <form class="dropdown-item">
-                                    <a type="button" class="btn btn-block btn-sm btn-outline-primary" href="account" th:text="${user.name}"></a>
+                                    <a type="button" class="btn btn-block btn-sm btn-outline-primary" th:href="account" th:text="${user.name}"></a>
                                 </form>
                                 <form th:action="@{/logout}" method="post" class="dropdown-item">
                                     <button type="submit" class="btn btn-outline-danger btn-sm btn-block">Выйти</button>
@@ -46,16 +46,16 @@
                             </div>
                             <div th:unless="${user}">
                                 <form class="dropdown-item">
-                                    <a type="button" class="btn btn-outline-primary btn-sm btn-block" href="account">Вход</a>
+                                    <a type="button" class="btn btn-outline-primary btn-sm btn-block" th:href="account">Вход</a>
                                 </form>
                             </div>
                         </div>
                     </li>
                     <li class="nav-item">
-                        <a href="contacts" class="nav-link">Контакты</a>
+                        <a th:href="contacts" class="nav-link">Контакты</a>
                     </li>
                     <li class="nav-item">
-                        <a href="information" class="nav-link">О нас</a>
+                        <a th:href="information" class="nav-link">О нас</a>
                     </li>
                 </ul>
             </div>

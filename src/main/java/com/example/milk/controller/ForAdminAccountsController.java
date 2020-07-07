@@ -3,6 +3,7 @@ package com.example.milk.controller;
 import com.example.milk.domain.User;
 import com.example.milk.service.OrderService;
 import com.example.milk.service.ProductService;
+import com.example.milk.service.ReviewService;
 import com.example.milk.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -23,6 +24,8 @@ public class ForAdminAccountsController {
     private OrderService orderService;
     @Autowired
     private ProductService productService;
+    @Autowired
+    private ReviewService reviewService;
 
     @GetMapping
     public String ShowUsers(Map<String, Object> model) {
@@ -30,6 +33,7 @@ public class ForAdminAccountsController {
         model.put("countNotActiveOrders", orderService.countActiveOrders());
         model.put("countNotActiveUsers", userService.countNotActiveUsers());
         model.put("countStopProducts", productService.countStopProducts());
+        model.put("countNewReviews", reviewService.countNewReviews());
         model.putIfAbsent("title", null);
         return "AdminAccounts";
     }

@@ -1,10 +1,7 @@
 package com.example.milk.controller;
 
 import com.example.milk.domain.*;
-import com.example.milk.service.BasketInfoService;
-import com.example.milk.service.BasketService;
-import com.example.milk.service.InfoService;
-import com.example.milk.service.OrderService;
+import com.example.milk.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -26,6 +23,8 @@ public class BasketController {
     private BasketInfoService basketInfoService;
     @Autowired
     private InfoService infoService;
+    @Autowired
+    private DiscountService discountService;
 
     @GetMapping
     public String showBasket (@AuthenticationPrincipal User user,
@@ -34,6 +33,7 @@ public class BasketController {
         model.put("basketInfo", basketInfoService.findBasketInfo(basketService.findBasket(user)));
         model.put("orderCoast", basketInfoService.orderCoast(user));
         model.put("count", infoService.countAdminActivity());
+        model.put("orderCoastDiscount", discountService.discountByReview(user));
         return "basket";
     }
     @GetMapping("{product}")
@@ -49,9 +49,13 @@ public class BasketController {
     @PostMapping("/saveOrderDelivery")
     public String saveOrderDelivery(@AuthenticationPrincipal User user,
                             @RequestParam Long orderCoast,
+                            @RequestParam Long orderCoastDiscount,
                             @RequestParam String address,
                             @RequestParam String comment,
                             String time, String date, RedirectAttributes attr) {
+        if (orderCoastDiscount != null) {
+            orderCoast = orderCoastDiscount;
+        }
         date = orderService.dateFormat();
         time = orderService.timeFormat();
         Basket basket = basketService.findByUserId(user);
@@ -64,9 +68,13 @@ public class BasketController {
     }
     @PostMapping("/saveOrderPickup")
     public String saveOrderPickup(@AuthenticationPrincipal User user,
+                            @RequestParam Long orderCoastDiscount,
                             @RequestParam Long orderCoast,
                             @RequestParam String comment,
                             String time, String date, String address, RedirectAttributes attr) {
+        if (orderCoastDiscount != null) {
+            orderCoast = orderCoastDiscount;
+        }
         date = orderService.dateFormat();
         time = orderService.timeFormat();
         Basket basket = basketService.findByUserId(user);

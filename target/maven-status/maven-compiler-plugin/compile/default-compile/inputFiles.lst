@@ -4,11 +4,9 @@ C:\Users\Asus\IdeaProjects\Milk\src\main\java\com\example\milk\repos\OrderRepo.j
 C:\Users\Asus\IdeaProjects\Milk\src\main\java\com\example\milk\repos\UserRepo.java
 C:\Users\Asus\IdeaProjects\Milk\src\main\java\com\example\milk\controller\AccountController.java
 C:\Users\Asus\IdeaProjects\Milk\src\main\java\com\example\milk\domain\Product.java
-C:\Users\Asus\IdeaProjects\Milk\src\main\java\com\example\milk\repos\GroupRepo.java
 C:\Users\Asus\IdeaProjects\Milk\src\main\java\com\example\milk\controller\ForAdminCarouselsController.java
 C:\Users\Asus\IdeaProjects\Milk\src\main\java\com\example\milk\repos\ProductRepo.java
 C:\Users\Asus\IdeaProjects\Milk\src\main\java\com\example\milk\domain\Basket.java
-C:\Users\Asus\IdeaProjects\Milk\src\main\java\com\example\milk\domain\Group.java
 C:\Users\Asus\IdeaProjects\Milk\src\main\java\com\example\milk\domain\UserRolesEnum.java
 C:\Users\Asus\IdeaProjects\Milk\src\main\java\com\example\milk\controller\ForAdminsProductsController.java
 C:\Users\Asus\IdeaProjects\Milk\src\main\java\com\example\milk\service\ProductGroupService.java
@@ -18,7 +16,6 @@ C:\Users\Asus\IdeaProjects\Milk\src\main\java\com\example\milk\service\UserServi
 C:\Users\Asus\IdeaProjects\Milk\src\main\java\com\example\milk\repos\OrderInfoRepo.java
 C:\Users\Asus\IdeaProjects\Milk\src\main\java\com\example\milk\service\BasketInfoService.java
 C:\Users\Asus\IdeaProjects\Milk\src\main\java\com\example\milk\config\WebSecurityConfig.java
-C:\Users\Asus\IdeaProjects\Milk\src\main\java\com\example\milk\service\GroupService.java
 C:\Users\Asus\IdeaProjects\Milk\src\main\java\com\example\milk\config\MvcConfig.java
 C:\Users\Asus\IdeaProjects\Milk\src\main\java\com\example\milk\domain\ProductGroup.java
 C:\Users\Asus\IdeaProjects\Milk\src\main\java\com\example\milk\domain\Carousel.java

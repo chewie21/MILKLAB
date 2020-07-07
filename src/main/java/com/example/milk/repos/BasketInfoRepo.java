@@ -16,11 +16,16 @@ public interface BasketInfoRepo extends CrudRepository <BasketInfo, Long> {
     List<BasketInfo> findAllByBasketId (Long basketId);
 
     @Query(nativeQuery = true,
-            value = "SELECT SUM(mp.prod_coast) FROM m_basket_products mbp JOIN m_basket mb on mbp.basket_id = mb.id JOIN m_product mp on mbp.product_id = mp.id  WHERE user_id =:user")
+            value = "SELECT SUM(mp.prod_coast) FROM m_basket_products mbp " +
+                    "JOIN m_basket mb on mbp.basket_id = mb.id " +
+                    "JOIN m_product mp on mbp.product_id = mp.id  " +
+                    "WHERE user_id =:user")
     String orderCoast (@Param("user") Long user);
 
     @Query(nativeQuery = true,
-            value = "SELECT count(mbp.product_id) FROM m_basket_products mbp JOIN m_basket mb on mbp.basket_id = mb.id where user_id =:user")
+            value = "SELECT count(mbp.product_id) FROM m_basket_products mbp " +
+                    "JOIN m_basket mb on mbp.basket_id = mb.id " +
+                    "where user_id =:user")
     String countProducts (@Param("user") Long user);
 
     @Transactional
