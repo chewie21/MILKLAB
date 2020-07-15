@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>MILKLAB</title>
+    <link rel="stylesheet" href="/css/style.css">
     <link href="/css/bootstrap-formhelpers.min.css" rel="stylesheet" media="screen">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
@@ -16,8 +17,8 @@
 <body>
     <div class="jumbotron bg-white">
         <div class="container">
-            <h1 class="display-4">MILKLAB</h1>
-            <p class="lead">Оставте свой отзыв, чтобы мы могли сделать Ваш следующий визит еще приятнее.</p>
+            <h1 class="display-4">MILK LAB</h1>
+            <p class="lead">Оставь свой отзыв, чтобы мы могли сделать следующий визит еще приятнее.</p>
             <hr class="my-4">
             <form th:action="@{/review}" method="post">
                 <div class="form-group col-md-6">
@@ -31,57 +32,21 @@
                 <hr class="my-4">
                 <div class="rating-area">
                     <input type="radio" id="star-5" name="rating" value="5">
-                    <label for="star-5" title="Оценка «5»"></label>
+                    <label for="star-5" title="5"></label>
                     <input type="radio" id="star-4" name="rating" value="4">
-                    <label for="star-4" title="Оценка «4»"></label>
+                    <label for="star-4" title="4"></label>
                     <input type="radio" id="star-3" name="rating" value="3">
-                    <label for="star-3" title="Оценка «3»"></label>
+                    <label for="star-3" title="3"></label>
                     <input type="radio" id="star-2" name="rating" value="2">
-                    <label for="star-2" title="Оценка «2»"></label>
-                    <input type="radio" id="star-1" name="rating" value="1">
-                    <label for="star-1" title="Оценка «1»"></label>
+                    <label for="star-2" title="2"></label>
+                    <input type="radio" id="star-1" name="rating" value="1" required>
+                    <label for="star-1" title="1"></label>
                 </div>
-                <style type="text/css">
-                    .rating-area {
-                        width: fit-content;
-                        overflow: hidden;
-                        margin-bottom: 24px;
-                    }
-                    .rating-area:not(:checked) > input {
-                        display: none;
-                    }
-                    .rating-area:not(:checked) > label {
-                        float: right;
-                        width: 42px;
-                        padding: 0;
-                        cursor: pointer;
-                        font-size: 50px;
-                        line-height: 50px;
-                        color: lightgrey;
-                    }
-                    .rating-area:not(:checked) > label:before {
-                        content: '★';
-                    }
-                    .rating-area > input:checked ~ label {
-                        color: #007BFF;
-                    }
-                    .rating-area:not(:checked) > label:hover,
-                    .rating-area:not(:checked) > label:hover ~ label {
-                        color: #007BFF;
-                    }
-                    .rating-area > input:checked + label:hover,
-                    .rating-area > input:checked + label:hover ~ label,
-                    .rating-area > input:checked ~ label:hover,
-                    .rating-area > input:checked ~ label:hover ~ label,
-                    .rating-area > label:hover ~ input:checked ~ label {
-                        color: #007BFF;
-                    }
-                    .rate-area > label:active {
-                        position: relative;
-                    }
-                </style>
                 <div class="form-group">
-                    <textarea class="form-control" name="text" rows="3" required placeholder="Расскажите, что Вам понравилось, а что мы можем сделать лучше."></textarea>
+                    <input type="text" class="form-control" name="shortText" placeholder="Опиши свой визит одной фразой.">
+                </div>
+                <div class="form-group">
+                    <textarea class="form-control" name="text" rows="3" required placeholder="Расскажи, что понравилось, а что мы можем сделать лучше."></textarea>
                 </div>
                 <button type="submit" class="btn btn-primary btn-block">Отправить</button>
             </form>

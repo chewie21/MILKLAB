@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>MILKLAB</title>
+    <title>MILK LAB</title>
     <link href="/css/bootstrap-formhelpers.min.css" rel="stylesheet" media="screen">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
@@ -17,7 +17,19 @@
 <header>
     <nav class="navbar navbar-dark bg-primary navbar-expand-md fixed-top">
         <div class="container">
-            <a href="/" class="navbar-brand">MILKLAB</a>
+            <div class="dropdown">
+                <a type="button" class="navbar-brand" id="dropdownInfo" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">MILK LAB</a>
+                <div class="dropdown-menu p-0 m-0" aria-labelledby="dropdownInfo">
+                    <div class="jumbotron p-2 m-0 bg-white text-center">
+                        <p>+7 (927) 658-37-03</p>
+                        <div class="row justify-content-around">
+                            <a href="/"><i class="fab fa-vk" style="font-size: 25px; color: #007bff"></i></a>
+                            <a href="/"><i class="fab fa-instagram" style="font-size: 25px; color: #007bff"></i></a>
+                            <a href="/"><i class="fab fa-telegram-plane" style="font-size: 25px; color: #007bff"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -34,7 +46,7 @@
                         <a href="menu" class="nav-link">Меню</a>
                     </li>
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Акаунт</a>
+                        <a class="nav-link" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Акаунт</a>
                         <div class="dropdown-menu">
                             <div th:if="${user}">
                                 <form class="dropdown-item">
@@ -66,20 +78,35 @@
     <div class="container">
         <div class="container mb-5">
             <h1 class="display-4">Корзина</h1>
-            <p class="lead">Проверьте все внимательно.</p>
+            <p class="lead">Проверь все внимательно.</p>
         </div>
         <div class="container">
             <div th:if="${orderCoast}">
-                <div class="form-row col-md-7" th:each="basket : ${basketInfo}">
-                    <div class="form-group col-md-7">
+                <div class="d-none d-sm-none d-md-block">
+                    <div class="form-row col-md-7" th:each="basket : ${basketInfo}">
+                        <div class="form-group col-md-7">
+                            <span th:text="${basket.product.prodName}"></span>
+                        </div>
+                        <div class="form-group col-md-4 text-center">
+                            <p> <text th:text="${basket.product.prodCoast}"></text>
+                                Руб./шт.
+                            </p>
+                        </div>
+                        <div class="form-group col-md-auto align-items-center">
+                            <a class="far fa-window-close" style="color: #ff0000" th:href="@{/basket/delete/{product.id}(product.id=${basket.product.id})}"></a>
+                        </div>
+                    </div>
+                </div>
+                <div class="d-md-none d-lg-none d-xl-none" th:each="basket : ${basketInfo}">
+                    <div class="form-group text-center">
                         <span th:text="${basket.product.prodName}"></span>
                     </div>
-                    <div class="form-group col-md-4 text-center">
+                    <div class="form-group text-center">
                         <p> <text th:text="${basket.product.prodCoast}"></text>
                             Руб./шт.
                         </p>
                     </div>
-                    <div class="form-group col-md-auto align-items-center">
+                    <div class="form-group text-center">
                         <a class="far fa-window-close" style="color: #ff0000" th:href="@{/basket/delete/{product.id}(product.id=${basket.product.id})}"></a>
                     </div>
                 </div>
@@ -89,7 +116,7 @@
                     </div>
                 </div>
                 <div class="form-row col-md-6 justify-content-end">
-                    <div class="form-group col-md-3">
+                    <div class="form-group col-md-auto">
                         <p class="text-center m-0">
                             Итог:
                             <text th:text="${orderCoast}"></text>
@@ -98,7 +125,7 @@
                     </div>
                 </div>
                 <div th:if="${orderCoastDiscount}" class="form-row col-md-6 justify-content-end">
-                    <div class="form-group col-md-3">
+                    <div class="form-group col-md-auto">
                         <p class="text-center m-0">
                             Цена для Вас:
                             <text th:text="${orderCoastDiscount}"></text>
@@ -112,17 +139,17 @@
                     </div>
                 </div>
                 <div class="form-row col-md-6 justify-content-between">
-                    <div class="form-group col-md-4">
+                    <div class="form-group col-md-auto">
                         <a type="button" class="btn btn-block btn-outline-secondary" th:href="@{/menu}">Вернутся в меню</a>
                     </div>
-                    <div class="form-group col-md-4">
+                    <div class="form-group col-md-auto">
                         <button type="button" class="btn btn-primary btn-block" data-toggle="modal" data-target="#staticBackdrop">Оформить заказ</button>
                     </div>
                 </div>
             </div>
             <div th:unless="${orderCoast}">
                 <div class="container>">
-                    <p class="lead">Кажется, Ваша корзина пуста...</p>
+                    <p class="lead">Корзина пуста...</p>
                     <a type="button" class="btn btn-primary" th:href="@{/menu}">Выбирете товары в меню</a>
                 </div>
             </div>

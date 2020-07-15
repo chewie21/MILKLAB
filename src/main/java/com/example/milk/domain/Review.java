@@ -15,22 +15,23 @@ public class Review {
 
     private Long rating;
 
+    private String shortText;
     @Column(columnDefinition = "LONGTEXT")
     private String text;
 
-    private boolean active;
     private boolean discount;
     private boolean view;
 
     public Review() {
     }
 
-    public Review(String username, String name, String date, Long rating, String text) {
+    public Review(String username, String name, String date, Long rating, String text, String shortText) {
         this.username = username;
         this.name = name;
         this.date = date;
         this.rating = rating;
         this.text = text;
+        this.shortText = shortText;
     }
 
     public Long getId() {
@@ -81,12 +82,12 @@ public class Review {
         this.text = text;
     }
 
-    public boolean isActive() {
-        return active;
+    public String getShortText() {
+        return shortText;
     }
 
-    public void setActive(boolean active) {
-        this.active = active;
+    public void setShortText(String shortText) {
+        this.shortText = shortText;
     }
 
     public boolean isDiscount() {

@@ -9,6 +9,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
 @Service
 public class CarouselService {
@@ -34,14 +35,15 @@ public class CarouselService {
         } else return false;
     }
 
-    public void newCarousel (String carouselInfo, MultipartFile file) throws IOException {
-        Carousel carousel = new Carousel(carouselInfo);
+    public void newCarousel (Long carouselGroup, String carouselInfo, MultipartFile file) throws IOException {
+        Carousel carousel = new Carousel(carouselGroup, carouselInfo);
         if (checkImg(file)) {
             carousel.setCarouselImg(file.getOriginalFilename());
         }
         carouselRepo.save(carousel);
     }
-    public void saveCarousel (Carousel carousel, String carouselInfo, MultipartFile file) throws IOException {
+    public void saveCarousel (Carousel carousel, Long carouselGroup, String carouselInfo, MultipartFile file) throws IOException {
+        carousel.setCarouselGroup(carouselGroup);
         carousel.setCarouselInfo(carouselInfo);
         if (checkImg(file)) {
             carousel.setCarouselImg(file.getOriginalFilename());
@@ -50,5 +52,12 @@ public class CarouselService {
     }
     public void deleteCarousel (Carousel carousel) {
         carouselRepo.delete(carousel);
+    }
+
+    public List<Carousel> findAllByGroupMenu() {
+        return carouselRepo.findAllByCarouselGroupMenu();
+    }
+    public List<Carousel> findAllByGroupContacts() {
+        return carouselRepo.findAllByCarouselGroupContacts();
     }
 }

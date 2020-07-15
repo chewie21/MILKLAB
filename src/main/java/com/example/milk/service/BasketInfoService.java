@@ -20,8 +20,6 @@ public class BasketInfoService {
     private BasketInfoRepo basketInfoRepo;
     @Autowired
     private EntityManager entityManager;
-    @Autowired
-    private ReviewService reviewService;
 
     public List<BasketInfo> findBasketInfo (Basket basket) {
         return basketInfoRepo.findAllByBasketId(basket.getId());

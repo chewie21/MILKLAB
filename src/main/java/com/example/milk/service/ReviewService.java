@@ -23,12 +23,9 @@ public class ReviewService {
         return dateFormat.format(nowDate);
     }
 
-    public void newReview (String username, String name, Long rating, String text) {
+    public void newReview (String username, String name, Long rating, String text, String shortText) {
         String date = dateFormat();
-        Review review = new Review(username, name, date, rating, text);
-        if (rating > 3) {
-            review.setActive(true);
-        }
+        Review review = new Review(username, name, date, rating, text, shortText);
         review.setDiscount(true);
         review.setView(true);
         reviewRepo.save(review);
@@ -42,9 +39,6 @@ public class ReviewService {
         review.setView(false);
         reviewRepo.save(review);
     }
-    public boolean countReviewsByUsername(User user) {
-        return reviewRepo.countReviewsByUsername(user.getUsername()) != null;
-    }
 
     public void closeDiscount(User user) {
         Review review = reviewRepo.countReviewsByUsername(user.getUsername());
@@ -57,6 +51,9 @@ public class ReviewService {
     //Count
     public String countNewReviews() {
         return reviewRepo.countNewReviews();
+    }
+    public boolean countReviewsByUsername(User user) {
+        return reviewRepo.countReviewsByUsername(user.getUsername()) != null;
     }
 
     //Find
@@ -72,5 +69,11 @@ public class ReviewService {
     }
     public List<Review> findNewReview() {
         return reviewRepo.findNewReviews();
+    }
+    public List<Review> findAllByGoodRatingFirst() {
+        return reviewRepo.findAllByGoodRatingFirst();
+    }
+    public List<Review> findAllByGoodRatingSecond() {
+        return reviewRepo.findAllByGoodRatingSecond();
     }
 }

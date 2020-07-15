@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>MILKLAB</title>
+    <title>MILK LAB</title>
     <link href="/css/bootstrap-formhelpers.min.css" rel="stylesheet" media="screen">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
@@ -41,30 +41,41 @@
         </div>
     </nav>
 </header>
-<div class="jumbotron pt-3 pb-3 m-0 sticky-top">
-    <h1 class="display-4">Карусель</h1>
-    <div class="row">
-        <button type="button" class="btn btn-primary m-1" data-toggle="modal" data-target="#newCarousel">
-            Добавить
-        </button>
-    </div>
-</div>
-<div class="container">
-    <div th:each="carousel : ${carousels}">
-        <div class="card m-3">
-            <div class="card-img">
-                <img th:src="@{/img/{img}(img=${carousel.carouselImg})}" class="d-block w-100" alt="/" style="height: 360px; width: 1000px">
-            </div>
-            <div class="card-body">
-                <p class="card-text" th:text="${carousel.carouselInfo}"></p>
-            </div>
-            <a class="btn btn-primary btn-block mb-2" th:href="@{/AdminCarousels/{carousel.id}(carousel.id=${carousel.id})}">Изменить</a>
-            <form th:action="@{/AdminCarousels/deleteCarousel/{carousel.id}(carousel.id=${carousel.id})}" method="post">
-                <button type="submit" class="btn btn-danger btn-block">Удалить</button>
+<main>
+    <div class="jumbotron pt-3 pb-3 m-0 sticky-top">
+        <h1 class="display-4">Карусель <span th:if="${title}">/ <span th:text="${title}"></span></span></h1>
+        <div class="row">
+            <button type="button" class="btn btn-primary m-1" data-toggle="modal" data-target="#newCarousel">
+                Добавить
+            </button>
+            <form th:action="@{/AdminCarousels/findMenu}" method="post">
+                <button  type="submit" class="btn btn-primary m-1">"Меню"</button>
             </form>
+            <form th:action="@{/AdminCarousels/findContacts}" method="post">
+                <button  type="submit" class="btn btn-primary m-1">"Контакты"</button>
+            </form>
+            <a href="AdminCarousels" class="btn btn-secondary m-1" role="button" aria-pressed="true">Полный список</a>
         </div>
     </div>
-</div>
+    <div class="container">
+        <div th:each="carousel : ${carousels}">
+            <div class="card m-3">
+                <div class="card-img">
+                    <img th:src="@{/img/{img}(img=${carousel.carouselImg})}" class="d-block w-100" alt="/" style="height: 360px; width: 100%">
+                </div>
+                <div class="card-body">
+                    <p class="card-text" th:text="${carousel.carouselInfo}"></p>
+
+                </div>
+                <a class="btn btn-primary btn-block mb-2" th:href="@{/AdminCarousels/{carousel.id}(carousel.id=${carousel.id})}">Изменить</a>
+                <form th:action="@{/AdminCarousels/deleteCarousel/{carousel.id}(carousel.id=${carousel.id})}" method="post">
+                    <button type="submit" class="btn btn-danger btn-block">Удалить</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</main>
+<!-- ModalNew -->
 <form th:action="@{/AdminCarousels/newCarousel}" method="post" enctype="multipart/form-data">
     <div class="modal fade" id="newCarousel" data-backdrop="static" tabindex="-1" role="dialog" aria-labelledby="staticBackdropLabel" aria-hidden="true">
         <div class="modal-dialog" role="dialog">
@@ -77,6 +88,15 @@
                 </div>
                 <div class="modal-body">
                     <div class="input-group">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text">Группа</span>
+                        </div>
+                        <select class="custom-select" name="carouselGroup">
+                            <option value="1">"Меню"</option>
+                            <option value="2">"Контакты"</option>
+                        </select>
+                    </div>
+                    <div class="input-group pt-3">
                         <div class="input-group-prepend">
                             <span class="input-group-text">Информация</span>
                         </div>

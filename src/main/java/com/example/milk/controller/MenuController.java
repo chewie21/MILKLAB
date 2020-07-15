@@ -26,7 +26,7 @@ public class MenuController {
     public String showMenu(@AuthenticationPrincipal User user,
                            Map<String, Object> model) {
         model.put("user", user);
-        model.put("carousels", carouselService.findAll());
+        model.put("carousels", carouselService.findAllByGroupMenu());
         model.put("groups", productGroupService.findAllGroup());
         model.put("countProducts", basketInfoService.countProduct(user));
         if (user != null) {

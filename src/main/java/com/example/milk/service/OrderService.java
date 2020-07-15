@@ -109,10 +109,10 @@ public class OrderService {
         return orderRepo.findAllByOrderCoast(orderCoast);
     }
     public List<Order> findByDelivery () {
-        return orderRepo.findAllByStatus(OrderStatusEnum.DELIVERY);
+        return orderRepo.findAllByStatusDelivery();
     }
     public List<Order> findByPickup () {
-        return orderRepo.findAllByStatus(OrderStatusEnum.PICKUP);
+        return orderRepo.findAllByStatusPickup();
     }
 
 }

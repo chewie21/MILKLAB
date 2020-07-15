@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>MILKLAB</title>
+    <title>MILK LAB</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
     <link href="css/bootstrap-formhelpers.min.css" rel="stylesheet" media="screen">
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
@@ -16,7 +16,7 @@
 <body>
 <header>
     <nav class="navbar navbar-expand-md navbar-light sticky-top bg-light">
-        <a href="/" class="navbar-brand">MILKLAB for admins</a>
+        <a href="Admin" class="navbar-brand">MILKLAB for admins</a>
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive">
             <span class="navbar-toggler-icon"></span>
         </button>
@@ -41,72 +41,107 @@
         </div>
     </nav>
 </header>
-<div class="jumbotron pt-3 pb-3 m-0 sticky-top">
-    <h1 class="display-4">Товар <span th:if="${title}">/ <span th:text="${title}"></span></span></h1>
-    <div class="row">
-        <button type="button" class="btn btn-primary m-1" data-toggle="modal" data-target="#findProduct">
-            Найти продукт
-        </button>
-        <form th:action="@{/AdminProducts/findActive}" method="post">
-            <button type="submit" class="btn btn-primary m-1">Товары в наличии</button>
-        </form>
-        <form th:action="@{/AdminProducts/findStop}" method="post">
-            <button type="submit" class="btn btn-primary m-1">Товары в стопе <span th:if="${countStopProducts}" class="badge badge-light badge-pill" th:text="${countStopProducts}"></span></button>
-        </form>
-        <button type="button" class="btn btn-primary m-1" data-toggle="modal" data-target="#newProduct">
-            Добавить продукт
-        </button>
-        <button type="button" class="btn btn-primary m-1" data-toggle="modal" data-target="#group">
-            Группы товаров
-        </button>
-        <a href="AdminProducts" class="btn btn-secondary m-1" role="button" aria-pressed="true">Полный список</a>
+<main>
+    <div class="jumbotron sticky-top m-0 p-3">
+        <h1 class="display-4">Товар <span th:if="${title}">/ <span th:text="${title}"></span></span></h1>
+        <div class="form-row">
+            <button type="button" class="btn btn-primary m-1" data-toggle="modal" data-target="#findProduct">
+                Найти продукт
+            </button>
+            <form th:action="@{/AdminProducts/findActive}" method="post">
+                <button type="submit" class="btn btn-primary m-1">Товары в наличии</button>
+            </form>
+            <form th:action="@{/AdminProducts/findStop}" method="post">
+                <button type="submit" class="btn btn-primary m-1">Товары в стопе <span th:if="${countStopProducts}" class="badge badge-light badge-pill" th:text="${countStopProducts}"></span></button>
+            </form>
+            <button type="button" class="btn btn-primary m-1" data-toggle="modal" data-target="#newProduct">
+                Добавить продукт
+            </button>
+            <button type="button" class="btn btn-primary m-1" data-toggle="modal" data-target="#group">
+                Группы товаров
+            </button>
+            <a href="AdminProducts" class="btn btn-secondary m-1" role="button" aria-pressed="true">Полный список</a>
+        </div>
     </div>
-</div>
-<div class="table-responsive">
-    <table class="table table-hover">
-        <thead class="text-center">
-        <tr>
-            <th>ID</th>
-            <th>Группа</th>
-            <th>Название</th>
-            <th>Цена</th>
-            <th>Состояние</th>
-            <th>Действия</th>
-        </tr>
-        </thead>
-        <tbody class="text-center">
-        <tr th:each="product : ${products}">
-            <td th:text="${product.id}"></td>
-            <td>
-                <div th:if="${product.productGroup}">
-                    <p th:text="${product.productGroup.prodGroup}"></p>
+    <div class="table-responsive">
+        <table class="table table-hover">
+            <thead class="text-center">
+                <tr>
+                    <th>ID</th>
+                    <th>Группа</th>
+                    <th>Название</th>
+                    <th>Цена</th>
+                    <th>Состояние</th>
+                    <th>Действия</th>
+                </tr>
+            </thead>
+            <tbody class="text-center">
+                <div th:each="product : ${products}">
+                    <div th:switch="${product.status}">
+                        <tr th:case="${product.status.ACTIVE}">
+                            <td th:text="${product.id}"></td>
+                            <td>
+                                <div th:if="${product.productGroup}">
+                                    <p th:text="${product.productGroup.prodGroup}"></p>
+                                </div>
+                                <div th:unless="${product.productGroup}">
+                                    <p>Без группы</p>
+                                </div>
+                            </td>
+                            <td th:text="${product.prodName}"></td>
+                            <td th:text="${product.prodCoast}"></td>
+                            <td>
+                                <div th:switch="${product.status}">
+                                    <p th:case="${product.status.ACTIVE}">В наличии</p>
+                                    <p th:case="${product.status.STOP}">В стопе</p>
+                                </div>
+                            </td>
+                            <td>
+                                <a class="btn btn-primary btn-block mb-2" th:href="@{/AdminProducts/{product.id}(product.id=${product.id})}">Изменить</a>
+                                <div class="mb-2" th:switch="${product.status}">
+                                    <a th:case="${product.status.ACTIVE}" class="btn btn-warning btn-block" th:href="@{/AdminProducts/close/{product.id}(product.id=${product.id})}">В стоп</a>
+                                    <a th:case="${product.status.STOP}" class="btn btn-success btn-block" th:href="@{/AdminProducts/open/{product.id}(product.id=${product.id})}">В наличие</a>
+                                </div>
+                                <form th:action="@{/AdminProducts/deleteProduct/{product.id}(product.id=${product.id})}" method="post">
+                                    <button type="submit" class="btn btn-danger btn-block">Удалить</button>
+                                </form>
+                            </td>
+                        </tr>
+                        <tr th:case="${product.status.STOP}" class="table-warning">
+                            <td th:text="${product.id}"></td>
+                            <td>
+                                <div th:if="${product.productGroup}">
+                                    <p th:text="${product.productGroup.prodGroup}"></p>
+                                </div>
+                                <div th:unless="${product.productGroup}">
+                                    <p>Без группы</p>
+                                </div>
+                            </td>
+                            <td th:text="${product.prodName}"></td>
+                            <td th:text="${product.prodCoast}"></td>
+                            <td>
+                                <div th:switch="${product.status}">
+                                    <p th:case="${product.status.ACTIVE}">В наличии</p>
+                                    <p th:case="${product.status.STOP}">В стопе</p>
+                                </div>
+                            </td>
+                            <td>
+                                <a class="btn btn-primary btn-block mb-2" th:href="@{/AdminProducts/{product.id}(product.id=${product.id})}">Изменить</a>
+                                <div class="mb-2" th:switch="${product.status}">
+                                    <a th:case="${product.status.ACTIVE}" class="btn btn-warning btn-block" th:href="@{/AdminProducts/close/{product.id}(product.id=${product.id})}">В стоп</a>
+                                    <a th:case="${product.status.STOP}" class="btn btn-success btn-block" th:href="@{/AdminProducts/open/{product.id}(product.id=${product.id})}">В наличие</a>
+                                </div>
+                                <form th:action="@{/AdminProducts/deleteProduct/{product.id}(product.id=${product.id})}" method="post">
+                                    <button type="submit" class="btn btn-danger btn-block">Удалить</button>
+                                </form>
+                            </td>
+                        </tr>
+                    </div>
                 </div>
-                <div th:unless="${product.productGroup}">
-                    <p>Без группы</p>
-                </div>
-            </td>
-            <td th:text="${product.prodName}"></td>
-            <td th:text="${product.prodCoast}"></td>
-            <td>
-                <div th:switch="${product.status}">
-                    <p th:case="${product.status.ACTIVE}">В наличии</p>
-                    <p th:case="${product.status.STOP}">В стопе</p>
-                </div>
-            </td>
-            <td>
-                <a class="btn btn-primary btn-block mb-2" th:href="@{/AdminProducts/{product.id}(product.id=${product.id})}">Изменить</a>
-                <div class="pb-2" th:switch="${product.status}">
-                    <a th:case="${product.status.ACTIVE}" class="btn btn-dark btn-block" th:href="@{/AdminProducts/close/{product.id}(product.id=${product.id})}">В стоп</a>
-                    <a th:case="${product.status.STOP}" class="btn btn-dark btn-block" th:href="@{/AdminProducts/open/{product.id}(product.id=${product.id})}">Вернуть в наличие</a>
-                </div>
-                <form th:action="@{/AdminProducts/deleteProduct/{product.id}(product.id=${product.id})}" method="post">
-                    <button type="submit" class="btn btn-danger btn-block">Удалить</button>
-                </form>
-            </td>
-        </tr>
-        </tbody>
-    </table>
-</div>
+            </tbody>
+        </table>
+    </div>
+</main>
 
 <!-- ModuleFind -->
 <form th:action="@{/AdminProducts/filterProducts}" method="post">

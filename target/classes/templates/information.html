@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>MILKLAB</title>
+    <title>MILK LAB</title>
     <link href="/css/bootstrap-formhelpers.min.css" rel="stylesheet" media="screen">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
@@ -15,9 +15,21 @@
 </head>
 <body>
 <header>
-    <nav class="navbar navbar-dark bg-primary navbar-expand-md">
+    <nav class="navbar navbar-dark bg-primary navbar-expand-md fixed-top">
         <div class="container">
-            <a href="/" class="navbar-brand">MILKLAB</a>
+            <div class="dropdown">
+                <a type="button" class="navbar-brand" id="dropdownInfo" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">MILK LAB</a>
+                <div class="dropdown-menu p-0 m-0" aria-labelledby="dropdownInfo">
+                    <div class="jumbotron p-2 m-0 bg-white text-center">
+                        <p>+7 (927) 658-37-03</p>
+                        <div class="row justify-content-around">
+                            <a href="/"><i class="fab fa-vk" style="font-size: 25px; color: #007bff"></i></a>
+                            <a href="/"><i class="fab fa-instagram" style="font-size: 25px; color: #007bff"></i></a>
+                            <a href="/"><i class="fab fa-telegram-plane" style="font-size: 25px; color: #007bff"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -34,7 +46,7 @@
                         <a href="menu" class="nav-link">Меню</a>
                     </li>
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Акаунт</a>
+                        <a class="nav-link" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Акаунт</a>
                         <div class="dropdown-menu">
                             <div th:if="${user}">
                                 <form class="dropdown-item">
@@ -62,5 +74,55 @@
         </div>
     </nav>
 </header>
+<main>
+    <div class="jumbotron bg-white" style="margin-top: 55px">
+        <div class="container">
+            <p class="display-4 d-none d-sm-block">Познакомимся?</p>
+            <p class="lead d-block d-sm-none" style="font-size: 40px">Познакомимся?</p>
+            <p class="lead" style="font-size: 40px">Milk Lab - это совершенно новый формат кальянной.</p>
+            <p class="lead" style="font-size: 25px">Сейчас всё объясним.</p>
+            <p class="lead" style="font-size: 25px"> Утром, в суматохе, ты думаешь, куда бы заехать и вкусно позавтракать, верно?
+                В течение дня снова встаёт вопрос: «где поработать, чтобы никто не отвлекал», знакомо?
+                И, конечно же, вечером надо обязательно встретиться с друзьями. Узнал себя?</p>
+            <p class="lead" style="font-size: 40px"> Варианты для каждого случая разные.
+                Но можно просто выбрать для всего этого один - Milk Lab.</p>
+            <p class="lead" style="font-size: 25px">Именно здесь ты будешь начинать свой день, наслаждаясь чашкой кофе и так полюбившемся тебе завтраком.
+                            И именно здесь ты будешь собираться с друзьями после трудового дня или просто в выходные,
+                чтобы расслабиться и насладиться паровым коктейлем от наших ребят.</p>
+            <div class="card-columns">
+                <div th:each="reviews : ${reviewsFirst}">
+                    <div class="card" style="color: #005cbf; background-color: #E9ECEF">
+                        <blockquote class="blockquote mb-0 card-body">
+                            <p><text th:text="${reviews.shortText}"></text></p>
+                            <footer class="blockquote-footer">
+                                <small class="text-muted">
+                                    <text th:text="${reviews.name}"></text>
+                                </small>
+                            </footer>
+                        </blockquote>
+                    </div>
+                </div>
+            </div>
+            <p class="lead" style="font-size: 25px">Мы именно то заведение, которое ты так долго искал.
+                Светлое помещение, хорошая кухня, непринуждённая атмосфера и паровые коктейли.
+                Обещаем, любовь с первого взгляда обеспечена.</p>
+            <p class="lead" style="font-size: 40px">Поэтому, до скорой встречи!</p>
+            <div class="card-columns">
+                <div th:each="reviews : ${reviewsSecond}">
+                    <div class="card" style="color: #005cbf; background-color: #E9ECEF">
+                        <blockquote class="blockquote mb-0 card-body">
+                            <p><text th:text="${reviews.shortText}"></text></p>
+                            <footer class="blockquote-footer">
+                                <small class="text-muted">
+                                    <text th:text="${reviews.name}"></text>
+                                </small>
+                            </footer>
+                        </blockquote>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
 </body>
 </html>

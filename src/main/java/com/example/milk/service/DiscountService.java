@@ -14,14 +14,16 @@ public class DiscountService {
     private BasketInfoService basketInfoService;
 
     public String discountByReview (User user) {
-        if (reviewService.countReviewsByUsername(user)) {
-            int discount = 5; //скидка в 5%
-            int orderCoast = Integer.parseInt(basketInfoService.orderCoast(user));
-            int orderDiscountCoast = orderCoast - ((orderCoast * discount) / 100);
-            return String.valueOf(orderDiscountCoast);
+        if (basketInfoService.orderCoast(user) != null) {
+            if (reviewService.countReviewsByUsername(user)) {
+                int discount = 5; //скидка в 5%
+                int orderCoast = Integer.parseInt(basketInfoService.orderCoast(user));
+                int orderDiscountCoast = orderCoast - ((orderCoast * discount) / 100);
+                return String.valueOf(orderDiscountCoast);
+            } else {
+                return null;
+            }
         }
-        else {
-            return null;
-        }
+        else return null;
     }
 }

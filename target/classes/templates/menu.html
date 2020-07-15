@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>MILKLAB</title>
+    <title>MILK LAB</title>
     <link href="/css/bootstrap-formhelpers.min.css" rel="stylesheet" media="screen">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
@@ -17,7 +17,19 @@
 <header>
     <nav class="navbar navbar-dark bg-primary navbar-expand-md">
         <div class="container">
-            <a href="/" class="navbar-brand">MILKLAB</a>
+            <div class="dropdown">
+                <a type="button" class="navbar-brand" id="dropdownInfo" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">MILK LAB</a>
+                <div class="dropdown-menu p-0 m-0" aria-labelledby="dropdownInfo">
+                    <div class="jumbotron p-2 m-0 bg-white text-center">
+                        <p>+7 (927) 658-37-03</p>
+                        <div class="row justify-content-around">
+                            <a href="/"><i class="fab fa-vk" style="font-size: 25px; color: #007bff"></i></a>
+                            <a href="/"><i class="fab fa-instagram" style="font-size: 25px; color: #007bff"></i></a>
+                            <a href="/"><i class="fab fa-telegram-plane" style="font-size: 25px; color: #007bff"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -34,7 +46,7 @@
                         <a href="menu" class="nav-link active">Меню</a>
                     </li>
                     <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Акаунт</a>
+                        <a class="nav-link" data-toggle="dropdown" href="#" role="button" aria-haspopup="true" aria-expanded="false">Акаунт</a>
                         <div class="dropdown-menu">
                             <div th:if="${user}">
                                 <form class="dropdown-item">
@@ -62,77 +74,81 @@
         </div>
     </nav>
 </header>
-<div class="container">
-    <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
-        <div class="carousel-inner mt-3 mb-3 d-block w-100 rounded">
-            <div class="carousel-item active">
-                <img src="img1/logo.png" alt="/" class="d-block w-100" style="height: 360px; width: 1000px">
+<main>
+    <div class="container d-none d-xl-block d-lg-block">
+        <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
+            <div class="carousel-inner mt-3 mb-3 d-block w-100 rounded">
+                <div class="carousel-item active">
+                    <img src="img1/logo.png" alt="/" class="d-block w-100" style="height: 360px; width: 100%">
+                </div>
+                <div class="carousel-item" th:each="carousel :${carousels}">
+                    <img th:src="@{/img/{img}(img=${carousel.carouselImg})}" class="d-block w-100" alt="/" style="height: 360px; width: 100%">
+                </div>
             </div>
-            <div class="carousel-item" th:each="carousel :${carousels}">
-                <img th:src="@{/img/{img}(img=${carousel.carouselImg})}" class="d-block w-100" alt="/" style="height: 360px; width: 1000px">
-            </div>
+            <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="sr-only">Previous</span>
+            </a>
+            <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="sr-only">Next</span>
+            </a>
         </div>
-        <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span class="sr-only">Previous</span>
-        </a>
-        <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            <span class="sr-only">Next</span>
-        </a>
     </div>
-</div>
-<div class="container sticky-top">
-    <nav class="navbar navbar-light bg-white navbar-expand-md justify-content-center" id="navbarMenu">
-        <ul class="nav">
-            <li class="nav-item">
-                <a class="navbar-brand m-0" href="menu"><i class="fas fa-chevron-up" style="color: #007bff"></i></a>
-            </li>
-            <li class="nav-item" th:each="group : ${groups}">
+    <div class="container sticky-top">
+        <nav class="navbar navbar-light bg-white navbar-expand-md justify-content-center">
+            <ul class="nav">
+                <li class="nav-item">
+                    <a class="navbar-brand m-0" href="menu"><i class="fas fa-chevron-up" style="color: #007bff"></i></a>
+                </li>
+                <li class="nav-item" th:each="group : ${groups}">
+                    <div th:unless="${group.products.empty}">
+                        <a class="nav-link" th:href="@{'/menu#' + ${group.id}}" th:text="${group.prodGroup}"></a>
+                    </div>
+                </li>
+                <li class="nav-item">
+                    <div th:if="${user}">
+                        <a class="navbar-brand m-0" href="basket">
+                            <i class="fas fa-shopping-basket" style="color: #007bff">
+                                <span class="badge badge-primary badge-pill" th:text="${countProducts}"></span>
+                            </i>
+                        </a>
+                    </div>
+                    <div th:unless="${user}">
+                        <a class="navbar-brand m-0" href="basket">
+                            <i class="fas fa-shopping-basket" style="color: #007bff"></i>
+                        </a>
+                    </div>
+                </li>
+            </ul>
+        </nav>
+    </div>
+    <div class="container mt-3">
+        <div data-target="#navbarMenu" data-offset="0">
+            <div th:each="group : ${groups}">
                 <div th:unless="${group.products.empty}">
-                    <a class="nav-link" th:href="@{'/menu#' + ${group.id}}" th:text="${group.prodGroup}"></a>
-                </div>
-            </li>
-            <li class="nav-item">
-                <div th:if="${user}">
-                    <a class="navbar-brand m-0" href="basket">
-                        <i class="fas fa-shopping-basket" style="color: #007bff">
-                            <span class="badge badge-primary badge-pill" th:text="${countProducts}"></span>
-                        </i>
-                    </a>
-                </div>
-                <div th:unless="${user}">
-                    <a class="navbar-brand m-0" href="basket">
-                        <i class="fas fa-shopping-basket" style="color: #007bff"></i>
-                    </a>
-                </div>
-            </li>
-        </ul>
-    </nav>
-</div>
-<div class="container">
-    <div data-target="#navbarMenu" data-offset="0">
-        <div th:each="group : ${groups}">
-            <div th:unless="${group.products.empty}">
-                <h4 th:id="${group.id}" class="text-muted" th:text="${group.prodGroup}"></h4>
-                <div class="card-deck">
-                    <div th:each="product : ${group.products}">
-                        <div th:if="${product.isActive()}">
-                            <div class="card mt-3 mb-3" style="width: 250px; height: 450px; box-sizing: content-box">
-                                <div th:if="${product.prodImg}">
-                                    <img th:src="@{/img/{img}(img=${product.prodImg})}" style="height: 250px; width: 250px">
-                                </div>
-                                <div class="card-body">
-                                    <h5 class="card-title" th:text="${product.prodName}"></h5>
-                                    <small class="card-text text-muted" th:text="${product.prodInfo}"></small>
-                                </div>
-                                <div class="card-footer">
-                                    <div class="form-row justify-content-between">
-                                        <div class="form-group m-0 align-self-center">
-                                            <p class="card-text"><text th:text="${product.prodCoast}"></text> Руб./шт.</p>
-                                        </div>
-                                        <div class="form-group m-0">
-                                            <a th:href="@{/basket/{product}(product=${product.id})}" type="button" class="btn btn-primary"><i class="fas fa-dolly-flatbed"></i></a>
+                    <div class="navbar navbar-dark bg-primary navbar-expand-md rounded">
+                        <p th:id="${group.id}" class="navbar-brand m-0 p-0" th:text="${group.prodGroup}"></p>
+                    </div>
+                    <div class="card-deck justify-content-around">
+                        <div th:each="product : ${group.products}">
+                            <div th:if="${product.isActive()}">
+                                <div class="card mt-3 mb-3" style="box-sizing: content-box">
+                                    <div th:if="${product.prodImg}">
+                                        <img th:src="@{/img/{img}(img=${product.prodImg})}" class="card-img-top" style="height: 250px; width: 250px">
+                                    </div>
+                                    <div class="card-body">
+                                        <h5 class="card-title" th:text="${product.prodName}"></h5>
+                                        <small class="card-text text-muted" th:text="${product.prodInfo}"></small>
+                                    </div>
+                                    <div class="card-footer">
+                                        <div class="form-row justify-content-between">
+                                            <div class="form-group m-0 align-self-center">
+                                                <p class="card-text"><text th:text="${product.prodCoast}"></text> Руб./шт.</p>
+                                            </div>
+                                            <div class="form-group m-0">
+                                                <a th:href="@{/basket/{product}(product=${product.id})}" type="button" class="btn btn-primary"><i class="fas fa-dolly-flatbed"></i></a>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
@@ -143,6 +159,6 @@
             </div>
         </div>
     </div>
-</div>
+</main>
 </body>
 </html>

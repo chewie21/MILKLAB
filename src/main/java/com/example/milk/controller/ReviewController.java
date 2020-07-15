@@ -28,13 +28,15 @@ public class ReviewController {
                               @RequestParam String username,
                               @RequestParam Long rating,
                               @RequestParam String text,
+                              @RequestParam String shortText,
                               Map<String, String> model) {
-        reviewService.newReview(username, name, rating, text);
+        reviewService.newReview(username, name, rating, text, shortText);
         if (rating < 4) {
-            model.put("text", "Нам очень жаль, что Вам не понравилось.");
+            model.put("text", "Очень жаль, что тебе не понравилось :(" +
+                    " Мы обещаем исправить все ошибки, чтобы твой следующий визит прошел безупречно!");
         }
         else {
-            model.put("text", "Спасибо за отзыв, ждем вас снова");
+            model.put("text", "Спасибо за отзыв! Очень рады, что тебе понравилость! Ждем тебя снова!");
         }
         return "reviewSuccess";
     }

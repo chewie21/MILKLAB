@@ -1,8 +1,6 @@
 package com.example.milk.controller;
 
 import com.example.milk.domain.Carousel;
-import com.example.milk.domain.Product;
-import com.example.milk.domain.ProductStatusEnum;
 import com.example.milk.service.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -10,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.io.IOException;
 import java.util.Map;
@@ -32,11 +31,12 @@ public class ForAdminCarouselsController {
 
     @GetMapping
     public String showCarousel(Map<String, Object> model) {
-        model.put("carousels", carouselService.findAll());
+        model.putIfAbsent("carousels", carouselService.findAll());
         model.put("countNotActiveOrders", orderService.countActiveOrders());
         model.put("countNotActiveUsers", userService.countNotActiveUsers());
         model.put("countStopProducts", productService.countStopProducts());
         model.put("countNewReviews", reviewService.countNewReviews());
+        model.putIfAbsent("title", null);
         return "AdminCarousels";
     }
 
@@ -47,21 +47,35 @@ public class ForAdminCarouselsController {
     }
     @PostMapping
     public String saveCarousel (@RequestParam String carouselInfo,
+                                @RequestParam Long carouselGroup,
                                 @RequestParam("carouselImg") MultipartFile file,
                                 @RequestParam("id") Carousel carousel) throws IOException {
-        carouselService.saveCarousel(carousel, carouselInfo, file);
+        carouselService.saveCarousel(carousel, carouselGroup, carouselInfo, file);
         return "redirect:/AdminCarousels";
     }
 
     @PostMapping("/newCarousel")
     public String newCarousel (@RequestParam String carouselInfo,
+                               @RequestParam Long carouselGroup,
                                @RequestParam("carouselImg") MultipartFile file) throws IOException {
-        carouselService.newCarousel(carouselInfo,file);
+        carouselService.newCarousel(carouselGroup, carouselInfo,file);
         return "redirect:/AdminCarousels";
     }
     @PostMapping("deleteCarousel/{carousel}")
-    public  String deleteCarousel (@PathVariable Carousel carousel) {
+    public String deleteCarousel (@PathVariable Carousel carousel) {
         carouselService.deleteCarousel(carousel);
+        return "redirect:/AdminCarousels";
+    }
+    @PostMapping("/findMenu")
+    public String findMenu (RedirectAttributes attr) {
+        attr.addFlashAttribute("carousels", carouselService.findAllByGroupMenu());
+        attr.addFlashAttribute("title", "Картинки в основном меню");
+        return "redirect:/AdminCarousels";
+    }
+    @PostMapping("/findContacts")
+    public String findContacts (RedirectAttributes attr) {
+        attr.addFlashAttribute("carousels", carouselService.findAllByGroupContacts());
+        attr.addFlashAttribute("title", "Картинки в контактах");
         return "redirect:/AdminCarousels";
     }
 }

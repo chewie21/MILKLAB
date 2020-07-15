@@ -8,12 +8,14 @@ public class Carousel {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
+    private Long carouselGroup;
     private String carouselInfo;
     private String carouselImg;
 
     public Carousel (){}
 
-    public Carousel(String carouselInfo) {
+    public Carousel(Long carouselGroup, String carouselInfo) {
+        this.carouselGroup = carouselGroup;
         this.carouselInfo = carouselInfo;
     }
 
@@ -23,6 +25,14 @@ public class Carousel {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Long getCarouselGroup() {
+        return carouselGroup;
+    }
+
+    public void setCarouselGroup(Long carouselGroup) {
+        this.carouselGroup = carouselGroup;
     }
 
     public String getCarouselInfo() {
